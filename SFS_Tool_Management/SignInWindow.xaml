@@ -12,7 +12,7 @@
                 <TextBlock Text="Sign In" FontSize="16" FontFamily="Segoe UI Symbol" FontWeight="Bold" Margin="0,0,0,2"/>
                 <TextBlock Text="Enter your email below to login to your account" FontFamily="Segoe UI" Margin="0,0,0,5"/>
 
-                <TextBlock Text="Email" Margin="0,0,0,3" FontFamily="Segoe UI"/>
+                <TextBlock Text="ID" Margin="0,0,0,3" FontFamily="Segoe UI"/>
                 <TextBox x:Name="textBox_Email" FontFamily="Segoe UI" Margin="0,0,0,3"/>
                 
                 <Grid>
@@ -21,17 +21,19 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     
-                    <TextBlock Text="Password" Grid.Column="0" FontFamily="Segoe UI" Margin="0,0,0,3" HorizontalAlignment="Left"/>
-                    <TextBlock Text="Forgot your password?" Grid.Column="1" FontFamily="Segoe UI" HorizontalAlignment="Right" Foreground="CornflowerBlue" TextDecorations="Underline"/>
+                    <TextBlock Text="Password" Grid.Column="0" FontFamily="Segoe UI" Margin="0,0,0,3" HorizontalAlignment="Left" />
+                    <TextBlock Text="Forgot your password?" Grid.Column="1" FontFamily="Segoe UI" HorizontalAlignment="Right"
+                               Foreground="CornflowerBlue" TextDecorations="Underline" Cursor="Hand" />
                 </Grid>
                 
                 <PasswordBox x:Name="textBox_Password" FontFamily="Segoe UI" Margin="0,0,0,5"/>
 
-                <Button x:Name="button_Login" Content="Login" FontFamily="Segoe UI" Margin="0,0,0,2"/>
+                <Button x:Name="button_Login" Content="Login" FontFamily="Segoe UI" Margin="0,0,0,2" Click="SignInButton_Click" Cursor="Hand" />
 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Don't have an account?" FontFamily="Segoe UI" Margin="0,0,5,0"/>
-                    <TextBlock Text="Sign Up" FontFamily="Segoe UI" Foreground="CornflowerBlue" TextDecorations="Underline"/>
+                    <TextBlock Text="Sign Up" FontFamily="Segoe UI" Foreground="CornflowerBlue" TextDecorations="Underline"
+                               MouseLeftButtonUp="SignUpBlock_Click" Cursor="Hand" />
                 </StackPanel>
             </StackPanel>
         </Grid>
