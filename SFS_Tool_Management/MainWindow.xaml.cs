@@ -20,5 +20,20 @@ namespace SFS_Tool_Management
         {
             InitializeComponent();
         }
+
+        private void button_ShowDashboard_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new Views.DashboardPage());
+        }
+
+        private void button_ShowToolList_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new Views.ToolListPage());
+        }
+
+        private void button_ShowRentalHistory_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new Views.RentalHistoryPage());
+        }
     }
 }
