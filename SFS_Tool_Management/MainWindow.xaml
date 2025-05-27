@@ -5,8 +5,91 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SFS_Tool_Management"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="960" Width="1440">
+    
+    <!-- 서랍 메뉴 Storyboard -->
+    <Window.Resources>
+        <!-- 여는 애니메이션 -->
+        <Storyboard x:Key="OpenMenu">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="GridMenu">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="256">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <!-- 닫는 애니메이션 -->
+        <Storyboard x:Key="CloseMenu">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="GridMenu">
+                <EasingDoubleKeyFrame KeyTime="0" Value="256"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Window.Resources>
+
+    <!-- 애니메이션 이벤트 트리거 -->
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Button.Click" SourceName="button_DrawOpen">
+            <BeginStoryboard Storyboard="{StaticResource OpenMenu}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="Button.Click" SourceName="button_DrawClose">
+            <BeginStoryboard Storyboard="{StaticResource CloseMenu}"/>
+        </EventTrigger>
+    </Window.Triggers>
+    
+    <!-- MainWindow Grid -->
     <Grid>
+        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
+        
+        <!-- Draw Menu 열기 Btn -->
+        <Button x:Name="button_DrawOpen" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="30" Content="메뉴" Margin="5"/>
+        
+        <!-- Draw Menu Grid -->
+        <Grid x:Name="GridMenu" Width="256" HorizontalAlignment="Left" Margin="-256,0,0,0" Background="AliceBlue">
+            <!-- 애니메이션 사용 관련 선언 -->
+            <Grid.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Grid.RenderTransform>
+
+            <!-- 메뉴 전환 Btn Gird -->
+            <Grid VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+ 
+                <Image Grid.Column="0" Grid.Row="0" Source="/Resources/layout.png" Width="20" Height="20" Margin="10"/>
+                <Button Grid.Column="1" Grid.Row="0" x:Name="button_ShowDashboard" Content="Dashboard" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Click="button_ShowDashboard_Click"/>
+                
+                <Image Grid.Column="0" Grid.Row="1" Source="/Resources/list.png" Width="20" Height="20" Margin="10"/>
+                <Button Grid.Column="1" Grid.Row="1" x:Name="button_ShowToolList" Content="Tool List" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Click="button_ShowToolList_Click"/>
+                
+                <Image Grid.Column="0" Grid.Row="2" Source="/Resources/history.png" Width="20" Height="20" Margin="10"/>
+                <Button Grid.Column="1" Grid.Row="2" x:Name="button_ShowRentalHistory" Content="Rental History" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Click="button_ShowRentalHistory_Click"/>
+            </Grid>
+            
+            <!-- Draw Menu 닫기 Btn -->
+            <Button x:Name="button_DrawClose" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="30" Content="닫기" Margin="5"/>
+            
+            <!-- Page Frame -->
+        </Grid>
 
     </Grid>
 </Window>
