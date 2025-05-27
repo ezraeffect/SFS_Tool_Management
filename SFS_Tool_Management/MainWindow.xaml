@@ -19,12 +19,28 @@
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="GridBackground">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
         </Storyboard>
 
         <!-- 닫는 애니메이션 -->
         <Storyboard x:Key="CloseMenu">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="GridMenu">
                 <EasingDoubleKeyFrame KeyTime="0" Value="256"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="GridBackground">
+                <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <CubicEase EasingMode="EaseInOut"/>
@@ -46,13 +62,15 @@
     
     <!-- MainWindow Grid -->
     <Grid>
+        <Grid x:Name="GridBackground" Background="LightGray" Opacity="0"/>
+
         <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
         
         <!-- Draw Menu 열기 Btn -->
         <Button x:Name="button_DrawOpen" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="30" Content="메뉴" Margin="5"/>
         
         <!-- Draw Menu Grid -->
-        <Grid x:Name="GridMenu" Width="256" HorizontalAlignment="Left" Margin="-256,0,0,0" Background="AliceBlue">
+        <Grid x:Name="GridMenu" Width="256" HorizontalAlignment="Left" Margin="-256,0,0,0" Background="White">
             <!-- 애니메이션 사용 관련 선언 -->
             <Grid.RenderTransform>
                 <TransformGroup>
