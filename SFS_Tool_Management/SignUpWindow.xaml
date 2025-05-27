@@ -9,7 +9,7 @@
     <Grid>
         <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="Sign Up" FontSize="16" FontFamily="Segoe UI Symbol" FontWeight="Bold" Margin="0,0,0,2"/>
+                <TextBlock Text="Sign Up" FontSize="16" FontFamily="Segoe UI Symbol" FontWeight="Bold" Margin="0,0,0,2" />
                 <TextBlock Text="Enter your information to create an account" FontFamily="Segoe UI" Margin="0,0,0,5"/>
 
                 <!-- 이름 입력 Control -->
@@ -38,8 +38,8 @@
                 <TextBox x:Name="textBox_PhoneNumber" FontFamily="Segoe UI" Margin="0,0,0,3"/>
                 
                 <!-- 아이디 입력 Control -->
-                <TextBlock Text="Email" Margin="0,0,0,3" FontFamily="Segoe UI"/>
-                <TextBox x:Name="textBox_Email" FontFamily="Segoe UI" Margin="0,0,0,3"/>
+                <TextBlock Text="ID" Margin="0,0,0,3" FontFamily="Segoe UI"/>
+                <TextBox x:Name="textBox_ID" FontFamily="Segoe UI" Margin="0,0,0,3"/>
 
                 <!-- 비밀번호 입력 Control -->
                 <TextBlock Text="Password" FontFamily="Segoe UI" Margin="0,0,0,3"/>
@@ -52,12 +52,12 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <RadioButton x:Name="radioButton_isUser" Content="User" Grid.Column="0" FontFamily="Segoe UI"/>
+                    <RadioButton x:Name="radioButton_isUser" Content="User" Grid.Column="0" FontFamily="Segoe UI" IsChecked="True" />
                     <RadioButton x:Name="radioButton_isAdmin" Content="Administrator" Grid.Column="1" FontFamily="Segoe UI"/>
                 </Grid>
 
                 <!-- 가입 컨트롤 Control -->
-                <Button x:Name="button_SignUp" Content="Sign Up" FontFamily="Segoe UI" Margin="0,0,0,2"/>
+                <Button x:Name="button_SignUp" Content="Sign Up" FontFamily="Segoe UI" Margin="0,0,0,2" Click="button_SignUp_Click"/>
             </StackPanel>
         </Grid>
     </Grid>
