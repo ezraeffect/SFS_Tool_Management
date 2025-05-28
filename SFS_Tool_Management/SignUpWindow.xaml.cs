@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using System.Data.SqlClient;
 
 namespace SFS_Tool_Management
 {
