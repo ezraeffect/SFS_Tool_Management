@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SFS_Tool_Management.Views;
 
 namespace SFS_Tool_Management
 {
@@ -19,6 +20,8 @@ namespace SFS_Tool_Management
         public MainWindow()
         {
             InitializeComponent();
+            SignInWindow signInWindow = new SignInWindow();
+            signInWindow.Show();
         }
     }
 }
