@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Data.SqlClient;
 
-namespace SFS_Tool_Management
+namespace SFS_Tool_Management.Models
 {
     public class User
     {
@@ -19,23 +19,11 @@ namespace SFS_Tool_Management
         public User(string id, string pw, string pos, string dep, string pn, bool ac)
         {
             ID = id;
-            Hashedpw = HashPW(pw);
+            Hashedpw = Encrypter.HashPW(pw);
             Position = pos;
             Department = dep;
             PN = pn;
             Access = ac;
         }
-        public static string HashPW(string pw)
-        {
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(pw));
-                return Convert.ToBase64String(bytes);
-            }
-        }
-        public static List<User> users = new List<User>
-        {
-            new User ("a", "1234", "supervisor", "engineer", "01012345678", false)
-        };
     }
 }
