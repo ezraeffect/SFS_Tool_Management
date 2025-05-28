@@ -4,11 +4,23 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SFS_Tool_Management.Views"
+      xmlns:styles="clr-namespace:SFS_Tool_Management.Styles"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="DashboardPage">
 
     <Grid>
-        <TextBlock Text="대시보드 Page입니다." VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <StackPanel Orientation="Vertical">
+            <TextBlock Text="Summary" Margin="10" FontFamily="Segoe UI" FontSize="20" FontWeight="DemiBold"/>
+            <Line X1="10" Y1="10" X2="1000" Y2="10" Stroke="LightGray" StrokeThickness="2"/>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                <styles:SummaryCard Margin="5" Title="Total tools" Count="10" BackgroundBrush="#98D8AA"/>
+                <styles:SummaryCard Margin="5" Title="Available tools" Count="10" BackgroundBrush="#98D8AA"/>
+                <styles:SummaryCard Margin="5" Title="Tools under repair" Count="10" BackgroundBrush="#F3E99F"/>
+                <styles:SummaryCard Margin="5" Title="Tools on rental" Count="10" BackgroundBrush="#F7D060"/>
+            </StackPanel>
+        </StackPanel>
+        
+        
     </Grid>
 </Page>

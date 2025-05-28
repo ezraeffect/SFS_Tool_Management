@@ -32,7 +32,7 @@ namespace SFS_Tool_Management.Models
                                  $"User ID={Uid};" +
                                  $"Password={PWD};" +
                                  $"Integrated Security={false};" +
-                                 $"Connection Timeout=1");
+                                 $"Connection Timeout=30");
         }
     }
     
