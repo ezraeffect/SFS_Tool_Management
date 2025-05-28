@@ -64,12 +64,14 @@
     
     <!-- MainWindow Grid -->
     <Grid>
+        <!-- Draw Menu 열릴때 반응하는 Grid -->
         <Grid x:Name="GridBackground" Background="LightGray" Opacity="0"/>
 
+        <!-- Page 표시용 Frame-->
         <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
         
         <!-- Draw Menu 열기 Btn -->
-        <Button x:Name="button_DrawOpen" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="30" Content="메뉴" Margin="5"/>
+        <Button x:Name="button_DrawOpen" Style="{StaticResource IndentLeftButtonStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" Height="48" Margin="8"/>
         
         <!-- Draw Menu Grid -->
         <Grid x:Name="GridMenu" Width="256" HorizontalAlignment="Left" Margin="-256,0,0,0" Background="White">
@@ -86,18 +88,23 @@
             <!-- 메뉴 전환 Btn Gird -->
             <StackPanel Orientation="Vertical">
                 <!-- Draw Menu 닫기 Btn -->
-                <Button x:Name="button_DrawClose" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="30" Content="닫기" Margin="5"/>
+                <Button x:Name="button_DrawClose" Style="{StaticResource IndentRightButtonStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" Height="48" Content="닫기" Margin="8"/>
 
                 <TextBlock Text="Tool Management" FontFamily="Segoe UI" FontSize="20" FontWeight="Bold" Margin="10"/>
+
+                <StackPanel Orientation="Horizontal" Margin="0 10 0 10">
+                    <Ellipse Width="64" Height="64" Margin="12 2 2 2" Fill="#d7d7d7"></Ellipse>
+                    <StackPanel Orientation="Vertical" Width="Auto" VerticalAlignment="Center" Margin="8 0 0 0">
+                        <TextBlock Text="사원 홍길동" FontSize="16" FontFamily="Segoe UI" FontWeight="SemiBold" Margin="2"/>
+                        <TextBlock Text="생산관리2팀" FontSize="14" FontFamily="Segoe UI" Margin="2"/>
+                    </StackPanel>
+                </StackPanel>
+                
                 <Button x:Name="button_ShowDashboard" Style="{StaticResource DrawDashboardButtonStyle}" Content="Dashboard" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Click="button_ShowDashboard_Click"/>
                 <Button x:Name="button_ShowToolList" Style="{StaticResource DrawToolListButtonStyle}" Content="Tool List" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Click="button_ShowToolList_Click"/>
                 <Button x:Name="button_ShowRentalHistory" Style="{StaticResource DrawRentalHistoryButtonStyle}" Content="Rental History" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Click="button_ShowRentalHistory_Click"/>
             </StackPanel>
 
-            
-            
-            <!-- Page Frame -->
         </Grid>
-
     </Grid>
 </Window>
