@@ -43,7 +43,7 @@
 
                 <!-- 비밀번호 입력 Control -->
                 <TextBlock Text="Password" FontFamily="Segoe UI" Margin="0,0,0,3"/>
-                <PasswordBox x:Name="textBox_Password" FontFamily="Segoe UI" Margin="0,0,0,5"/>
+                <PasswordBox x:Name="textBox_Password" FontFamily="Segoe UI" Margin="0,0,0,5" />
 
                 <!-- 역할 입력 Control -->
                 <TextBlock Text="Role" FontFamily="Segoe UI" Margin="0,0,0,3"/>
