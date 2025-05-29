@@ -35,27 +35,26 @@ namespace SFS_Tool_Management.ViewModels
 
         public void LoadData(DashboardModel model)
         {
-            totalToolCount = model.TotalToolCount;
-            availableToolCount = model.AvailableToolCount;
-            repairingToolCount = model.RepairingToolCount;
-            rentedToolCount = model.RentedToolCount;
+            TotalToolCount = model.TotalToolCount;
+            AvailableToolCount = model.AvailableToolCount;
+            RepairingToolCount = model.RepairingToolCount;
+            RentedToolCount = model.RentedToolCount;
         }
 
         public DashboardModel ToModel()
         {
             return new DashboardModel
             {
-                TotalToolCount = totalToolCount,
-                AvailableToolCount = availableToolCount,
-                RepairingToolCount = repairingToolCount,
-                RentedToolCount = rentedToolCount
+                TotalToolCount = TotalToolCount,
+                AvailableToolCount = AvailableToolCount,
+                RepairingToolCount = RepairingToolCount,
+                RentedToolCount = RentedToolCount
             };
         }
 
         [RelayCommand]
         public async Task GetDataAsync()
         {
-            MessageBox.Show("H");
             var repo = new SQLRepository();
             var result = await repo.ExecuteQueryAsync("SELECT COUNT(*) FROM dbo.Tool", reader => new DashboardModel
             {
