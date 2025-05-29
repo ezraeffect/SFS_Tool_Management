@@ -29,5 +29,17 @@ namespace SFS_Tool_Management.Views
             InitializeComponent();
             DataContext = new SignUpViewModel();
         }
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            PasswordBox? pb = sender as PasswordBox;
+            if (pb != null)
+            {
+                var viewModel = this.DataContext as SignUpViewModel; // ViewModel 가져오기
+                if (viewModel != null)
+                {
+                    viewModel.Password = pb.Password; // ViewModel의 Password 업데이트
+                }
+            }
+        }
     }
 }

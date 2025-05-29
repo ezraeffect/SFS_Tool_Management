@@ -28,7 +28,7 @@
                                Foreground="CornflowerBlue" TextDecorations="Underline" Cursor="Hand" />
                 </Grid>
 
-                <PasswordBox x:Name="textBox_Password" FontFamily="Segoe UI" Margin="0,0,0,5"/>
+                <PasswordBox x:Name="textBox_Password" FontFamily="Segoe UI" Margin="0,0,0,5" PasswordChanged="PasswordBox_PasswordChanged" />
                 <Button x:Name="button_Login" Content="Login" FontFamily="Segoe UI" Margin="0,0,0,2" Command="{Binding SignInCommand}" Cursor="Hand" />
 
                 <StackPanel Orientation="Horizontal">

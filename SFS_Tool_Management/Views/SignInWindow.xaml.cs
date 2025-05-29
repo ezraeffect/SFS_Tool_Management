@@ -15,6 +15,7 @@ using System.Security.Cryptography;
 using System.Data.SqlClient;
 using SFS_Tool_Management.Models;
 using SFS_Tool_Management.ViewModels;
+using SFS_Tool_Management.Data;
 
 namespace SFS_Tool_Management.Views
 {
@@ -30,8 +31,15 @@ namespace SFS_Tool_Management.Views
         }
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (this.DataContext != null)
-            { ((SignInViewModel)this.DataContext).Password = ((PasswordBox)sender).Password; }
+            PasswordBox? pb = sender as PasswordBox;
+            if (pb != null)
+            {
+                var viewModel = this.DataContext as SignInViewModel;
+                if (viewModel != null)
+                {
+                    viewModel.Password = pb.Password;
+                }
+            }
         }
     }
 }

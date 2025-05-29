@@ -8,16 +8,20 @@ using System.Data.SqlClient;
 
 namespace SFS_Tool_Management.Models
 {
-    public class User
+    public class UserList
     {
-        public string ID { get; set; }
-        public string Hashedpw { get; set; }
-        public string Position { get; set; }
-        public string Department { get; set; }
-        public string PN {  get; set; }
+        public string? Name { get; set; }
+        public string? ID { get; set; }
+        public string? Hashedpw { get; set; }
+        public string? Position { get; set; }
+        public string? Department { get; set; }
+        public string? PN {  get; set; }
         public bool Access { get; set; }
-        public User(string id, string pw, string pos, string dep, string pn, bool ac)
+        public UserList() { }
+
+        public UserList(string name, string id, string pw, string pos, string dep, string pn, bool ac)
         {
+            Name = name;
             ID = id;
             Hashedpw = Encrypter.HashPW(pw);
             Position = pos;
