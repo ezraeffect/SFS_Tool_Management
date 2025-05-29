@@ -23,13 +23,7 @@ namespace SFS_Tool_Management.Views
     /// </summary>
     public partial class FunctionTestPage : Page
     {
-        public SQLcInfo cInfo = new SQLcInfo() {
-            Server = "sfstool.database.windows.net",
-            Port = "1433",
-            Database = "SFS",
-            Uid = "Codingon",
-            PWD = "sfs2751!"
-        };
+        private string str = "Server=tcp:sfstool.database.windows.net,1433;Initial Catalog=SFS;Persist Security Info=False;User ID=Codingon;Password=sfs2751!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         public FunctionTestPage()
         {
@@ -38,10 +32,10 @@ namespace SFS_Tool_Management.Views
 
         private void button_ConnectSQL_Click(object sender, RoutedEventArgs e)
         {
-            SqlConnection conn = new(cInfo.GetConnectInfo());
+            SqlConnection conn = new(str);
             conn.Open();
 
-            string query = "SELECT * FROM Persons";
+            string query = "SELECT * FROM UserList";
             using (SqlCommand cmd = new SqlCommand(query, conn))
             using (SqlDataReader reader = cmd.ExecuteReader())
             {
