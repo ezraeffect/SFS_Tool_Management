@@ -14,49 +14,19 @@ namespace SFS_Tool_Management.Data
 {
     public class AppDbContext : DbContext
     {
-        public DbSet<UserList> UserLists { get; set; }
-        private SqlConnection? conn;
-        private string connectionString = "Server=sfstool.database.windows.net;Database=SFS;" +
-            "User Id=Codingon; Password=sfs2751!;";
+        public DbSet<UserList> UserList { get; set; }
+        private string connectionString = "Server=sfstool.database.windows.net;Database=SFS;User Id=Codingon; Password=sfs2751!;";
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string connectionString = "Server=sfstool.database.windows.net;Database=SFS;" +
-            "User Id=Codingon; Password=sfs2751!;";
-            optionsBuilder.UseSqlServer(connectionString);
-        }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(connectionString);
+            }
         }
         public List<UserList> GetAllUsers()
         {
-            List<UserList> users = new List<UserList>();
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-                string query = "SELECT * FROM UserList";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        users.Add(new UserList
-                        {
-                            Name = reader["Name"].ToString(),
-                            ID = reader["UserID"].ToString(),
-                            Hashedpw = reader["PasswordHash"].ToString(),
-                            Position = reader["Position"].ToString(),
-                            Department = reader["Department"].ToString(),
-                            PN = reader["PhoneNumber"].ToString(),
-                            Access = Convert.ToBoolean(reader["IsAdmin"])
-                        });
-                    }
-                }
-            }
-            return users;
+            return UserList.ToList();
         }
-
     }
 }
