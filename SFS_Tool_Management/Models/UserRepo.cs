@@ -14,14 +14,14 @@ namespace SFS_Tool_Management.Models
         {
             using (var db = new AppDbContext())
             {
-                return db.UserLists.ToList();
+                return db.UserList.ToList();
             }
         }
         public static void AddUser(UserList user)
         {
             using (var db = new AppDbContext())
             {
-                db.UserLists.Add(user);
+                db.UserList.Add(user);
                 db.SaveChanges();
             }
         }

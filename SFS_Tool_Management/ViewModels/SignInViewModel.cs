@@ -38,7 +38,7 @@ namespace SFS_Tool_Management.ViewModels
             {
                 using (var db = new AppDbContext())
                 {
-                    var user = db.UserLists.FirstOrDefault(u => u.ID == ID);
+                    var user = db.UserList.FirstOrDefault(u => u.UserID == ID);
                     if (string.IsNullOrWhiteSpace(ID))
                     {
                         MessageBox.Show("아이디를 입력하세요.");
@@ -54,9 +54,11 @@ namespace SFS_Tool_Management.ViewModels
                         MessageBox.Show("존재하지 않는 아이디입니다.");
                         return;
                     }
-                    if (user.Hashedpw != Encrypter.HashPW(Password))
+                    string hashedPassword = Encrypter.HashPW(Password);
+                    if (user.PasswordHash != hashedPassword)
                     {
                         MessageBox.Show("비밀번호가 틀렸습니다.");
+                        MessageBox.Show($"입력한 비밀번호: {hashedPassword}");
                         return;
                     }
 
@@ -66,9 +68,9 @@ namespace SFS_Tool_Management.ViewModels
                     Application.Current.MainWindow.Close();
                 }
             }
-            catch ()
+            catch (Exception ex)
             {
-
+                MessageBox.Show($"로그인 중 오류가 발생했습니다: {ex.Message}");
             }
         }
         private void OpenSignUpPage()

@@ -123,14 +123,14 @@ namespace SFS_Tool_Management.ViewModels
                 MessageBox.Show("비밀번호에는 최소 하나 이상의 숫자가 포함되어야 합니다.");
                 return;
             }
-            if (!Regex.IsMatch(Password, @"[~․!@#$%^&*()_\-+={}[\]|\:;""<>,.?/]$"))
+            if (!Regex.IsMatch(Password, @"[~․!@#$%^&*()_\-+={}[\]|\:;""<>,.?/]"))
             {
                 MessageBox.Show("비밀번호에는 최소 하나 이상의 특수문자가 포함되어야 합니다.");
                 return;
             }
             bool ac = false;
             string hashedPw = Encrypter.HashPW(Password);
-            UserList newUser = new UserList(Name, ID, hashedPw, Position, Department, PhoneNumber, ac);
+            UserList newUser = new UserList(Name, ID, Position, Department, PhoneNumber, ac, hashedPw);
             UserRepo.AddUser(newUser);
 
             MessageBox.Show("회원가입이 완료되었습니다.");
