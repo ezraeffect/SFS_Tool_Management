@@ -10,7 +10,7 @@
 
     <Grid>
         <StackPanel Orientation="Vertical">
-            <Button x:Name="button_ConnectSQL" Content="SQL 연결" Click="button_ConnectSQL_Click"/>
+            <Button x:Name="button_ConnectSQL" Content="SQL 연결"/>
             <TextBlock x:Name="textBlock_debug"/>
         </StackPanel>
     </Grid>

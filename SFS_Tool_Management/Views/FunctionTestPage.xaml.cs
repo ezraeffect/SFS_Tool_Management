@@ -23,32 +23,9 @@ namespace SFS_Tool_Management.Views
     /// </summary>
     public partial class FunctionTestPage : Page
     {
-        private string str = "Server=tcp:sfstool.database.windows.net,1433;Initial Catalog=SFS;Persist Security Info=False;User ID=Codingon;Password=sfs2751!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-
         public FunctionTestPage()
         {
             InitializeComponent();
-        }
-
-        private void button_ConnectSQL_Click(object sender, RoutedEventArgs e)
-        {
-            SqlConnection conn = new(str);
-            conn.Open();
-
-            string query = "SELECT * FROM UserList";
-            using (SqlCommand cmd = new SqlCommand(query, conn))
-            using (SqlDataReader reader = cmd.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    ReadSingleRow(reader);
-                }
-            }
-        }
-        public void ReadSingleRow(IDataRecord record)
-        {
-            textBlock_debug.Text += String.Format("{0}, {1}", record[0], record[1]);
-            textBlock_debug.Text += "\r\n";
         }
     }
 }

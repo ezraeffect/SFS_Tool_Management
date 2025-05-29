@@ -8,9 +8,9 @@ namespace SFS_Tool_Management.Models
 {
     public partial class DashboardModel
     {
-        public string? totalToolCount;
-        public string? availableToolCount;
-        public string? repairingToolCount;
-        public string? rentedToolCount;
+        public string? TotalToolCount;
+        public string? AvailableToolCount;
+        public string? RepairingToolCount;
+        public string? RentedToolCount;
     }
 }
