@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using SFS_Tool_Management.Views;
+using SFS_Tool_Management.Data;
 
 namespace SFS_Tool_Management.ViewModels
 {
@@ -22,8 +23,6 @@ namespace SFS_Tool_Management.ViewModels
         }
         public string? ID { get; set; }
         public string? Password { get; set; }
-        public string? Message { get; set; }
-
         public ICommand SignInCommand { get; }
         public ICommand SignUpCommand { get; }
 
@@ -35,20 +34,42 @@ namespace SFS_Tool_Management.ViewModels
 
         private void SignIn()
         {
-            if (string.IsNullOrWhiteSpace(ID) || string.IsNullOrWhiteSpace(Password))
+            try
             {
-                MessageBox.Show("아이디와 비밀번호를 입력하세요.");
-                return;
-            }
+                using (var db = new AppDbContext())
+                {
+                    var user = db.UserLists.FirstOrDefault(u => u.ID == ID);
+                    if (string.IsNullOrWhiteSpace(ID))
+                    {
+                        MessageBox.Show("아이디를 입력하세요.");
+                        return;
+                    }
+                    if (string.IsNullOrWhiteSpace(Password))
+                    {
+                        MessageBox.Show("비밀번호를 입력하세요.");
+                        return;
+                    }
+                    if (user == null)
+                    {
+                        MessageBox.Show("존재하지 않는 아이디입니다.");
+                        return;
+                    }
+                    if (user.Hashedpw != Encrypter.HashPW(Password))
+                    {
+                        MessageBox.Show("비밀번호가 틀렸습니다.");
+                        return;
+                    }
 
-            var user = UserRepo.GetAllUsers().FirstOrDefault(u => u.ID == ID);
-            if (user == null || user.Hashedpw != Encrypter.HashPW(Password))
+                    MessageBox.Show("로그인 완료");
+                    MainWindow mainWindow = new MainWindow();
+                    mainWindow.Show();
+                    Application.Current.MainWindow.Close();
+                }
+            }
+            catch ()
             {
-                MessageBox.Show("아이디 또는 비밀번호가 잘못되었습니다.");
-                return;
-            }
 
-            MessageBox.Show("로그인 완료");
+            }
         }
         private void OpenSignUpPage()
         {

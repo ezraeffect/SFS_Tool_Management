@@ -5,22 +5,58 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SFS_Tool_Management.Models;
-using System.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Data.SqlClient;
+using System.Windows;
+using System.Configuration;
 
 namespace SFS_Tool_Management.Data
 {
     public class AppDbContext : DbContext
     {
-        string connectionString = string.Format("sfstool","1433", "SFS", "Codingon", "sfs2751!", false);
-        public DbSet<User> Users { get; set; }
-
+        public DbSet<UserList> UserLists { get; set; }
+        private SqlConnection? conn;
+        private string connectionString = "Server=sfstool.database.windows.net;Database=SFS;" +
+            "User Id=Codingon; Password=sfs2751!;";
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=AppDb;Integrated Security=True;");
+            string connectionString = "Server=sfstool.database.windows.net;Database=SFS;" +
+            "User Id=Codingon; Password=sfs2751!;";
+            optionsBuilder.UseSqlServer(connectionString);
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
         }
+        public List<UserList> GetAllUsers()
+        {
+            List<UserList> users = new List<UserList>();
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = "SELECT * FROM UserList";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        users.Add(new UserList
+                        {
+                            Name = reader["Name"].ToString(),
+                            ID = reader["UserID"].ToString(),
+                            Hashedpw = reader["PasswordHash"].ToString(),
+                            Position = reader["Position"].ToString(),
+                            Department = reader["Department"].ToString(),
+                            PN = reader["PhoneNumber"].ToString(),
+                            Access = Convert.ToBoolean(reader["IsAdmin"])
+                        });
+                    }
+                }
+            }
+            return users;
+        }
+
     }
 }

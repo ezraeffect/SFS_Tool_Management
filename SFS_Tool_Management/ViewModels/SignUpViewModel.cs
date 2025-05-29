@@ -7,6 +7,7 @@ using SFS_Tool_Management.Models;
 using System.Windows.Input;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace SFS_Tool_Management.ViewModels
 {
@@ -62,10 +63,16 @@ namespace SFS_Tool_Management.ViewModels
         {
             SignUpCommand = new RelayCommand(_ => SignUp());
         }
-
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            PasswordBox? pb = sender as PasswordBox;
+            if (pb != null)
+            {
+                Password = pb.Password;
+            }
+        }
         public void SignUp()
         {
-            // 각 입력값에 대해 Validation 처리
             if (string.IsNullOrWhiteSpace(Name))
             {
                 MessageBox.Show("이름을 입력하세요.");
@@ -101,11 +108,6 @@ namespace SFS_Tool_Management.ViewModels
                 MessageBox.Show("아이디는 8자 이상 16자 이하여야 합니다.");
                 return;
             }
-            if (string.IsNullOrWhiteSpace(Password))
-            {
-                MessageBox.Show("비밀번호를 입력하세요.");
-                return;
-            }
             if (Password.Length < 8 || Password.Length > 20)
             {
                 MessageBox.Show("비밀번호는 8자 이상 20자 이하여야 합니다.");
@@ -127,7 +129,8 @@ namespace SFS_Tool_Management.ViewModels
                 return;
             }
             bool ac = false;
-            User newUser = new User(ID, Password, Position, Department, PhoneNumber, ac);
+            string hashedPw = Encrypter.HashPW(Password);
+            UserList newUser = new UserList(Name, ID, hashedPw, Position, Department, PhoneNumber, ac);
             UserRepo.AddUser(newUser);
 
             MessageBox.Show("회원가입이 완료되었습니다.");

@@ -4,30 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SFS_Tool_Management.Data;
+using System.Data.SqlClient;
 
 namespace SFS_Tool_Management.Models
 {
     public class UserRepo
     {
-        private static List<User> users = new List<User>
-        {
-            new User ("a", "1234", "supervisor", "engineer", "01012345678", false)
-        };
-        public static List<User> GetAllUsers()
+        public static List<UserList> GetAllUsers()
         {
             using (var db = new AppDbContext())
             {
-                return db.Users.ToList();
+                return db.UserLists.ToList();
             }
         }
-        public static void AddUser(User user)
+        public static void AddUser(UserList user)
         {
             using (var db = new AppDbContext())
             {
-                db.Users.Add(user);
+                db.UserLists.Add(user);
                 db.SaveChanges();
             }
         }
-
     }
 }
