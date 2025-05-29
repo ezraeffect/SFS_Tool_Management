@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,6 @@ namespace SFS_Tool_Management.Repositories
         public SQLRepository()
         {
             GetConnectionString();
-            MessageBox.Show(_connectionString);
         }
 
         public async Task<List<T>> ExecuteQueryAsync<T>(string query, Func<SqlDataReader, T> map)
@@ -30,23 +30,25 @@ namespace SFS_Tool_Management.Repositories
             while (await reader.ReadAsync())
             {
                 result.Add(map(reader));
+                ReadSingleRow((IDataRecord)reader);
             }
             return result;
+        }
+
+        private static void ReadSingleRow(IDataRecord record)
+        {
+            MessageBox.Show(String.Format("{0}", record[0]));
         }
 
         private void GetConnectionString()
         {
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(string.Empty);
 
-            //string password = Environment.GetEnvironmentVariable("DB_Password");
-
-            //MessageBox.Show(password);
-
-            builder["Server"] = "tcp:***REMOVED***,1443";
+            builder["Server"] = "tcp:***REMOVED***,***REMOVED***";
             builder["Initial Catalog"] = "SFS";
             builder["Persist Security Info"] = false;
             builder["User Id"] = "***REMOVED***";
-            builder["Password"] = "";
+            builder["Password"] = "***REMOVED***";
             builder["MultipleActiveResultSets"] = false;
             builder["Encrypt"] = true;
             builder["TrustServerCertificate"] = false;
