@@ -9,6 +9,7 @@ namespace SFS_Tool_Management
     /// </summary>
     public partial class App : Application
     {
+
     }
 
 }
