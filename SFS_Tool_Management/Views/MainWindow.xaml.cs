@@ -20,8 +20,7 @@ namespace SFS_Tool_Management
         public MainWindow()
         {
             InitializeComponent();
-            SignInWindow signInWindow = new SignInWindow();
-            signInWindow.Show();
+            MainFrame.Navigate(new Views.DashboardPage());
         }
 
         private void button_ShowDashboard_Click(object sender, RoutedEventArgs e)
@@ -37,6 +36,11 @@ namespace SFS_Tool_Management
         private void button_ShowRentalHistory_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new Views.RentalHistoryPage());
+        }
+
+        private void button_ShowFuncTest_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new Views.FunctionTestPage());
         }
     }
 }
