@@ -1,20 +1,21 @@
-﻿<Window x:Class="SFS_Tool_Management.SignUpWindow"
+﻿<Window x:Class="SFS_Tool_Management.Views.SignUpWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SFS_Tool_Management"
+        xmlns:helpers="clr-namespace:SFS_Tool_Management.Helpers"
         mc:Ignorable="d"
         Title="SignUpWindow" Height="450" Width="800">
     <Grid>
         <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="Sign Up" FontSize="16" FontFamily="Segoe UI Symbol" FontWeight="Bold" Margin="0,0,0,2"/>
+                <TextBlock Text="Sign Up" FontSize="16" FontFamily="Segoe UI Symbol" FontWeight="Bold" Margin="0,0,0,2" />
                 <TextBlock Text="Enter your information to create an account" FontFamily="Segoe UI" Margin="0,0,0,5"/>
 
                 <!-- 이름 입력 Control -->
                 <TextBlock Text="Name" Margin="0,0,0,3" FontFamily="Segoe UI"/>
-                <TextBox x:Name="textBox_Name" FontFamily="Segoe UI" Margin="0,0,0,3"/>
+                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" x:Name="textBox_Name" FontFamily="Segoe UI" Margin="0,0,0,3"/>
 
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -24,26 +25,27 @@
                     <!-- 직급 입력 Control -->
                     <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,0,3,0">
                         <TextBlock Text="Position" Margin="0,0,0,3" FontFamily="Segoe UI"/>
-                        <TextBox x:Name="textBox_Position" FontFamily="Segoe UI" Margin="0,0,0,3"/>
+                        <TextBox Text="{Binding Position, UpdateSourceTrigger=PropertyChanged}" x:Name="textBox_Position" FontFamily="Segoe UI" Margin="0,0,0,3"/>
                     </StackPanel>
                     <!-- 부서 입력 Control -->
                     <StackPanel Grid.Column="1" Orientation="Vertical" Margin="3,0,0,0">
                         <TextBlock Text="Department" Margin="0,0,0,3" FontFamily="Segoe UI"/>
-                        <TextBox x:Name="textBox_Department" FontFamily="Segoe UI" Margin="0,0,0,3"/>
+                        <TextBox Text="{Binding Department, UpdateSourceTrigger=PropertyChanged}" x:Name="textBox_Department" FontFamily="Segoe UI" Margin="0,0,0,3"/>
                     </StackPanel>
                 </Grid>
 
                 <!-- 전화번호 입력 Control -->
                 <TextBlock Text="Phone Number" Margin="0,0,0,3" FontFamily="Segoe UI"/>
-                <TextBox x:Name="textBox_PhoneNumber" FontFamily="Segoe UI" Margin="0,0,0,3"/>
+                <TextBox Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}" x:Name="textBox_PhoneNumber" FontFamily="Segoe UI" Margin="0,0,0,3"/>
                 
                 <!-- 아이디 입력 Control -->
-                <TextBlock Text="Email" Margin="0,0,0,3" FontFamily="Segoe UI"/>
-                <TextBox x:Name="textBox_Email" FontFamily="Segoe UI" Margin="0,0,0,3"/>
+                <TextBlock Text="ID" Margin="0,0,0,3" FontFamily="Segoe UI"/>
+                <TextBox Text="{Binding ID, UpdateSourceTrigger=PropertyChanged}" x:Name="textBox_ID" FontFamily="Segoe UI" Margin="0,0,0,3"/>
 
                 <!-- 비밀번호 입력 Control -->
                 <TextBlock Text="Password" FontFamily="Segoe UI" Margin="0,0,0,3"/>
-                <PasswordBox x:Name="textBox_Password" FontFamily="Segoe UI" Margin="0,0,0,5"/>
+                <PasswordBox helpers:Helper.BoundPassword="{Binding Password, Mode=OneWayToSource}" x:Name="textBox_Password"
+                             FontFamily="Segoe UI" Margin="0,0,0,5" PasswordChanged="PasswordBox_PasswordChanged" />
 
                 <!-- 역할 입력 Control -->
                 <TextBlock Text="Role" FontFamily="Segoe UI" Margin="0,0,0,3"/>
@@ -52,12 +54,13 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <RadioButton x:Name="radioButton_isUser" Content="User" Grid.Column="0" FontFamily="Segoe UI"/>
-                    <RadioButton x:Name="radioButton_isAdmin" Content="Administrator" Grid.Column="1" FontFamily="Segoe UI"/>
+                    <RadioButton x:Name="radioButton_isUser" Content="User" Grid.Column="0" FontFamily="Segoe UI"
+                                 IsChecked="True" />
+                    <RadioButton x:Name="radioButton_isAdmin" Content="Administrator" Grid.Column="1" FontFamily="Segoe UI" />
                 </Grid>
 
                 <!-- 가입 컨트롤 Control -->
-                <Button x:Name="button_SignUp" Content="Sign Up" FontFamily="Segoe UI" Margin="0,0,0,2"/>
+                <Button x:Name="button_SignUp" Content="Sign Up" FontFamily="Segoe UI" Margin="0,0,0,2" Command="{Binding SignUpCommand}" />
             </StackPanel>
         </Grid>
     </Grid>
