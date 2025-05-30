@@ -13,7 +13,7 @@ namespace SFS_Tool_Management.ViewModels
 {
     public class SignUpViewModel : BaseViewModel
     {
-        // 회원가입에 필요한 속성들
+        //회원가입에 필요한 속성들
         private string _name = string.Empty;
         public string Name
         {
@@ -55,8 +55,13 @@ namespace SFS_Tool_Management.ViewModels
             get => _password;
             set { _password = value; OnPropertyChanged(nameof(Password)); }
         }
+        private bool _IsAdmin = false;
+        public bool IsAdmin
+        {
+            get => _IsAdmin;
+            set { _IsAdmin = value; OnPropertyChanged(nameof(IsAdmin)); }
+        }
 
-        // 가입 버튼을 위한 Command
         public ICommand SignUpCommand { get; }
 
         public SignUpViewModel()
@@ -123,17 +128,18 @@ namespace SFS_Tool_Management.ViewModels
                 MessageBox.Show("비밀번호에는 최소 하나 이상의 숫자가 포함되어야 합니다.");
                 return;
             }
-            if (!Regex.IsMatch(Password, @"[~․!@#$%^&*()_\-+={}[\]|\:;""<>,.?/]"))
-            {
-                MessageBox.Show("비밀번호에는 최소 하나 이상의 특수문자가 포함되어야 합니다.");
-                return;
-            }
+            //if (!Regex.IsMatch(Password, @"[~․!@#$%^&*()_\-+={}[\]|\:;""<>,.?/]"))
+            //{
+                //MessageBox.Show("비밀번호에는 최소 하나 이상의 특수문자가 포함되어야 합니다.");
+                //return;
+            //}
             bool ac = false;
             string hashedPw = Encrypter.HashPW(Password);
             UserList newUser = new UserList(Name, ID, Position, Department, PhoneNumber, ac, hashedPw);
             UserRepo.AddUser(newUser);
 
             MessageBox.Show("회원가입이 완료되었습니다.");
+            MessageBox.Show($"입력한 비밀번호: {hashedPw}");
         }
     }
 

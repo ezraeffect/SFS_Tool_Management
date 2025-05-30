@@ -25,7 +25,7 @@ namespace SFS_Tool_Management.Models
         {
             Name = name;
             UserID = id;
-            PasswordHash = Encrypter.HashPW(pw);
+            PasswordHash = pw;
             Position = pos;
             Department = dep;
             PhoneNumber = pn;
