@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
+using System.Windows;
 
 namespace SFS_Tool_Management.Models
 {
@@ -11,6 +12,7 @@ namespace SFS_Tool_Management.Models
     {
         public static string HashPW(string pw)
         {
+            MessageBox.Show(pw);
             using (SHA256 sha256 = SHA256.Create())
             {
                 byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(pw));
