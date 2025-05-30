@@ -64,5 +64,12 @@ namespace SFS_Tool_Management.ViewModels
             if (result.Count > 0)
                 LoadData(result[0]);
         }
+
+        [RelayCommand]
+        public static void InsertUserInfo()
+        {
+            var repo = new SQLRepository();
+            repo.InsertTestQuery();
+        }
     }
 }
