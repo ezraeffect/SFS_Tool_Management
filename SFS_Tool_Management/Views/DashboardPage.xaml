@@ -24,7 +24,8 @@
                 <styles:SummaryCard Margin="5" Title="Tools under repair" Count="{Binding RepairingToolCount}" BackgroundBrush="#F3E99F"/>
                 <styles:SummaryCard Margin="5" Title="Tools on rental" Count="{Binding RentedToolCount}" BackgroundBrush="#F7D060"/>
             </StackPanel>
-            <Button Command="{Binding GetDataCommand}" Width="50" Height="50"/>
+            <Button Command="{Binding GetDataCommand}" Width="50" Height="50" Content="가져와잇"/>
+            <Button Command="{Binding InsertUserInfoCommand}" Width="50" Height="50" Content="보내라잇"/>
         </StackPanel>
         
         

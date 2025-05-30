@@ -19,7 +19,7 @@ namespace SFS_Tool_Management
         public MainWindow()
         {
             InitializeComponent();
-            MainFrame.Navigate(new Views.FunctionTestPage());
+            MainFrame.Navigate(new Views.DashboardPage());
         }
 
         private void button_ShowDashboard_Click(object sender, RoutedEventArgs e)
