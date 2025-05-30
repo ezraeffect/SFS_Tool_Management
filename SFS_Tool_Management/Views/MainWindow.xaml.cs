@@ -37,10 +37,5 @@ namespace SFS_Tool_Management
         {
             MainFrame.Navigate(new Views.RentalHistoryPage());
         }
-
-        private void button_ShowFuncTest_Click(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new Views.FunctionTestPage());
-        }
     }
 }

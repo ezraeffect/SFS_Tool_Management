@@ -22,7 +22,7 @@ namespace SFS_Tool_Management.Views
     /// </summary>
     public partial class ToolListPage : Page
     {
-        private string connectionString = @"Server=tcp:sfstool.database.windows.net,1433;Initial Catalog=SFS;Persist Security Info=False;User ID=Codingon;Password=sfs2751!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=90;";
+        private string connectionString = @"Server=tcp:sfstool.database.windows.net,1433;Initial Catalog=Tool;Persist Security Info=False;User ID=Codingon;Password=sfs2751!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=90;";
 
 
         public ToolListPage()
