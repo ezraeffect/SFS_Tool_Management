@@ -41,8 +41,11 @@ namespace SFS_Tool_Management.Repositories
         {
             SqlCommand cmd2 = new SqlCommand();
             var conn = new SqlConnection(_connectionString);
+            MessageBox.Show(_connectionString);
             cmd2.Connection = conn;
             conn.Open();
+
+
 
             SqlParameter paraId = new SqlParameter("UserID", SqlDbType.VarChar, 30);
             SqlParameter paraPW = new SqlParameter("PasswordHash", SqlDbType.VarChar, 64);
@@ -52,7 +55,7 @@ namespace SFS_Tool_Management.Repositories
             SqlParameter paraPhoneNumber = new SqlParameter("PhoneNumber", SqlDbType.VarChar, 30);
             SqlParameter paraIsAdmin = new SqlParameter("IsAdmin", SqlDbType.Bit);
 
-            paraId.Value = "test03";
+            paraId.Value = "test05";
             string pw = "qwer1234!";
             byte[] bytes = null;
             using(SHA256 Hash = SHA256.Create())
@@ -97,15 +100,15 @@ namespace SFS_Tool_Management.Repositories
         {
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(string.Empty);
 
-            builder["Server"] = "tcp:***REMOVED***,***REMOVED***";
-            builder["Initial Catalog"] = "Tool";
-            builder["Persist Security Info"] = false;
-            builder["User Id"] = "***REMOVED***";
-            builder["Password"] = "***REMOVED***";
-            builder["MultipleActiveResultSets"] = false;
-            builder["Encrypt"] = true;
-            builder["TrustServerCertificate"] = false;
-            builder["Connection Timeout"] = 30;
+            builder["Server"] = Config.Load("Server");
+            builder["Initial Catalog"] = Config.Load("Initial Catalog");
+            builder["Persist Security Info"] = bool.Parse(Config.Load("Persist Security Info"));
+            builder["User Id"] = Config.Load("User ID");
+            builder["Password"] = Config.Load("Password");
+            builder["MultipleActiveResultSets"] = bool.Parse(Config.Load("MultipleActiveResultSets"));
+            builder["Encrypt"] = bool.Parse(Config.Load("Encrypt"));
+            builder["TrustServerCertificate"] = bool.Parse(Config.Load("TrustServerCertificate"));
+            builder["Connection Timeout"] = int.Parse(Config.Load("Connection Timeout"));
 
             _connectionString = builder.ConnectionString;
         }

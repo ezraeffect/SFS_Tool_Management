@@ -26,6 +26,7 @@
             </StackPanel>
             <Button Command="{Binding GetDataCommand}" Width="50" Height="50" Content="가져와잇"/>
             <Button Command="{Binding InsertUserInfoCommand}" Width="50" Height="50" Content="보내라잇"/>
+            <Button Command="{Binding SaveConfigCommand}" Width="50" Height="50" Content="설정 만들어랏"/>
         </StackPanel>
         
         

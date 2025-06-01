@@ -10,6 +10,7 @@ using System.Reflection.PortableExecutable;
 using CommunityToolkit.Mvvm.Input;
 using System.Windows;
 
+
 namespace SFS_Tool_Management.ViewModels
 {
     public partial class DashboardViewModel : ObservableObject
@@ -70,6 +71,14 @@ namespace SFS_Tool_Management.ViewModels
         {
             var repo = new SQLRepository();
             repo.InsertTestQuery();
+        }
+
+        [RelayCommand]
+        public static void SaveConfig()
+        {
+            Config.Save("Key", "Value");
+            string value = Config.Load("Server");
+            MessageBox.Show(value);
         }
     }
 }
