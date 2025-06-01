@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SFS_Tool_Management.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 
 namespace SFS_Tool_Management.ViewModels
 {
@@ -25,7 +26,8 @@ namespace SFS_Tool_Management.ViewModels
         public UserViewModel()
         {
             _repo = new UserRepo();
-            UserLists = new ObservableCollection<UserList> (UserRepo.GetAllUsers());
+            var users = UserRepo.GetAllUsers() ?? new List<UserList>();
+            UserLists = new ObservableCollection<UserList>(users);
         }
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName) =>

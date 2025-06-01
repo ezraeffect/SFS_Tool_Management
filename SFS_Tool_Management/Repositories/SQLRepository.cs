@@ -54,7 +54,7 @@ namespace SFS_Tool_Management.Repositories
 
             paraId.Value = "test03";
             string pw = "qwer1234!";
-            byte[] bytes = null;
+            byte[]? bytes = null;
             using(SHA256 Hash = SHA256.Create())
             {
                 bytes = Hash.ComputeHash(Encoding.UTF8.GetBytes(pw));

@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SFS_Tool_Management.ViewModels;
 using SFS_Tool_Management.Views;
 
 namespace SFS_Tool_Management
@@ -21,6 +22,7 @@ namespace SFS_Tool_Management
         {
             InitializeComponent();
             MainFrame.Navigate(new Views.DashboardPage());
+            this.DataContext = MainViewModel.Instance;
         }
 
         private void button_ShowDashboard_Click(object sender, RoutedEventArgs e)

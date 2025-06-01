@@ -11,6 +11,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using SFS_Tool_Management.Views;
 using SFS_Tool_Management.Data;
+using SFS_Tool_Management.ViewModels;
 
 namespace SFS_Tool_Management.ViewModels
 {
@@ -41,31 +42,32 @@ namespace SFS_Tool_Management.ViewModels
                     var user = db.UserList.FirstOrDefault(u => u.UserID == ID);
                     if (string.IsNullOrWhiteSpace(ID))
                     {
-                        MessageBox.Show("아이디를 입력하세요.");
+                        MessageBox.Show("아이디를 입력하세요.", "로그인 오류", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
                     if (string.IsNullOrWhiteSpace(Password))
                     {
-                        MessageBox.Show("비밀번호를 입력하세요.");
+                        MessageBox.Show("비밀번호를 입력하세요.", "로그인 오류", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
                     if (user == null)
                     {
-                        MessageBox.Show("존재하지 않는 아이디입니다.");
+                        MessageBox.Show("존재하지 않는 아이디입니다.", "로그인 오류", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
                     string hashedPassword = Encrypter.HashPW(Password);
                     if (user.PasswordHash != hashedPassword)
                     {
-                        MessageBox.Show("비밀번호가 틀렸습니다.");
-                        MessageBox.Show($"입력한 비밀번호: {hashedPassword}");
+                        MessageBox.Show("비밀번호가 틀렸습니다.", "로그인 오류", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
 
-                    MessageBox.Show("로그인 완료");
+                    MessageBox.Show($"{user.Name}님, 환영합니다.", "로그인 성공", MessageBoxButton.OK, MessageBoxImage.Information);
                     MainWindow mainWindow = new MainWindow();
                     mainWindow.Show();
                     Application.Current.MainWindow.Close();
+                    UserRepo.SetCurrentUser(user);
+                    MainViewModel.Instance.IsLoggedIn = true;
                 }
             }
             catch (Exception ex)
