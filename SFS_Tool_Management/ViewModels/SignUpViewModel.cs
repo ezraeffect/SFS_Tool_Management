@@ -136,7 +136,7 @@ namespace SFS_Tool_Management.ViewModels
             bool ac = false;
             string hashedPw = Encrypter.HashPW(Password);
             UserList newUser = new UserList(Name, ID, Position, Department, PhoneNumber, ac, hashedPw);
-            UserRepo.AddUser(newUser);
+            UserList.AddUser(newUser);
 
             MessageBox.Show("회원가입이 완료되었습니다.", "회원가입 완료", MessageBoxButton.OK, MessageBoxImage.Information);
         }

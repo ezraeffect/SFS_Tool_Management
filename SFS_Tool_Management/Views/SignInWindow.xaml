@@ -15,7 +15,7 @@
                 <TextBlock Text="Sign In" FontSize="16" FontFamily="Segoe UI Symbol" FontWeight="Bold" Margin="0,0,0,2"/>
                 <TextBlock Text="Enter your ID below to login to your account" FontFamily="Segoe UI" Margin="0,0,0,5"/>
 
-                <TextBlock Text="{Binding ID, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,3" FontFamily="Segoe UI"/>
+                <TextBlock Text="ID" Margin="0,0,0,3" FontFamily="Segoe UI"/>
                 <TextBox Text="{Binding ID, UpdateSourceTrigger=PropertyChanged}" x:Name="textBox_ID" FontFamily="Segoe UI" Margin="0,0,0,3"/>
                 
                 <Grid>

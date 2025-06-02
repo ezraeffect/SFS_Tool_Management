@@ -12,7 +12,6 @@ namespace SFS_Tool_Management.ViewModels
 {
     public class UserViewModel : INotifyPropertyChanged
     {
-        private UserRepo _repo;
         private ObservableCollection<UserList>? _userLists;
         public ObservableCollection<UserList>? UserLists
         {
@@ -25,8 +24,7 @@ namespace SFS_Tool_Management.ViewModels
         }
         public UserViewModel()
         {
-            _repo = new UserRepo();
-            var users = UserRepo.GetAllUsers() ?? new List<UserList>();
+            var users = UserList.GetAllUsers() ?? new List<UserList>();
             UserLists = new ObservableCollection<UserList>(users);
         }
         public event PropertyChangedEventHandler? PropertyChanged;

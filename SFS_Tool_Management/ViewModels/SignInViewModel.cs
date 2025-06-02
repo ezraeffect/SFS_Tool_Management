@@ -12,6 +12,7 @@ using System.Windows;
 using SFS_Tool_Management.Views;
 using SFS_Tool_Management.Data;
 using SFS_Tool_Management.ViewModels;
+using System.Runtime.Intrinsics.Arm;
 
 namespace SFS_Tool_Management.ViewModels
 {
@@ -32,7 +33,6 @@ namespace SFS_Tool_Management.ViewModels
             SignInCommand = new RelayCommand(_ => SignIn());
             SignUpCommand = new RelayCommand(_ => OpenSignUpPage());
         }
-
         private void SignIn()
         {
             try
@@ -61,13 +61,13 @@ namespace SFS_Tool_Management.ViewModels
                         MessageBox.Show("비밀번호가 틀렸습니다.", "로그인 오류", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
-
                     MessageBox.Show($"{user.Name}님, 환영합니다.", "로그인 성공", MessageBoxButton.OK, MessageBoxImage.Information);
                     MainWindow mainWindow = new MainWindow();
                     mainWindow.Show();
                     Application.Current.MainWindow.Close();
-                    UserRepo.SetCurrentUser(user);
-                    MainViewModel.Instance.IsLoggedIn = true;
+                    UserList user = new UserList(user.Name, ID, user.Position, user.Department, user.PhoneNumber, user.IsAdmin, hashedPassword);
+                    UserList.SetCurrentUser(user);
+                    OnPropertyChanged(nameof(UserList.CurrentUser));
                 }
             }
             catch (Exception ex)
