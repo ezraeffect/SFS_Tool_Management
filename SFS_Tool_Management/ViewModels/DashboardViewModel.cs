@@ -23,33 +23,48 @@ namespace SFS_Tool_Management.ViewModels
         }
 
         [ObservableProperty]
-        private string? totalToolCount;
+        public string? totalQuantity;
 
         [ObservableProperty]
-        private string? availableToolCount;
+        public string? availableQuantity;
 
         [ObservableProperty]
-        private string? repairingToolCount;
+        public string? requiredCheckQuantity;
 
         [ObservableProperty]
-        private string? rentedToolCount;
+        public string? chekcingQuantity;
+
+        [ObservableProperty]
+        public string? requiredCalibrationQuantity;
+
+        [ObservableProperty]
+        public string? calibratingQuantity;
+
+        [ObservableProperty]
+        public string? rentalQuantity;
 
         public void LoadData(DashboardModel model)
         {
-            TotalToolCount = model.TotalToolCount;
-            AvailableToolCount = model.AvailableToolCount;
-            RepairingToolCount = model.RepairingToolCount;
-            RentedToolCount = model.RentedToolCount;
+            TotalQuantity = model.TotalQuantity;
+            AvailableQuantity = model.AvailableQuantity;
+            RequiredCheckQuantity = model.RequiredCheckQuantity;
+            ChekcingQuantity = model.ChekcingQuantity;
+            RequiredCalibrationQuantity = model.RequiredCalibrationQuantity;
+            CalibratingQuantity = model.CalibratingQuantity;
+            RentalQuantity = model.RentalQuantity;
         }
 
         public DashboardModel ToModel()
         {
             return new DashboardModel
             {
-                TotalToolCount = TotalToolCount,
-                AvailableToolCount = AvailableToolCount,
-                RepairingToolCount = RepairingToolCount,
-                RentedToolCount = RentedToolCount
+                TotalQuantity = TotalQuantity,
+                AvailableQuantity = AvailableQuantity,
+                RequiredCheckQuantity = RequiredCheckQuantity,
+                ChekcingQuantity = ChekcingQuantity,
+                RequiredCalibrationQuantity = RequiredCalibrationQuantity,
+                CalibratingQuantity = CalibratingQuantity,
+                RentalQuantity = RentalQuantity,
             };
         }
 
@@ -57,9 +72,25 @@ namespace SFS_Tool_Management.ViewModels
         public async Task GetDataAsync()
         {
             var repo = new SQLRepository();
-            var result = await repo.ExecuteQueryAsync("SELECT COUNT(*) FROM dbo.Tool", reader => new DashboardModel
+
+            string query = "SELECT COUNT(*) AS TotalQuantity, "
+                        + "COUNT(CASE WHEN Condition = '정상' THEN 1 END) AS AvailableQuantity, "
+                        + "COUNT(CASE WHEN Condition = '점검 필요' THEN 1 END) AS RequiredCheckQuantity, "
+                        + "COUNT(CASE WHEN Condition = '점검 중' THEN 1 END) AS ChekcingQuantity, "
+                        + "COUNT(CASE WHEN Condition = '교정 필요' THEN 1 END) AS RequiredCalibrationQuantity, "
+                        + "COUNT(CASE WHEN Condition = '교정 중' THEN 1 END) AS CalibratingQuantity, "
+                        + "COUNT(CASE WHEN Condition = '대여' THEN 1 END) AS RentalQuantity "
+                        + "FROM ToolInstance;";
+
+            var result = await repo.ExecuteQueryAsync(query, reader => new DashboardModel
             {
-                TotalToolCount = reader.GetInt32(0).ToString()
+                TotalQuantity = reader.GetInt32(0).ToString(),
+                AvailableQuantity = reader.GetInt32(1).ToString(),
+                RequiredCheckQuantity = reader.GetInt32(2).ToString(),
+                ChekcingQuantity = reader.GetInt32(3).ToString(),
+                RequiredCalibrationQuantity = reader.GetInt32(4).ToString(),
+                CalibratingQuantity = reader.GetInt32(5).ToString(),
+                RentalQuantity = reader.GetInt32(6).ToString()
             });
 
             if (result.Count > 0)
@@ -71,14 +102,6 @@ namespace SFS_Tool_Management.ViewModels
         {
             var repo = new SQLRepository();
             repo.InsertTestQuery();
-        }
-
-        [RelayCommand]
-        public static void SaveConfig()
-        {
-            Config.Save("Key", "Value");
-            string value = Config.Load("Server");
-            MessageBox.Show(value);
         }
     }
 }
