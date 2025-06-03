@@ -8,7 +8,51 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="RentalHistoryPage">
 
-    <Grid>
-        <TextBlock Text="대여기록 Page입니다." VerticalAlignment="Center" HorizontalAlignment="Center"/>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- 필터 패널 -->
+            <RowDefinition Height="*"/>
+            <!-- DataGrid -->
+            <RowDefinition Height="Auto"/>
+            <!-- 하단 버튼 -->
+        </Grid.RowDefinitions>
+
+        <!-- 필터 영역 -->
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Grid.Row="0">
+            <Label Content="공구명:" VerticalAlignment="Center"/>
+            <TextBox x:Name="ToolNameFilterBox" Width="150" Margin="5,0"/>
+
+            <Label Content="대여자 ID:" VerticalAlignment="Center"/>
+            <TextBox x:Name="UserIdFilterBox" Width="150" Margin="5,0"/>
+
+            <Label Content="상태:" VerticalAlignment="Center"/>
+            <ComboBox x:Name="StatusFilterBox" Width="100" Margin="5,0">
+                <ComboBoxItem Content="전체" IsSelected="True"/>
+                <ComboBoxItem Content="대여중"/>
+                <ComboBoxItem Content="반납완료"/>
+            </ComboBox>
+
+            <Button Content="검색" Click="FilterSearch_Click" Margin="10,0"/>
+        </StackPanel>
+
+        <!-- 데이터 그리드 -->
+        <DataGrid x:Name="RentalDataGrid"
+              AutoGenerateColumns="True"
+              IsReadOnly="True"
+              Grid.Row="1"
+              Margin="0,0,0,10"
+              SelectionMode="Single" >
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="반납하기" Click="ReturnTool_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+
+        <!-- 하단 버튼 -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="2">
+            <Button Content="CSV 내보내기" Width="120" Height="30" Click="ExportCsv_Click" Margin="0,10,0,0"/>
+        </StackPanel>
     </Grid>
 </Page>
