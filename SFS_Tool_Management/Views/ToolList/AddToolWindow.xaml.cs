@@ -9,7 +9,15 @@ namespace SFS_Tool_Management
     /// </summary>
     public partial class AddToolWindow : Window
     {
-        private string connectionString = @"Server=tcp:***REMOVED***,***REMOVED***;Initial Catalog=SFS;Persist Security Info=False;User ID=***REMOVED***;Password=***REMOVED***;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=90;";
+        private string connectionString = @"Server=tcp:***REMOVED***,***REMOVED***;
+                                            Initial Catalog=Tool;
+                                            Persist Security Info=False;
+                                            User ID=***REMOVED***;
+                                            Password=***REMOVED***;
+                                            MultipleActiveResultSets=False;
+                                            Encrypt=True;
+                                            TrustServerCertificate=False;
+                                            Connection Timeout=90;";
 
         public AddToolWindow()
         {

@@ -14,7 +14,7 @@ namespace SFS_Tool_Management
 
         public EditToolWindow(string toolId, string toolType, string modelName, string manufacture,
                               int totalQty, int availableQty, DateTime purchaseDate,
-                              DateTime durabilityLimit, string status)
+                              DateTime durabilityLimit)
         {
             InitializeComponent();
 
@@ -30,7 +30,6 @@ namespace SFS_Tool_Management
             AvailableQuantityTextBox.Text = availableQty.ToString();
             PurchaseDatePicker.SelectedDate = purchaseDate;
             DurabilityLimitPicker.SelectedDate = durabilityLimit;
-            StatusTextBox.Text = status;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -50,7 +49,6 @@ namespace SFS_Tool_Management
                             AvailableQuantity = @AvailableQuantity,
                             PurchaseDate = @PurchaseDate,
                             DurabilityLimit = @DurabilityLimit,
-                            Status = @Status
                         WHERE ToolID = @ToolID";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -63,7 +61,6 @@ namespace SFS_Tool_Management
                         cmd.Parameters.AddWithValue("@AvailableQuantity", int.Parse(AvailableQuantityTextBox.Text));
                         cmd.Parameters.AddWithValue("@PurchaseDate", PurchaseDatePicker.SelectedDate ?? DateTime.Now);
                         cmd.Parameters.AddWithValue("@DurabilityLimit", DurabilityLimitPicker.SelectedDate ?? DateTime.Now);
-                        cmd.Parameters.AddWithValue("@Status", StatusTextBox.Text);
 
                         cmd.ExecuteNonQuery();
                     }
