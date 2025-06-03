@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using SFS_Tool_Management.Views.ToolList;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -22,9 +23,10 @@ namespace SFS_Tool_Management.Views
     /// </summary>
     public partial class ToolListPage : Page
     {
+        
         private string connectionString = @"Server=tcp:sfstool.database.windows.net,1433;Initial Catalog=Tool;Persist Security Info=False;User ID=Codingon;Password=sfs2751!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=90;";
 
-
+        private DataRowView _lastDeletedTool = null;
         public ToolListPage()
         {
 
@@ -79,10 +81,10 @@ namespace SFS_Tool_Management.Views
                 int availableQty = Convert.ToInt32(selectedRow["AvailableQuantity"]);
                 DateTime purchaseDate = Convert.ToDateTime(selectedRow["PurchaseDate"]);
                 DateTime durabilityLimit = Convert.ToDateTime(selectedRow["DurabilityLimit"]);
-                string status = selectedRow["Status"].ToString();
+
 
                 var editPopup = new EditToolWindow(toolId, toolType, modelName, manufacture,
-                    totalQty, availableQty, purchaseDate, durabilityLimit, status);
+                    totalQty, availableQty, purchaseDate, durabilityLimit);
                 editPopup.ShowDialog();
             }
 
@@ -92,20 +94,23 @@ namespace SFS_Tool_Management.Views
         {
             if (ToolDataGrid.SelectedItem is DataRowView selectedRow)
             {
-                int id = Convert.ToInt32(selectedRow["Id"]);
+                string toolId = selectedRow["ToolID"].ToString();
+
 
                 var result = MessageBox.Show("정말 삭제하시겠습니까?", "삭제 확인", MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {
+                    _lastDeletedTool = selectedRow;
+
                     using (SqlConnection connection = new SqlConnection(connectionString))
                     {
                         connection.Open();
 
-                        string query = "DELETE FROM Tool WHERE Id = @Id";
+                        string query = "DELETE FROM Tool WHERE ToolId = @ToolId";
 
                         using (SqlCommand cmd = new SqlCommand(query, connection))
                         {
-                            cmd.Parameters.AddWithValue("@Id", id);
+                            cmd.Parameters.AddWithValue("@ToolId", toolId);
                             cmd.ExecuteNonQuery();
                         }
                     }
@@ -113,6 +118,63 @@ namespace SFS_Tool_Management.Views
                 }
             }
         }
+
+        private void RestoreTool_Click(object sender, RoutedEventArgs e)
+        {
+            if (_lastDeletedTool == null)
+            {
+                MessageBox.Show("복원할 삭제 기록이 없습니다.");
+                return;
+            }
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = @"INSERT INTO Tool 
+                                (ToolID, ToolType, ModelName, Manufacture, TotalQuantity, AvailableQuantity, PurchaseDate, DurabilityLimit)
+                                VALUES
+                                (@ToolID, @ToolType, @ModelName, @Manufacture, @TotalQuantity, @AvailableQuantity, @PurchaseDate, @DurabilityLimit)";
+
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@ToolID", _lastDeletedTool["ToolID"]);
+                    cmd.Parameters.AddWithValue("@ToolType", _lastDeletedTool["ToolType"]);
+                    cmd.Parameters.AddWithValue("@ModelName", _lastDeletedTool["ModelName"]);
+                    cmd.Parameters.AddWithValue("@Manufacture", _lastDeletedTool["Manufacture"]);
+                    cmd.Parameters.AddWithValue("@TotalQuantity", _lastDeletedTool["TotalQuantity"]);
+                    cmd.Parameters.AddWithValue("@AvailableQuantity", _lastDeletedTool["AvailableQuantity"]);
+                    cmd.Parameters.AddWithValue("@PurchaseDate", _lastDeletedTool["PurchaseDate"]);
+                    cmd.Parameters.AddWithValue("@DurabilityLimit", _lastDeletedTool["DurabilityLimit"]);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            _lastDeletedTool = null;
+            LoadToolData();
+            MessageBox.Show("복원이 완료되었습니다.");
+        }
+
+
+        private void RequestRental_Click(object sender, RoutedEventArgs e)
+        {
+            if(ToolDataGrid.SelectedItem is DataRowView selectedRow)
+            {
+                string serialNumber = selectedRow["ToolID"].ToString();
+                string modelName = selectedRow["ModelName"].ToString();
+
+                var rentalWindow = new AddRentalWindow(serialNumber, modelName);
+                rentalWindow.ShowDialog();
+
+            }
+            else
+            {
+                MessageBox.Show("공구를 먼저 선택하세요.");
+            }
+
+        }
+
 
     }
 }

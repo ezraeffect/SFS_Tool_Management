@@ -28,6 +28,8 @@
                 <ContextMenu>
                     <MenuItem Header="수정" Click="EditTool_Click"/>
                     <MenuItem Header="삭제" Click="DeleteTool_Click"/>
+                    <MenuItem Header="복원하기" Click="RestoreTool_Click"/>
+                    <MenuItem Header="대여 요청" Click="RequestRental_Click"/>
                 </ContextMenu>
 
             </DataGrid.ContextMenu>
