@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SFS_Tool_Management.Views"
-        DataContext="{Binding SignInViewModel}"
+        DataContext="{Binding}"
         mc:Ignorable="d"
         Title="SignInWindow" Height="450" Width="800"
         WindowStartupLocation="CenterScreen">
@@ -34,13 +34,7 @@
 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Don't have an account?" FontFamily="Segoe UI" Margin="0,0,5,0"/>
-                    <TextBlock Text="Sign Up" FontFamily="Segoe UI" Foreground="CornflowerBlue" TextDecorations="Underline" Cursor="Hand">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="MouseLeftButtonUp">
-                                <i:InvokeCommandAction Command="{Binding SignUpCommand}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </TextBlock>
+                    <TextBlock Text="Sign Up" FontFamily="Segoe UI" Foreground="CornflowerBlue" TextDecorations="Underline" Cursor="Hand" MouseLeftButtonUp="SignUpTextBlock_Click" />
                 </StackPanel>
             </StackPanel>
         </Grid>

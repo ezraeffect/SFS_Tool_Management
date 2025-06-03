@@ -23,7 +23,7 @@ namespace SFS_Tool_Management
         {
             InitializeComponent();
             MainFrame.Navigate(new Views.DashboardPage());
-            DataContext = UserList.GetCurrentUser();
+            DataContext = UserList.Instance;
         }
         private void button_ShowDashboard_Click(object sender, RoutedEventArgs e)
         {

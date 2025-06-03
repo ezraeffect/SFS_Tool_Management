@@ -1,91 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Security.Cryptography;
-using System.Data.SqlClient;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using SFS_Tool_Management.Data;
-using System.Reflection.Metadata.Ecma335;
+using CommunityToolkit.Mvvm.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SFS_Tool_Management.Models
 {
-    public class UserList : INotifyPropertyChanged
+    public partial class UserList : ObservableObject
     {
-        private string? name, id, position, department;
-        [Key]
-        public string? Name
-        {
-            get => name;
-            set
-            {
-                if (name != value)
-                {
-                    name = value;
-                    OnPropertyChanged(nameof(Name));
-                }
-            }
-        }
-        public string? UserID
-        {
-            get => id;
-            set
-            {
-                if (id != value)
-                {
-                    id = value;
-                    OnPropertyChanged(nameof(UserID));
-                }
-            }
-        }
+        [property: Key]
+        [ObservableProperty]
+        private string? name;
 
+        [ObservableProperty]
+        private string? userID;
 
-        public string? Position
-        {
-            get => position;
-            set
-            {
-                if (position != value)
-                {
-                    position = value;
-                    OnPropertyChanged(nameof(Position));
-                }
-            }
-        }
-        public string? Department
-        {
-            get => department;
-            set
-            {
-                if (department != value)
-                {
-                    department = value;
-                    OnPropertyChanged(nameof(Department));
-                }
-            }
-        }
+        [ObservableProperty]
+        private string? position;
+
+        [ObservableProperty]
+        private string? department;
         public string? PasswordHash { get; set; }
         public string? PhoneNumber { get; set; }
         public bool IsAdmin { get; set; }
         public UserList() { }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        public static event PropertyChangedEventHandler? PropertyChangedStatic;
-        private static UserList? currentUser;
-        public static UserList? CurrentUser
+        private static UserList? instance;
+        public static UserList Instance
         {
-            get => currentUser;
-            set
+            get
             {
-                if (currentUser != value)
+                if (instance == null)
                 {
-                    currentUser = value;
-                    PropertyChangedStatic?.Invoke(null, new PropertyChangedEventArgs(nameof(CurrentUser)));
+                    instance = new UserList();
                 }
+                return instance;
             }
         }
+        [NotMapped]
+        [ObservableProperty]
+        private UserList? currentUser;
         public static List<UserList> GetAllUsers()
         {
             using (var db = new AppDbContext())
@@ -101,19 +59,12 @@ namespace SFS_Tool_Management.Models
                 db.SaveChanges();
             }
         }
-        public static void SetCurrentUser(UserList user)
+        public void SetCurrentUser(UserList user)
         {
-            currentUser = user;
+            CurrentUser = user;
+            OnPropertyChanged(nameof(CurrentUser));
         }
-        public static UserList? GetCurrentUser()
-        {
-            return currentUser;
-        }
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        public UserList(string name, string id, string pos, string dep, string pn, bool ac, string pw)
+        public UserList(string? name, string? id, string? pos, string? dep, string? pn, bool ac, string? pw)
         {
             Name = name;
             UserID = id;
@@ -123,5 +74,8 @@ namespace SFS_Tool_Management.Models
             PhoneNumber = pn;
             IsAdmin = ac;
         }
+        public string DisplayName
+            => $"{Position} {Name}";
+
     }
 }

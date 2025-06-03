@@ -82,8 +82,8 @@
                         HorizontalAlignment="Right" Width="200" Height="50">
                 <ContentControl Content="{Binding CurrentPage}" />
                 <StackPanel Orientation="Vertical" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 8 0">
-                    <TextBlock Text="{Binding Name, Mode=OneWay}" FontSize="14" FontFamily="Segoe UI" FontWeight="SemiBold" Margin="2" HorizontalAlignment="Right"/>
-                    <TextBlock Text="{Binding Department, Mode=OneWay}" FontSize="12" FontFamily="Segoe UI" Margin="2" HorizontalAlignment="Right"/>
+                    <TextBlock Text="{Binding CurrentUser.DisplayName, Mode=OneWay}" FontSize="14" FontFamily="Segoe UI" FontWeight="SemiBold" Margin="2" HorizontalAlignment="Right"/>
+                    <TextBlock Text="{Binding CurrentUser.Department, Mode=OneWay}" FontSize="12" FontFamily="Segoe UI" Margin="2" HorizontalAlignment="Right"/>
                 </StackPanel>
                 <Ellipse Width="40" Height="40" Margin="2 2 2 2" Fill="#d7d7d7"></Ellipse>
             </StackPanel>

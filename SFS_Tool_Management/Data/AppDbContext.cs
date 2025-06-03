@@ -28,5 +28,13 @@ namespace SFS_Tool_Management.Data
         {
             return UserList.ToList();
         }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<UserList>()
+                   .Ignore(u => u.CurrentUser);
+        }
+
     }
 }
