@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SFS_Tool_Management.Models;
+using SFS_Tool_Management.Repositories;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Data.SqlClient;
 using System.Windows;
@@ -21,7 +22,7 @@ namespace SFS_Tool_Management.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(connectionString);
+                optionsBuilder.UseSqlServer(SQLRepository.BuildConnectionString());
             }
         }
         public List<UserList> GetAllUsers()

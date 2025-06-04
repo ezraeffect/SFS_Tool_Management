@@ -9,21 +9,16 @@ using System.Windows.Controls;
 using Microsoft.Data.SqlClient;
 using System.Security.Cryptography;
 using System.IO.Packaging;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace SFS_Tool_Management.Repositories
 {
     public class SQLRepository
     {
-        private string? _connectionString {  get; set; }
-
-        public SQLRepository()
-        {
-            GetConnectionString();
-        }
 
         public async Task<List<T>> ExecuteQueryAsync<T>(string query, Func<SqlDataReader, T> map)
         {
-            using var conn = new SqlConnection(_connectionString);
+            using var conn = new SqlConnection(BuildConnectionString());
             using var cmd = new SqlCommand(query, conn);
             await conn.OpenAsync();
             using var reader = await cmd.ExecuteReaderAsync();
@@ -32,7 +27,9 @@ namespace SFS_Tool_Management.Repositories
             while (await reader.ReadAsync())
             {
                 result.Add(map(reader));
-                ReadSingleRow((IDataRecord)reader);
+
+                // Only USE DEBUG
+                // ReadMultiRow((IDataRecord)reader);
             }
             return result;
         }
@@ -40,8 +37,8 @@ namespace SFS_Tool_Management.Repositories
         public void InsertTestQuery()
         {
             SqlCommand cmd2 = new SqlCommand();
-            var conn = new SqlConnection(_connectionString);
-            MessageBox.Show(_connectionString);
+            var conn = new SqlConnection(BuildConnectionString());
+            MessageBox.Show(BuildConnectionString());
             cmd2.Connection = conn;
             conn.Open();
 
@@ -96,21 +93,36 @@ namespace SFS_Tool_Management.Repositories
             MessageBox.Show(String.Format("{0}", record[0]));
         }
 
-        private void GetConnectionString()
+        private static void ReadMultiRow(IDataRecord record)
         {
-            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(string.Empty);
+            int fieldCount = record.FieldCount;
+            List<string> values = new List<string>();
 
-            builder["Server"] = Config.Load("Server");
-            builder["Initial Catalog"] = Config.Load("Initial Catalog");
-            builder["Persist Security Info"] = bool.Parse(Config.Load("Persist Security Info"));
-            builder["User Id"] = Config.Load("User ID");
-            builder["Password"] = Config.Load("Password");
-            builder["MultipleActiveResultSets"] = bool.Parse(Config.Load("MultipleActiveResultSets"));
-            builder["Encrypt"] = bool.Parse(Config.Load("Encrypt"));
-            builder["TrustServerCertificate"] = bool.Parse(Config.Load("TrustServerCertificate"));
-            builder["Connection Timeout"] = int.Parse(Config.Load("Connection Timeout"));
+            for (int i = 0; i < fieldCount; i++)
+            {
+                values.Add(record[i]?.ToString());
+            }
 
-            _connectionString = builder.ConnectionString;
+            string result = string.Join(", ", values);
+            MessageBox.Show(result, "Result");
+        }
+
+        public static string BuildConnectionString()
+        {
+            var builder = new SqlConnectionStringBuilder
+            {
+                ["Server"] = Config.Load("Server"),
+                ["Initial Catalog"] = Config.Load("Initial Catalog"),
+                ["Persist Security Info"] = bool.Parse(Config.Load("Persist Security Info")),
+                ["User Id"] = Config.Load("User ID"),
+                ["Password"] = Config.Load("Password"),
+                ["MultipleActiveResultSets"] = bool.Parse(Config.Load("MultipleActiveResultSets")),
+                ["Encrypt"] = bool.Parse(Config.Load("Encrypt")),
+                ["TrustServerCertificate"] = bool.Parse(Config.Load("TrustServerCertificate")),
+                ["Connection Timeout"] = int.Parse(Config.Load("Connection Timeout"))
+            };
+
+            return builder.ConnectionString;
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿<Page x:Class="SFS_Tool_Management.Views.DashboardPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+      xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SFS_Tool_Management.Views"
@@ -9,24 +11,37 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="DashboardPage">
-    
+
     <Page.DataContext>
         <model:DashboardViewModel/>
     </Page.DataContext>
 
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding GetDataCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <Grid>
         <StackPanel Orientation="Vertical">
-            <TextBlock Text="Summary" Margin="10" FontFamily="Segoe UI" FontSize="20" FontWeight="DemiBold"/>
-            <Line X1="10" Y1="10" X2="1000" Y2="10" Stroke="LightGray" StrokeThickness="2"/>
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
-                <styles:SummaryCard Margin="5" Title="Total tools" Count="{Binding TotalToolCount}" BackgroundBrush="#98D8AA"/>
-                <styles:SummaryCard Margin="5" Title="Available tools" Count="{Binding AvailableToolCount}" BackgroundBrush="#98D8AA"/>
-                <styles:SummaryCard Margin="5" Title="Tools under repair" Count="{Binding RepairingToolCount}" BackgroundBrush="#F3E99F"/>
-                <styles:SummaryCard Margin="5" Title="Tools on rental" Count="{Binding RentedToolCount}" BackgroundBrush="#F7D060"/>
-            </StackPanel>
+            <TextBlock Text="요약" Margin="10" FontFamily="Segoe UI" FontSize="22" FontWeight="DemiBold"/>
+            <Line X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" HorizontalAlignment="Stretch" Stroke="LightGray" StrokeThickness="2" Margin="5,5,5,5"/>
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" CanHorizontallyScroll="True">
+                    <styles:SummaryCard Margin="5" Title="총 공구 수량" Count="{Binding TotalQuantity}" BackgroundBrush="#98D8AA"/>
+                    <styles:SummaryCard Margin="5" Title="사용 가능 수량" Count="{Binding AvailableQuantity}" BackgroundBrush="#98D8AA"/>
+                    <styles:SummaryCard Margin="5" Title="점검 필요" Count="{Binding RequiredCheckQuantity}" BackgroundBrush="#F3E99F"/>
+                    <styles:SummaryCard Margin="5" Title="점검 중" Count="{Binding ChekcingQuantity}" BackgroundBrush="#F3E99F"/>
+                    <styles:SummaryCard Margin="5" Title="교정 필요" Count="{Binding RequiredCalibrationQuantity}" BackgroundBrush="#F7D060"/>
+                    <styles:SummaryCard Margin="5" Title="교정 중" Count="{Binding CalibratingQuantity}" BackgroundBrush="#F7D060"/>
+                    <styles:SummaryCard Margin="5" Title="대여" Count="{Binding RentalQuantity}" BackgroundBrush="#c3a54c"/>
+                </StackPanel>
+            </ScrollViewer>
+             <!--
             <Button Command="{Binding GetDataCommand}" Width="50" Height="50" Content="가져와잇"/>
             <Button Command="{Binding InsertUserInfoCommand}" Width="50" Height="50" Content="보내라잇"/>
             <Button Command="{Binding SaveConfigCommand}" Width="50" Height="50" Content="설정 만들어랏"/>
+            -->
         </StackPanel>
         
         
