@@ -19,15 +19,25 @@
                FontWeight="Bold"
                Margin="10"
                Grid.Row="0"/>
-        <DataGrid x:Name="UserDataGrid"
-              AutoGenerateColumns="true"
+
+        <DataGrid ItemsSource="{Binding Users}"
+              SelectedItem="{Binding SelectedUser}"
+              AutoGenerateColumns="false"
               IsReadOnly="True"
               Margin="10"
               Grid.Row="1">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="UserID" Binding="{Binding UserID}" />
+                <DataGridTextColumn Header="Position" Binding="{Binding Position}" />
+                <DataGridTextColumn Header="Department" Binding="{Binding Department}" />
+                <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNumber}" />
+                <DataGridTextColumn Header="Access" Binding="{Binding Access}" />
+            </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="삭제" Click="DeleteUser_Click"/>
-                    <MenuItem Header="복원하기" Click="RestoreUser_Click"/>
+                    <MenuItem Header="삭제" Command="{Binding DataContext.DeleteUserCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                    <MenuItem Header="복원하기" Command="{Binding DataContext.RestoreUserCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>

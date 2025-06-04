@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using SFS_Tool_Management.Repositories;
 using Microsoft.Data.SqlClient;
 using System.Data;
-using SFS_Tool_Management.Models;
+using SFS_Tool_Management.ViewModels;
 
 namespace SFS_Tool_Management.Views
 {
@@ -24,6 +24,10 @@ namespace SFS_Tool_Management.Views
     /// </summary>
     public partial class AdminOptionPage : Page
     {
-        
+        public AdminOptionPage()
+        {
+            InitializeComponent();
+            DataContext = new AdminViewModel();
+        }
     }
 }
