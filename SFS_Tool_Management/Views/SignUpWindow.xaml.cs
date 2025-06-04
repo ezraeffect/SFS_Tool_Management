@@ -1,19 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Security.Cryptography;
 using System.Text.RegularExpressions;
-using System.Data.SqlClient;
 using SFS_Tool_Management.Models;
 using SFS_Tool_Management.ViewModels;
 
@@ -31,14 +21,9 @@ namespace SFS_Tool_Management.Views
         }
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            PasswordBox? pb = sender as PasswordBox;
-            if (pb != null)
+            if (sender is PasswordBox pb && DataContext is SignUpViewModel viewModel)
             {
-                var viewModel = this.DataContext as SignUpViewModel; // ViewModel 가져오기
-                if (viewModel != null)
-                {
-                    viewModel.Password = pb.Password; // ViewModel의 Password 업데이트
-                }
+                viewModel.Password = pb.Password;
             }
         }
     }

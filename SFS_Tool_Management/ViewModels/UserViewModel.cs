@@ -6,29 +6,19 @@ using System.Threading.Tasks;
 using SFS_Tool_Management.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SFS_Tool_Management.ViewModels
 {
-    public class UserViewModel : INotifyPropertyChanged
+    public partial class UserViewModel : ObservableObject
     {
-        private UserRepo _repo;
-        private ObservableCollection<UserList>? _userLists;
-        public ObservableCollection<UserList>? UserLists
-        {
-            get => _userLists;
-            set
-            {
-                _userLists = value;
-                OnPropertyChanged(nameof(UserLists));
-            } 
-        }
+        [ObservableProperty]
+        private ObservableCollection<UserList>? userLists;
         public UserViewModel()
         {
-            _repo = new UserRepo();
-            UserLists = new ObservableCollection<UserList> (UserRepo.GetAllUsers());
+            var users = UserList.GetAllUsers() ?? new List<UserList>();
+            UserLists = new ObservableCollection<UserList>(users);
         }
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged(string propertyName) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
