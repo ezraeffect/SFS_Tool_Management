@@ -10,9 +10,13 @@
 
   <ItemGroup>
     <Compile Remove="Resources\**" />
+    <Compile Remove="Services\**" />
     <EmbeddedResource Remove="Resources\**" />
+    <EmbeddedResource Remove="Services\**" />
     <None Remove="Resources\**" />
+    <None Remove="Services\**" />
     <Page Remove="Resources\**" />
+    <Page Remove="Services\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,7 +28,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
-    <Folder Include="Services\" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.5" />
   </ItemGroup>
 
 </Project>

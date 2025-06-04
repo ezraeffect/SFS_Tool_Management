@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
 using System.Windows;
+using SFS_Tool_Management.Repositories;
 
 namespace SFS_Tool_Management
 {
@@ -8,7 +9,7 @@ namespace SFS_Tool_Management
     {
         public bool IsUpdated { get; set; } = false;
 
-        private string connectionString = @"Server=tcp:***REMOVED***,***REMOVED***;Initial Catalog=SFS;Persist Security Info=False;User ID=***REMOVED***;Password=***REMOVED***;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=90;";
+        private string connectionString = SQLRepository.BuildConnectionString();
 
         private string ToolID;
 

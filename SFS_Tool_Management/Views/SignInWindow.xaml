@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SFS_Tool_Management.Views"
+        DataContext="{Binding}"
         mc:Ignorable="d"
         Title="SignInWindow" Height="450" Width="800"
         WindowStartupLocation="CenterScreen">
@@ -14,7 +15,7 @@
                 <TextBlock Text="Sign In" FontSize="16" FontFamily="Segoe UI Symbol" FontWeight="Bold" Margin="0,0,0,2"/>
                 <TextBlock Text="Enter your ID below to login to your account" FontFamily="Segoe UI" Margin="0,0,0,5"/>
 
-                <TextBlock Text="{Binding ID, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,3" FontFamily="Segoe UI"/>
+                <TextBlock Text="ID" Margin="0,0,0,3" FontFamily="Segoe UI"/>
                 <TextBox Text="{Binding ID, UpdateSourceTrigger=PropertyChanged}" x:Name="textBox_ID" FontFamily="Segoe UI" Margin="0,0,0,3"/>
                 
                 <Grid>
@@ -33,13 +34,7 @@
 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Don't have an account?" FontFamily="Segoe UI" Margin="0,0,5,0"/>
-                    <TextBlock Text="Sign Up" FontFamily="Segoe UI" Foreground="CornflowerBlue" TextDecorations="Underline" Cursor="Hand">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="MouseLeftButtonUp">
-                                <i:InvokeCommandAction Command="{Binding SignUpCommand}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </TextBlock>
+                    <TextBlock Text="Sign Up" FontFamily="Segoe UI" Foreground="CornflowerBlue" TextDecorations="Underline" Cursor="Hand" MouseLeftButtonUp="SignUpTextBlock_Click" />
                 </StackPanel>
             </StackPanel>
         </Grid>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
 using System.Windows;
+using SFS_Tool_Management.Repositories;
 
 namespace SFS_Tool_Management
 {
@@ -9,15 +10,8 @@ namespace SFS_Tool_Management
     /// </summary>
     public partial class AddToolWindow : Window
     {
-        private string connectionString = @"Server=tcp:***REMOVED***,***REMOVED***;
-                                            Initial Catalog=Tool;
-                                            Persist Security Info=False;
-                                            User ID=***REMOVED***;
-                                            Password=***REMOVED***;
-                                            MultipleActiveResultSets=False;
-                                            Encrypt=True;
-                                            TrustServerCertificate=False;
-                                            Connection Timeout=90;";
+
+        private string connectionString = SQLRepository.BuildConnectionString();
 
         public AddToolWindow()
         {
@@ -33,7 +27,7 @@ namespace SFS_Tool_Management
                     connection.Open();
 
                     string query = @"
-                        INSERT INTO ToolList 
+                        INSERT INTO Tool
                         (ToolID, ToolType, ModelName, Manufacture, TotalQuantity, AvailableQuantity, PurchaseDate, DurabilityLimit, Status)
                         VALUES 
                         (@ToolID, @ToolType, @ModelName, @Manufacture, @TotalQuantity, @AvailableQuantity, @PurchaseDate, @DurabilityLimit, @Status)";

@@ -9,21 +9,16 @@ using System.Windows.Controls;
 using Microsoft.Data.SqlClient;
 using System.Security.Cryptography;
 using System.IO.Packaging;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace SFS_Tool_Management.Repositories
 {
     public class SQLRepository
     {
-        private string? _connectionString {  get; set; }
-
-        public SQLRepository()
-        {
-            GetConnectionString();
-        }
 
         public async Task<List<T>> ExecuteQueryAsync<T>(string query, Func<SqlDataReader, T> map)
         {
-            using var conn = new SqlConnection(_connectionString);
+            using var conn = new SqlConnection(BuildConnectionString());
             using var cmd = new SqlCommand(query, conn);
             await conn.OpenAsync();
             using var reader = await cmd.ExecuteReaderAsync();
@@ -32,7 +27,9 @@ namespace SFS_Tool_Management.Repositories
             while (await reader.ReadAsync())
             {
                 result.Add(map(reader));
-                ReadSingleRow((IDataRecord)reader);
+
+                // Only USE DEBUG
+                // ReadMultiRow((IDataRecord)reader);
             }
             return result;
         }
@@ -40,9 +37,12 @@ namespace SFS_Tool_Management.Repositories
         public void InsertTestQuery()
         {
             SqlCommand cmd2 = new SqlCommand();
-            var conn = new SqlConnection(_connectionString);
+            var conn = new SqlConnection(BuildConnectionString());
+            MessageBox.Show(BuildConnectionString());
             cmd2.Connection = conn;
             conn.Open();
+
+
 
             SqlParameter paraId = new SqlParameter("UserID", SqlDbType.VarChar, 30);
             SqlParameter paraPW = new SqlParameter("PasswordHash", SqlDbType.VarChar, 64);
@@ -52,9 +52,9 @@ namespace SFS_Tool_Management.Repositories
             SqlParameter paraPhoneNumber = new SqlParameter("PhoneNumber", SqlDbType.VarChar, 30);
             SqlParameter paraIsAdmin = new SqlParameter("IsAdmin", SqlDbType.Bit);
 
-            paraId.Value = "test03";
+            paraId.Value = "test05";
             string pw = "qwer1234!";
-            byte[] bytes = null;
+            byte[]? bytes = null;
             using(SHA256 Hash = SHA256.Create())
             {
                 bytes = Hash.ComputeHash(Encoding.UTF8.GetBytes(pw));
@@ -93,21 +93,36 @@ namespace SFS_Tool_Management.Repositories
             MessageBox.Show(String.Format("{0}", record[0]));
         }
 
-        private void GetConnectionString()
+        private static void ReadMultiRow(IDataRecord record)
         {
-            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(string.Empty);
+            int fieldCount = record.FieldCount;
+            List<string> values = new List<string>();
 
-            builder["Server"] = "tcp:***REMOVED***,***REMOVED***";
-            builder["Initial Catalog"] = "Tool";
-            builder["Persist Security Info"] = false;
-            builder["User Id"] = "***REMOVED***";
-            builder["Password"] = "***REMOVED***";
-            builder["MultipleActiveResultSets"] = false;
-            builder["Encrypt"] = true;
-            builder["TrustServerCertificate"] = false;
-            builder["Connection Timeout"] = 30;
+            for (int i = 0; i < fieldCount; i++)
+            {
+                values.Add(record[i]?.ToString());
+            }
 
-            _connectionString = builder.ConnectionString;
+            string result = string.Join(", ", values);
+            MessageBox.Show(result, "Result");
+        }
+
+        public static string BuildConnectionString()
+        {
+            var builder = new SqlConnectionStringBuilder
+            {
+                ["Server"] = Config.Load("Server"),
+                ["Initial Catalog"] = Config.Load("Initial Catalog"),
+                ["Persist Security Info"] = bool.Parse(Config.Load("Persist Security Info")),
+                ["User Id"] = Config.Load("User ID"),
+                ["Password"] = Config.Load("Password"),
+                ["MultipleActiveResultSets"] = bool.Parse(Config.Load("MultipleActiveResultSets")),
+                ["Encrypt"] = bool.Parse(Config.Load("Encrypt")),
+                ["TrustServerCertificate"] = bool.Parse(Config.Load("TrustServerCertificate")),
+                ["Connection Timeout"] = int.Parse(Config.Load("Connection Timeout"))
+            };
+
+            return builder.ConnectionString;
         }
     }
 }

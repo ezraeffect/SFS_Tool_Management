@@ -1,5 +1,6 @@
-﻿using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using SFS_Tool_Management.Views.ToolList;
+using SFS_Tool_Management.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -23,9 +24,8 @@ namespace SFS_Tool_Management.Views
     /// </summary>
     public partial class ToolListPage : Page
     {
+        private string connectionString = SQLRepository.BuildConnectionString();
         
-        private string connectionString = @"Server=tcp:***REMOVED***,***REMOVED***;Initial Catalog=Tool;Persist Security Info=False;User ID=***REMOVED***;Password=***REMOVED***;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=90;";
-
         private DataRowView _lastDeletedTool = null;
         public ToolListPage()
         {
