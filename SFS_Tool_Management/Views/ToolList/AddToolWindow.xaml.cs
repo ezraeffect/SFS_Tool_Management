@@ -10,6 +10,7 @@ namespace SFS_Tool_Management
     /// </summary>
     public partial class AddToolWindow : Window
     {
+
         private string connectionString = SQLRepository.BuildConnectionString();
 
         public AddToolWindow()
