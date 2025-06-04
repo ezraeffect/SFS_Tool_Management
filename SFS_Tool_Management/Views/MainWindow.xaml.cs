@@ -39,5 +39,9 @@ namespace SFS_Tool_Management
         {
             MainFrame.Navigate(new Views.RentalHistoryPage());
         }
+        private void button_ShowAdminOption_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new Views.AdminOptionPage());
+        }
     }
 }
