@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using SFS_Tool_Management.Data;
 
 namespace SFS_Tool_Management.ViewModels
 {
@@ -68,6 +69,14 @@ namespace SFS_Tool_Management.ViewModels
             {
                 MessageBox.Show("아이디는 8자 이상 16자 이하여야 합니다.", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
+            }
+            using (var db = new AppDbContext())
+            {
+                if (db.UserList.Any(u => u.UserID == ID))
+                {
+                    MessageBox.Show("이미 존재하는 사용자 ID입니다. 다른 ID를 선택해주세요.", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
             }
             if (Password.Length < 8 || Password.Length > 20)
             {

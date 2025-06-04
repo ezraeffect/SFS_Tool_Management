@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using SFS_Tool_Management.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace SFS_Tool_Management.Models
 {
@@ -76,7 +77,5 @@ namespace SFS_Tool_Management.Models
         }
         public string DisplayName
             => $"{Position} {Name}";
-
-
     }
 }
