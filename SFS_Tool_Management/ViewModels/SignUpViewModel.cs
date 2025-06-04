@@ -89,8 +89,7 @@ namespace SFS_Tool_Management.ViewModels
                 MessageBox.Show("비밀번호에는 최소 하나 이상의 특수문자가 포함되어야 합니다.", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-
-            bool ac = false;
+            bool ac = (IsAdmin) ? true : false;
             string hashedPw = Encrypter.HashPW(Password);
             UserList newUser = new UserList(Name, ID, Position, Department, PhoneNumber, ac, hashedPw);
             UserList.AddUser(newUser);

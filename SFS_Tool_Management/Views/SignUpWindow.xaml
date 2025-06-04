@@ -54,9 +54,8 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <RadioButton x:Name="radioButton_isUser" Content="User" Grid.Column="0" FontFamily="Segoe UI"
-                                 IsChecked="True" />
-                    <RadioButton x:Name="radioButton_isAdmin" Content="Administrator" Grid.Column="1" FontFamily="Segoe UI" />
+                    <RadioButton x:Name="radioButton_isUser" Content="User" Grid.Column="0" FontFamily="Segoe UI" IsChecked="True" />
+                    <RadioButton x:Name="radioButton_isAdmin" Content="Administrator" Grid.Column="1" FontFamily="Segoe UI" IsChecked="{Binding IsAdmin, Mode=TwoWay}" />
                 </Grid>
 
                 <!-- 가입 컨트롤 Control -->
