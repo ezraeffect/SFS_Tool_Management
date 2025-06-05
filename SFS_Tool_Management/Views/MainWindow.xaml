@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:SFS_Tool_Management"
         xmlns:styles="clr-namespace:SFS_Tool_Management.Styles"
         xmlns:model="clr-namespace:SFS_Tool_Management.ViewModels"
+        xmlns:helper="clr-namespace:SFS_Tool_Management.Helpers"
         mc:Ignorable="d"
         Title="MainWindow" Height="960" Width="1440">
 
@@ -55,17 +56,9 @@
         <!--#region ToastMessage Storyboard-->
         <!-- 여는 애니메이션 -->
         <Storyboard x:Key="OpenToast">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="GridMenu">
-                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="256">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <CubicEase EasingMode="EaseInOut"/>
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="GridBackground">
-                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="ToastGrid">
+                <EasingDoubleKeyFrame KeyTime="0" Value="45"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <CubicEase EasingMode="EaseInOut"/>
                     </EasingDoubleKeyFrame.EasingFunction>
@@ -75,17 +68,9 @@
 
         <!-- 닫는 애니메이션 -->
         <Storyboard x:Key="CloseToast">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="GridMenu">
-                <EasingDoubleKeyFrame KeyTime="0" Value="256"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <CubicEase EasingMode="EaseInOut"/>
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="GridBackground">
-                <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="ToastGrid">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="45">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <CubicEase EasingMode="EaseInOut"/>
                     </EasingDoubleKeyFrame.EasingFunction>
@@ -104,6 +89,12 @@
         </EventTrigger>
         <EventTrigger RoutedEvent="Button.Click" SourceName="button_DrawClose">
             <BeginStoryboard Storyboard="{StaticResource CloseMenu}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="Button.Click" SourceName="button_ToastShow">
+            <BeginStoryboard Storyboard="{StaticResource OpenToast}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="Button.Click" SourceName="button_ToastClose">
+            <BeginStoryboard Storyboard="{StaticResource CloseToast}"/>
         </EventTrigger>
     </Window.Triggers>
     
@@ -125,7 +116,7 @@
             <!-- 사용자 표시용 StackPanel -->
             <StackPanel x:Name="user_Profile" Orientation="Horizontal" Margin="0 10 10 10" 
                         HorizontalAlignment="Right" Width="200" Height="50">
-                <ContentControl Content="{Binding CurrentPage}" />
+                <!--<ContentControl Content="{Binding CurrentPage}" />-->
                 <StackPanel Orientation="Vertical" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 8 0">
                     <TextBlock Text="{Binding CurrentUser.DisplayName, Mode=OneWay}" FontSize="14" FontFamily="Segoe UI" FontWeight="SemiBold" Margin="2" HorizontalAlignment="Right"/>
                     <TextBlock Text="{Binding CurrentUser.Department, Mode=OneWay}" FontSize="12" FontFamily="Segoe UI" Margin="2" HorizontalAlignment="Right"/>
@@ -159,6 +150,9 @@
                 <!-- Draw Menu 닫기 Btn -->
                 <Button x:Name="button_DrawClose" Style="{StaticResource IndentRightButtonStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" Height="48" Content="닫기" Margin="8"/>
 
+                <Button x:Name="button_ToastShow" Style="{StaticResource IndentRightButtonStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" Height="48" Content="닫기" Margin="8"/>
+                <Button x:Name="button_ToastClose" Style="{StaticResource IndentRightButtonStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" Height="48" Content="닫기" Margin="8"/>
+                
                 <TextBlock Text="Tool Management" FontFamily="Segoe UI" FontSize="20" FontWeight="Bold" Margin="10"/>
 
                 <Button x:Name="button_ShowDashboard" Style="{StaticResource DrawDashboardButtonStyle}" Content="Dashboard" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Click="button_ShowDashboard_Click"/>
@@ -168,18 +162,19 @@
             </StackPanel>
         </Grid>
 
-        <!-- Draw Menu Grid -->
-        <Grid x:Name="ToastGrid" Height="45" HorizontalAlignment="Center" VerticalAlignment="Bottom" Background="White" Margin="0,0,0,0">
+        <!-- Toast Menu Grid -->
+        <Grid x:Name="ToastGrid" Height="45" Width="700" HorizontalAlignment="Center" VerticalAlignment="Bottom">
             <!-- 애니메이션 사용 관련 선언 -->
             <Grid.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
                     <SkewTransform/>
                     <RotateTransform/>
-                    <TranslateTransform/>
+                    <TranslateTransform Y="45"/>
                 </TransformGroup>
             </Grid.RenderTransform>
-            <styles:ToastMessage Icon="{StaticResource DashboardIcon}" Color="#000000" Title="NullPointExecption이 발생했습니다."/>
+            <styles:ToastMessage DataContext="{x:Static helper:ToastService.Instance}" 
+                                 Icon="{Binding Icon}" Color="{Binding Color}" Title="{Binding Message}"/>
         </Grid>
     </Grid>
 </Window>

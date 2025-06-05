@@ -5,6 +5,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -19,6 +20,7 @@ namespace SFS_Tool_Management
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public MainWindow()
         {
             InitializeComponent();
@@ -38,6 +40,22 @@ namespace SFS_Tool_Management
         private void button_ShowRentalHistory_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new Views.RentalHistoryPage());
+        }
+
+        public void OpenToast()
+        {
+            if (FindResource("OpenToast") is Storyboard sb)
+            {
+                sb.Begin(this); // 이 this는 MainWindow를 가리킴
+            }
+        }
+
+        public void CloseToast()
+        {
+            if (FindResource("CloseToast") is Storyboard sb)
+            {
+                sb.Begin(this); // 이 this는 MainWindow를 가리킴
+            }
         }
     }
 }

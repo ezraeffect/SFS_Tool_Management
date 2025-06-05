@@ -9,6 +9,8 @@ using SFS_Tool_Management.Repositories;
 using System.Reflection.PortableExecutable;
 using CommunityToolkit.Mvvm.Input;
 using System.Windows;
+using SFS_Tool_Management.Helpers;
+using System.Windows.Media;
 
 
 namespace SFS_Tool_Management.ViewModels
@@ -102,6 +104,14 @@ namespace SFS_Tool_Management.ViewModels
         {
             var repo = new SQLRepository();
             repo.InsertTestQuery();
+        }
+
+        [RelayCommand]
+        public static void CallToast()
+        {
+            Geometry icon = Geometry.Parse("M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z");
+            Brush color = new SolidColorBrush(Colors.Red);
+            ToastService.Instance.Show("로딩 완료", icon, color);
         }
     }
 }

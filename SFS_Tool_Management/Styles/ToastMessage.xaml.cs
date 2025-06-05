@@ -25,7 +25,9 @@ namespace SFS_Tool_Management.Styles
             InitializeComponent();
         }
 
-        public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(Geometry), typeof(ToastMessage));
+        public static readonly DependencyProperty IconProperty =
+            DependencyProperty.Register("Icon", typeof(Geometry), typeof(ToastMessage));
+
         public Geometry Icon
         {
             get => (Geometry)GetValue(IconProperty);
