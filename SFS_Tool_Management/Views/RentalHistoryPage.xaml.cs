@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Win32;
+using SFS_Tool_Management.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -21,15 +22,7 @@ namespace SFS_Tool_Management.Views
 {
     public partial class RentalHistoryPage : Page
     {
-        private string connectionString = @"Server=tcp:***REMOVED***,***REMOVED***;
-                                            Initial Catalog=Tool;
-                                            Persist Security Info=False;
-                                            User ID=***REMOVED***;
-                                            Password=***REMOVED***;
-                                            MultipleActiveResultSets=False;
-                                            Encrypt=True;
-                                            TrustServerCertificate=False;
-                                            Connection Timeout=90;";
+        private string connectionString = SQLRepository.BuildConnectionString();
 
         public RentalHistoryPage()
         {
