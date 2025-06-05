@@ -25,8 +25,13 @@ namespace SFS_Tool_Management.Models
 
         [ObservableProperty]
         private string? department;
-        public string? PasswordHash { get; set; }
-        public string? PhoneNumber { get; set; }
+
+        [ObservableProperty]
+        public string? passwordHash;
+
+        [ObservableProperty]
+        public string? phoneNumber;
+
         public bool IsAdmin { get; set; }
         public UserList() { }
 

@@ -37,7 +37,7 @@
             <DataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="삭제" Command="{Binding DataContext.DeleteUserCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
-                    <MenuItem Header="복원하기" Command="{Binding DataContext.RestoreUserCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                    <MenuItem Header="복원" Command="{Binding DataContext.RestoreUserCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>
