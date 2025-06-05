@@ -9,6 +9,7 @@ using SFS_Tool_Management.Repositories;
 using System.Reflection.PortableExecutable;
 using CommunityToolkit.Mvvm.Input;
 using System.Windows;
+using ScottPlot.WPF;
 
 
 namespace SFS_Tool_Management.ViewModels
@@ -16,6 +17,8 @@ namespace SFS_Tool_Management.ViewModels
     public partial class DashboardViewModel : ObservableObject
     {
         private DashboardModel _model;
+
+        WpfPlot PlotControl { get; } = new WpfPlot();
 
         public DashboardViewModel()
         {
@@ -102,6 +105,15 @@ namespace SFS_Tool_Management.ViewModels
         {
             var repo = new SQLRepository();
             repo.InsertTestQuery();
+        }
+
+        [RelayCommand]
+        public void Plot()
+        {
+            double[] dataX = { 1, 2, 3, 4, 5 };
+            double[] dataY = { 1, 4, 9, 16, 25 };
+            PlotControl.Plot.Add.Scatter(dataX, dataY);
+            PlotControl.Refresh();
         }
     }
 }
