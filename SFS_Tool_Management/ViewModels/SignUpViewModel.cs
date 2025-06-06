@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SFS_Tool_Management.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace SFS_Tool_Management.ViewModels
 {
@@ -72,7 +73,7 @@ namespace SFS_Tool_Management.ViewModels
             }
             await using (var db = new AppDbContext())
             {
-                if (db.UserList.Any(u => u.UserID == ID))
+                if (await db.UserList.AnyAsync(u => u.UserID == ID))
                 {
                     MessageBox.Show("이미 존재하는 사용자 ID입니다. 다른 ID를 선택해주세요.", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
@@ -100,7 +101,7 @@ namespace SFS_Tool_Management.ViewModels
                 bool ac = (IsAdmin) ? true : false;
                 string hashedPw = Encrypter.HashPW(Password);
                 UserList newUser = new UserList(Name, ID, Position, Department, PhoneNumber, ac, hashedPw);
-                UserList.AddUser(newUser);
+                await db.AddAsync(newUser);
 
                 MessageBox.Show("회원가입이 완료되었습니다.", "회원가입 완료", MessageBoxButton.OK, MessageBoxImage.Information);
             }

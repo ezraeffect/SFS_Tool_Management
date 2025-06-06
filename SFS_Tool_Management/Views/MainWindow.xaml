@@ -51,7 +51,7 @@
 
         <Geometry x:Key="DashboardIcon">M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m0 16H5V5h14zM9 17H7v-5h2zm4 0h-2V7h2zm4 0h-2v-7h2z</Geometry>
         <!--특정 조건에서만 보이는 옵션-->
-        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
 
     </Window.Resources>
 
@@ -123,7 +123,7 @@
                 <Button x:Name="button_ShowToolList" Style="{StaticResource DrawToolListButtonStyle}" Content="Tool List" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Click="button_ShowToolList_Click"/>
                 <Button x:Name="button_ShowRentalHistory" Style="{StaticResource DrawRentalHistoryButtonStyle}" Content="Rental History" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Click="button_ShowRentalHistory_Click"/>
                 <Border Height="665"/>
-                <Button x:Name="button_ShowAdminOption" Content="Administrator" Height="40" FontFamily="Segoe UI" FontSize="15" VerticalAlignment="Bottom" FontWeight="DemiBold" Visibility="{Binding CurrentUser.IsAdmin, Converter={StaticResource BoolToVis}}" Click="button_ShowAdminOption_Click" />
+                <Button Content="Administrator" Command="{Binding ShowAdminOptionCommand}" Height="40" Margin="5" Visibility="{Binding CurrentUser.IsAdmin, Converter={StaticResource BoolToVis}}"/>
                 <!-- <Button x:Name="button_ShowFuncTest" Style="{StaticResource DrawDashboardButtonStyle}" Content="USING ONLY TEST" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Click="button_ShowFuncTest_Click"/> -->
             </StackPanel>
         </Grid>

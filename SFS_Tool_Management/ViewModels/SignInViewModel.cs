@@ -4,6 +4,7 @@ using SFS_Tool_Management.Data;
 using SFS_Tool_Management.Models;
 using SFS_Tool_Management.Views;
 using System.Windows;
+using Microsoft.EntityFrameworkCore;
 
 namespace SFS_Tool_Management.ViewModels
 {
@@ -32,7 +33,7 @@ namespace SFS_Tool_Management.ViewModels
                 }
                 await using (var db = new AppDbContext())
                 {
-                    var userLog = db.UserList.FirstOrDefault(u => u.UserID == ID);
+                    var userLog = await db.UserList.FirstOrDefaultAsync(u => u.UserID == ID);
                     if (userLog == null)
                     {
                         MessageBox.Show("존재하지 않는 아이디입니다.", "로그인 오류", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -58,7 +59,6 @@ namespace SFS_Tool_Management.ViewModels
                         userLog.IsAdmin,
                         hashedPassword);
                     UserList.Instance.SetCurrentUser(authenticatedUser);
-                    OnPropertyChanged(nameof(UserList.CurrentUser));
                     CurrentUser = authenticatedUser;
                 }
             }
@@ -68,7 +68,7 @@ namespace SFS_Tool_Management.ViewModels
             }
         }
         [RelayCommand]
-        public async void OpenSignUpPage()
+        public void OpenSignUpPage()
         {
             var signUpWindow = new SignUpWindow();
             signUpWindow.Show();
