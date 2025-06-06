@@ -20,21 +20,28 @@
 
         <!-- 필터 영역 -->
         <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Grid.Row="0">
-            <Label Content="공구명:" VerticalAlignment="Center"/>
-            <TextBox x:Name="ToolNameFilterBox" Width="150" Margin="5,0"/>
+            <Label Content="공구명:" VerticalAlignment="Center" />
+            <TextBox x:Name="ModelNameFilterBox" Width="150" Margin="5,0" />
 
-            <Label Content="대여자 ID:" VerticalAlignment="Center"/>
-            <TextBox x:Name="UserIdFilterBox" Width="150" Margin="5,0"/>
+            <Label Content="사용자 ID:" VerticalAlignment="Center" />
+            <TextBox x:Name="UserIDBox" Width="150" Margin="5,0" />
 
-            <Label Content="상태:" VerticalAlignment="Center"/>
-            <ComboBox x:Name="StatusFilterBox" Width="100" Margin="5,0">
-                <ComboBoxItem Content="전체" IsSelected="True"/>
-                <ComboBoxItem Content="대여중"/>
-                <ComboBoxItem Content="반납완료"/>
+            <Label Content="반납 상태:" VerticalAlignment="Center" />
+            <ComboBox x:Name="ReturnStatusCombo" Width="120" Margin="5,0">
+                <ComboBoxItem Content="전체" IsSelected="True" />
+                <ComboBoxItem Content="반납완료" />
+                <ComboBoxItem Content="대여중" />
             </ComboBox>
 
-            <Button Content="검색" Click="FilterSearch_Click" Margin="10,0"/>
+            <Label Content="대여 시작일:" VerticalAlignment="Center" />
+            <DatePicker x:Name="StartDatePicker" Margin="5,0" />
+
+            <Label Content="반납 예정일:" VerticalAlignment="Center" />
+            <DatePicker x:Name="EndDatePicker" Margin="5,0" />
+
+            <Button Content="검색" Click="FilterSearch_Click" Margin="10,0" />
         </StackPanel>
+
 
         <!-- 데이터 그리드 -->
         <DataGrid x:Name="RentalDataGrid"

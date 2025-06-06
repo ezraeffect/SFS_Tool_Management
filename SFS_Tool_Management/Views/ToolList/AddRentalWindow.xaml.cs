@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using SFS_Tool_Management.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,25 +21,40 @@ namespace SFS_Tool_Management.Views.ToolList
     /// </summary>
     public partial class AddRentalWindow : Window
     {
+        private Dictionary<string, string> serialConditionMap = new Dictionary<string, string>();
         public AddRentalWindow(string toolId, string modelName)
         {
             InitializeComponent();
             ModelBox.Text = modelName;
 
             // 사용 가능한 SerialNumber 조회
-            string connectionString = "Server=tcp:***REMOVED***,***REMOVED***;" +
-                                      "Initial Catalog=Tool;" +
-                                      "Persist Security Info=False;" +
-                                      "User ID=***REMOVED***;" +
-                                      "Password=***REMOVED***;" +
-                                      "MultipleActiveResultSets=False;" +
-                                      "Encrypt=True;" +
-                                      "TrustServerCertificate=False;" +
-                                      "Connection Timeout=90;";
+            string connectionString = SQLRepository.BuildConnectionString();
 
-            string query = "SELECT SerialNumber FROM ToolInstance WHERE ToolID = @ToolID AND Condition = '정상'";
+
+            string query = "SELECT SerialNumber, Condition FROM ToolInstance WHERE ToolID = @ToolID";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@ToolID", toolId);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        string serialNumber = reader["SerialNumber"].ToString();
+                        string condition = reader["Condition"].ToString();
+
+                        SerialComboBox.Items.Add(serialNumber);
+                        serialConditionMap[serialNumber] = condition;
+
+                    }
+                }
+            }
+
+            /*using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
@@ -52,13 +68,31 @@ namespace SFS_Tool_Management.Views.ToolList
                         SerialComboBox.Items.Add(reader["SerialNumber"].ToString());
                     }
                 }
-            }
+            }*/
         }
 
 
         private void Confirm_Click(object sender, RoutedEventArgs e)
         {
+
             string serialNumber = SerialComboBox.Text;
+            if (string.IsNullOrWhiteSpace(serialNumber))
+            {
+                MessageBox.Show("시리얼 번호를 선택해주세요.");
+                return;
+            }
+
+            if(!serialConditionMap.TryGetValue(serialNumber, out string condition))
+            {
+                MessageBox.Show("상태 정보를 확인할 수 없습니다.");
+                return;
+            }
+
+            if(condition != "정상")
+            {
+                MessageBox.Show($"현재 상태가 [{condition}]이므로 대여할 수 없습니다.");
+                return;
+            }
             string modelName = ModelBox.Text;
             string purpose = PurposeBox.Text;
 
@@ -67,11 +101,12 @@ namespace SFS_Tool_Management.Views.ToolList
 
             try
             {
-                string connectionString = @"Server=tcp:***REMOVED***,***REMOVED***;Initial Catalog=Tool;Persist Security Info=False;User ID=***REMOVED***;Password=***REMOVED***;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=90;";
-
+                string connectionString = SQLRepository.BuildConnectionString();
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
+                 
                     conn.Open();
+              
 
                     // 1. SerialNumber → ToolID 조회
                     string toolId = "";
@@ -140,13 +175,36 @@ namespace SFS_Tool_Management.Views.ToolList
 
                 MessageBox.Show("대여 요청이 완료되었습니다.");
                 this.DialogResult = true;
+                
                 this.Close();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("DB 처리 중 오류: " + ex.Message);
             }
+
+           
         }
+
+        private void SerialComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (SerialComboBox.SelectedItem != null)
+            {
+                string selectedSerial = SerialComboBox.SelectedItem.ToString();
+
+                if (serialConditionMap.TryGetValue(selectedSerial, out string condition))
+                {
+                    conditionBlock.Text = $"{condition}";
+                }
+                else
+                {
+                    conditionBlock.Text = "Condition 정보를 불러올 수 없습니다.";
+                }
+            }
+        } 
+
+
+        
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Win32;
+using SFS_Tool_Management.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -21,51 +22,107 @@ namespace SFS_Tool_Management.Views
 {
     public partial class RentalHistoryPage : Page
     {
-        private string connectionString = @"Server=tcp:***REMOVED***,***REMOVED***;
-                                            Initial Catalog=Tool;
-                                            Persist Security Info=False;
-                                            User ID=***REMOVED***;
-                                            Password=***REMOVED***;
-                                            MultipleActiveResultSets=False;
-                                            Encrypt=True;
-                                            TrustServerCertificate=False;
-                                            Connection Timeout=90;";
+        private string connectionString = SQLRepository.BuildConnectionString();
 
         public RentalHistoryPage()
         {
             InitializeComponent();
-            LoadRentalData();
+
+            string defaultQuery = @"
+        SELECT rh.*, ti.ToolID, t.ModelName
+        FROM RentalHistory rh
+        JOIN ToolInstance ti ON rh.SerialNumber = ti.SerialNumber
+        JOIN Tool t ON ti.ToolID = t.ToolID
+    ";
+            LoadRentalData(defaultQuery, new List<SqlParameter>());
         }
 
-        private void LoadRentalData()
+
+
+        private void LoadRentalData(string query, List<SqlParameter> parameters)
         {
-            try
+            string connectionString = SQLRepository.BuildConnectionString();
+            DataTable table = new DataTable();
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    conn.Open();
-                    string query = "SELECT * FROM dbo.RentalHistory";
+                    foreach (var param in parameters)
+                    {
+                        cmd.Parameters.Add(param);
+                    }
 
-                    SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
-                    DataTable table = new DataTable();
-                    adapter.Fill(table);
-
-                    RentalDataGrid.ItemsSource = table.DefaultView;
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                    {
+                        adapter.Fill(table);
+                    }
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("대여기록 불러오기 오류: " + ex.Message);
-            }
+
+            RentalDataGrid.ItemsSource = table.DefaultView;
         }
 
-        // 필터 버튼 클릭 (아직 구현 전)
+
+        // 필터 버튼 클릭
         private void FilterSearch_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("필터 검색은 다음 단계에서 구현할 예정입니다.");
+            // 1. 공구명
+            string modelName = ModelNameFilterBox.Text.Trim();
+
+            // 2. 사용자 ID
+            string userID = UserIDBox.Text.Trim();
+
+            // 3. 상태
+            string selectedStatus = (ReturnStatusCombo.SelectedItem as ComboBoxItem)?.Content.ToString();
+            DateTime? startDate = StartDatePicker.SelectedDate;
+            DateTime? endDate = EndDatePicker.SelectedDate;
+            
+            // 쿼리 작성
+            StringBuilder queryBuilder = new StringBuilder(@"
+                                                            SELECT rh.*, ti.ToolID, t.ModelName
+                                                            FROM RentalHistory rh
+                                                            JOIN ToolInstance ti ON rh.SerialNumber = ti.SerialNumber
+                                                            JOIN Tool t ON ti.ToolID = t.ToolID
+                                                            WHERE 1=1");
+
+            List<SqlParameter> parameters = new List<SqlParameter>();
+
+            if (!string.IsNullOrEmpty(modelName))
+            {
+                queryBuilder.Append(" AND t.ModelName LIKE @ModelName");
+                parameters.Add(new SqlParameter("@ModelName", "%" + modelName + "%"));
+
+            }
+
+            if (selectedStatus == "대여중")
+            {
+                queryBuilder.Append(" AND rh.IsReturned = 0");
+            }
+
+            if(selectedStatus == "반납완료")
+            {
+                queryBuilder.Append(" AND rh.IsReturned = 1");
+            }
+
+            if (startDate.HasValue)
+            {
+                queryBuilder.Append(" AND rh.RentalStartDate >- @StartDate");
+                parameters.Add(new SqlParameter("@StartDate", startDate.Value));
+            }
+
+            if (endDate.HasValue)
+            {
+                queryBuilder.Append(" AND rh.RentalStartDate >= @StartDate");
+                parameters.Add(new SqlParameter("@StartDate", startDate.Value));
+            }
+
+            LoadRentalData(queryBuilder.ToString(), parameters);
+  
         }
 
-        // CSV 내보내기 클릭 (다음 단계에서 구현)
+        // CSV 내보내기 클릭
         private void ExportCsv_Click(object sender, RoutedEventArgs e)
         {
             if(RentalDataGrid.Items.Count == 0)
@@ -136,10 +193,10 @@ namespace SFS_Tool_Management.Views
                     return;
                 }
 
-                // ✅ SerialNumber는 문자열이므로 그대로 string으로 받기
+                // SerialNumber는 문자열이므로 그대로 string으로 받기
                 string serialNumber = row["SerialNumber"].ToString();
 
-                // ✅ 반납 처리 메서드 호출
+                // 반납 처리 메서드 호출
                 ReturnTool(serialNumber);
             }
         }
@@ -156,7 +213,7 @@ namespace SFS_Tool_Management.Views
                     string query = @"
                 -- 1. ToolInstance 상태 변경
                 UPDATE ToolInstance
-                SET Condition = '사용가능'
+                SET Condition = '정상'
                 WHERE SerialNumber = @SerialNumber;
 
                 -- 2. RentalHistory 반납 처리
@@ -181,16 +238,22 @@ namespace SFS_Tool_Management.Views
                 }
 
                 MessageBox.Show("반납이 완료되었습니다.");
-                LoadRentalData(); // 목록 갱신
+
+                // 목록 다시 불러오기
+                string defaultQuery = @"
+                                    SELECT rh.*, ti.ToolID, t.ModelName
+                                    FROM RentalHistory rh
+                                    JOIN ToolInstance ti ON rh.SerialNumber = ti.SerialNumber
+                                    JOIN Tool t ON ti.ToolID = t.ToolID
+                                    ";
+                LoadRentalData(defaultQuery, new List<SqlParameter>());
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show("반납 처리 중 오류: " + ex.Message);
             }
         }
-
-
-
 
     }
 }

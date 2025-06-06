@@ -9,7 +9,11 @@
     <Grid Margin="20">
         <StackPanel>
             <TextBlock Text="시리얼 번호 선택:" />
-            <ComboBox x:Name="SerialComboBox" Margin="0,5"/>
+            <ComboBox x:Name="SerialComboBox" Margin="0,5"
+                      SelectionChanged="SerialComboBox_SelectionChanged"/>
+
+            <TextBlock Text="상태:" Margin="0,10,0,0"/>
+            <TextBlock x:Name="conditionBlock" FontWeight="Bold" Foreground="DarkSlateBlue"/>
 
             <TextBlock Text="모델명:"/>
             <TextBox x:Name="ModelBox" IsReadOnly="True" Margin="0,5"/>

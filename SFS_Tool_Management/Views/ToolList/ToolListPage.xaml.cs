@@ -82,13 +82,20 @@ namespace SFS_Tool_Management.Views
                 DateTime purchaseDate = Convert.ToDateTime(selectedRow["PurchaseDate"]);
                 DateTime durabilityLimit = Convert.ToDateTime(selectedRow["DurabilityLimit"]);
 
-
                 var editPopup = new EditToolWindow(toolId, toolType, modelName, manufacture,
                     totalQty, availableQty, purchaseDate, durabilityLimit);
-                editPopup.ShowDialog();
-            }
 
+                bool? result = editPopup.ShowDialog();
+
+                // 수정 완료 후 목록 갱신
+                if (result == true && editPopup.IsUpdated)
+                {
+                    /*MessageBox.Show("수정됨 → 데이터 갱신 시작");*/
+                    LoadToolData();
+                }
+            }
         }
+
 
         private void DeleteTool_Click(object sender, RoutedEventArgs e)
         {
