@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SFS_Tool_Management.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace SFS_Tool_Management.ViewModels
 {
@@ -33,7 +34,7 @@ namespace SFS_Tool_Management.ViewModels
         private bool isAdmin = false;
 
         [RelayCommand]
-        private void SignUp()
+        private async Task SignUp()
         {
             if (string.IsNullOrWhiteSpace(Name))
             {
@@ -70,40 +71,40 @@ namespace SFS_Tool_Management.ViewModels
                 MessageBox.Show("아이디는 8자 이상 16자 이하여야 합니다.", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            using (var db = new AppDbContext())
+            await using (var db = new AppDbContext())
             {
-                if (db.UserList.Any(u => u.UserID == ID))
+                if (await db.UserList.AnyAsync(u => u.UserID == ID))
                 {
                     MessageBox.Show("이미 존재하는 사용자 ID입니다. 다른 ID를 선택해주세요.", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-            }
-            if (Password.Length < 8 || Password.Length > 20)
-            {
-                MessageBox.Show("비밀번호는 8자 이상 20자 이하여야 합니다.", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            if (!Regex.IsMatch(Password, @"[^가-힣ㄱ-ㅎㅏ-ㅣ]"))
-            {
-                MessageBox.Show("비밀번호는 대문자, 소문자, 특수문자로만 구성되어야 합니다.", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            if (!Regex.IsMatch(Password, @"\d"))
-            {
-                MessageBox.Show("비밀번호에는 최소 하나 이상의 숫자가 포함되어야 합니다.", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            if (!Regex.IsMatch(Password, @"[~․!@#$%^&*()_\-+={}[\]|\:;""<>,.?/]"))
-            {
-                MessageBox.Show("비밀번호에는 최소 하나 이상의 특수문자가 포함되어야 합니다.", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            bool ac = (IsAdmin) ? true : false;
-            string hashedPw = Encrypter.HashPW(Password);
-            UserList newUser = new UserList(Name, ID, Position, Department, PhoneNumber, ac, hashedPw);
-            UserList.AddUser(newUser);
+                if (Password.Length < 8 || Password.Length > 20)
+                {
+                    MessageBox.Show("비밀번호는 8자 이상 20자 이하여야 합니다.", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                if (!Regex.IsMatch(Password, @"[^가-힣ㄱ-ㅎㅏ-ㅣ]"))
+                {
+                    MessageBox.Show("비밀번호는 대문자, 소문자, 특수문자로만 구성되어야 합니다.", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                if (!Regex.IsMatch(Password, @"\d"))
+                {
+                    MessageBox.Show("비밀번호에는 최소 하나 이상의 숫자가 포함되어야 합니다.", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                if (!Regex.IsMatch(Password, @"[~․!@#$%^&*()_\-+={}[\]|\:;""<>,.?/]"))
+                {
+                    MessageBox.Show("비밀번호에는 최소 하나 이상의 특수문자가 포함되어야 합니다.", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                bool ac = (IsAdmin) ? true : false;
+                string hashedPw = Encrypter.HashPW(Password);
+                UserList newUser = new UserList(Name, ID, Position, Department, PhoneNumber, ac, hashedPw);
+                await db.AddAsync(newUser);
 
-            MessageBox.Show("회원가입이 완료되었습니다.", "회원가입 완료", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("회원가입이 완료되었습니다.", "회원가입 완료", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
         public void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {

@@ -4,6 +4,7 @@ using SFS_Tool_Management.Data;
 using SFS_Tool_Management.Models;
 using SFS_Tool_Management.Views;
 using System.Windows;
+using Microsoft.EntityFrameworkCore;
 
 namespace SFS_Tool_Management.ViewModels
 {
@@ -16,23 +17,23 @@ namespace SFS_Tool_Management.ViewModels
         [ObservableProperty]
         private UserList? currentUser;
         [RelayCommand]
-        private void SignIn()
+        private async Task SignIn()
         {
             try
             {
-                using (var db = new AppDbContext())
+                if (string.IsNullOrWhiteSpace(ID))
                 {
-                    var userLog = db.UserList.FirstOrDefault(u => u.UserID == ID);
-                    if (string.IsNullOrWhiteSpace(ID))
-                    {
-                        MessageBox.Show("아이디를 입력하세요.", "로그인 오류", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
-                    }
-                    if (string.IsNullOrWhiteSpace(Password))
-                    {
-                        MessageBox.Show("비밀번호를 입력하세요.", "로그인 오류", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
-                    }
+                    MessageBox.Show("아이디를 입력하세요.", "로그인 오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(Password))
+                {
+                    MessageBox.Show("비밀번호를 입력하세요.", "로그인 오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                await using (var db = new AppDbContext())
+                {
+                    var userLog = await db.UserList.FirstOrDefaultAsync(u => u.UserID == ID);
                     if (userLog == null)
                     {
                         MessageBox.Show("존재하지 않는 아이디입니다.", "로그인 오류", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -44,9 +45,8 @@ namespace SFS_Tool_Management.ViewModels
                         MessageBox.Show("비밀번호가 틀렸습니다.", "로그인 오류", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
-
                     MessageBox.Show($"{userLog.Name}님, 환영합니다.", "로그인 성공", MessageBoxButton.OK, MessageBoxImage.Information);
-                    MainWindow mainWindow = new MainWindow();
+                    MainWindow mainWindow =  new MainWindow();
                     mainWindow.Show();
                     Application.Current.MainWindow.Close();
 
@@ -59,7 +59,6 @@ namespace SFS_Tool_Management.ViewModels
                         userLog.IsAdmin,
                         hashedPassword);
                     UserList.Instance.SetCurrentUser(authenticatedUser);
-                    OnPropertyChanged(nameof(UserList.CurrentUser));
                     CurrentUser = authenticatedUser;
                 }
             }

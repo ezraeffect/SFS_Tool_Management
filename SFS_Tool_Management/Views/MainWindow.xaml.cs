@@ -23,7 +23,7 @@ namespace SFS_Tool_Management
         {
             InitializeComponent();
             MainFrame.Navigate(new Views.DashboardPage());
-            DataContext = UserList.Instance;
+            DataContext = new UserViewModel();
         }
         private void button_ShowDashboard_Click(object sender, RoutedEventArgs e)
         {
@@ -38,6 +38,10 @@ namespace SFS_Tool_Management
         private void button_ShowRentalHistory_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new Views.RentalHistoryPage());
+        }
+        private void button_ShowAdminOption_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new Views.AdminOptionPage());
         }
     }
 }
