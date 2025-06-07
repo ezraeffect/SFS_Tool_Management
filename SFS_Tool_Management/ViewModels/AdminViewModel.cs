@@ -32,7 +32,7 @@ namespace SFS_Tool_Management.ViewModels
         }
         private async Task RefreshUsersAsync()
         {
-            string query = "SELECT UserID, Name, Position, Department, PhoneNumber, IsAdmin, PasswordHash FROM [dbo].[UserList]";
+            string query = "SELECT UserID, Name, Position, Department, PhoneNumber, IsAdmin FROM [dbo].[UserList]";
             List<UserList> list = await sqlRepository.ExecuteQueryAsync(query, reader =>
             {
                 return new UserList
@@ -42,8 +42,7 @@ namespace SFS_Tool_Management.ViewModels
                     Position = reader["Position"] as string,
                     Department = reader["Department"] as string,
                     PhoneNumber = reader["PhoneNumber"] as string,
-                    IsAdmin = (reader["IsAdmin"] is bool b && b),
-                    passwordHash = reader["PasswordHash"] as string
+                    IsAdmin = (reader["IsAdmin"] is bool b && b)
                 };
             });
             Users = new ObservableCollection<UserList>(list);

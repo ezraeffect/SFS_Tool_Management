@@ -33,6 +33,8 @@ namespace SFS_Tool_Management.Models
         public string? phoneNumber;
 
         public bool IsAdmin { get; set; }
+        public string Access => IsAdmin ? "Administrator" : "User";
+
         public UserList() { }
 
         private static UserList? instance;
