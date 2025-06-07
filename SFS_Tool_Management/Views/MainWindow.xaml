@@ -123,7 +123,7 @@
                 <Button x:Name="button_ShowToolList" Style="{StaticResource DrawToolListButtonStyle}" Content="Tool List" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Click="button_ShowToolList_Click"/>
                 <Button x:Name="button_ShowRentalHistory" Style="{StaticResource DrawRentalHistoryButtonStyle}" Content="Rental History" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Click="button_ShowRentalHistory_Click"/>
                 <Border Height="665"/>
-                <Button Content="Administrator" Command="{Binding ShowAdminOptionCommand}" Height="40" Margin="5" Visibility="{Binding CurrentUser.IsAdmin, Converter={StaticResource BoolToVis}}"/>
+                <Button Content="Administrator" Command="{Binding OpenAdminPage}" Height="40" Margin="5" Visibility="{Binding CurrentUser.IsAdmin, Converter={StaticResource BoolToVis}}" Click="button_ShowAdminOption_Click"/>
                 <!-- <Button x:Name="button_ShowFuncTest" Style="{StaticResource DrawDashboardButtonStyle}" Content="USING ONLY TEST" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Click="button_ShowFuncTest_Click"/> -->
             </StackPanel>
         </Grid>

@@ -20,7 +20,8 @@
                Margin="10"
                Grid.Row="0"/>
 
-        <DataGrid ItemsSource="{Binding Users}"
+        <DataGrid x:Name="dgUsers"
+              ItemsSource="{Binding Users}"
               SelectedItem="{Binding SelectedUser}"
               AutoGenerateColumns="false"
               IsReadOnly="True"
@@ -35,9 +36,9 @@
                 <DataGridTextColumn Header="Access" Binding="{Binding Access}" />
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="삭제" Command="{Binding DataContext.DeleteUserCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
-                    <MenuItem Header="복원" Command="{Binding DataContext.RestoreUserCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}" >
+                    <MenuItem Header="삭제" Command="{Binding DeleteUserCommand}"
+                              CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>
