@@ -42,15 +42,15 @@ namespace SFS_Tool_Management
                     connection.Open();
 
                     string query = @"
-                        UPDATE ToolList SET
-                            ToolType = @ToolType,
-                            ModelName = @ModelName,
-                            Manufacture = @Manufacture,
-                            TotalQuantity = @TotalQuantity,
-                            AvailableQuantity = @AvailableQuantity,
-                            PurchaseDate = @PurchaseDate,
-                            DurabilityLimit = @DurabilityLimit,
-                        WHERE ToolID = @ToolID";
+                                    UPDATE Tool SET
+                                        ToolType = @ToolType,
+                                        ModelName = @ModelName,
+                                        Manufacture = @Manufacture,
+                                        TotalQuantity = @TotalQuantity,
+                                        AvailableQuantity = @AvailableQuantity,
+                                        PurchaseDate = @PurchaseDate,
+                                        DurabilityLimit = @DurabilityLimit
+                                    WHERE ToolID = @ToolID";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -68,6 +68,7 @@ namespace SFS_Tool_Management
                 }
 
                 IsUpdated = true;
+                this.DialogResult = true;
                 this.Close();
             }
             catch (Exception ex)
