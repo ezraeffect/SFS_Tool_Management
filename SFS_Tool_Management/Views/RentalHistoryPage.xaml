@@ -39,6 +39,11 @@
             <Label Content="반납 예정일:" VerticalAlignment="Center" />
             <DatePicker x:Name="EndDatePicker" Margin="5,0" />
 
+            <Label Content="반납 완료일:" VerticalAlignment="Center"/>
+            <DatePicker x:Name="ReturnDatePicker" Margin="5,0"/>
+
+            <Button Content="날짜 초기화" Click="ClearDateFilters_Click" Margin="10,0"/>
+
             <Button Content="검색" Click="FilterSearch_Click" Margin="10,0" />
         </StackPanel>
 

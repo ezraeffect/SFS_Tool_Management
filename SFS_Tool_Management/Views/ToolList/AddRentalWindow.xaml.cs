@@ -135,7 +135,7 @@ namespace SFS_Tool_Management.Views.ToolList
                     using (SqlCommand cmd = new SqlCommand(insertQuery, conn))
                     {
                         string rentalId = Guid.NewGuid().ToString();
-                        string userId = "Tester01";
+                        string userId = "Tester02";
 
                         cmd.Parameters.AddWithValue("@RentalID", rentalId);
                         cmd.Parameters.AddWithValue("@Purpose", purpose);

@@ -89,34 +89,55 @@ namespace SFS_Tool_Management.Views
 
             List<SqlParameter> parameters = new List<SqlParameter>();
 
+            // 1. 공구명(modelName) 필터링
             if (!string.IsNullOrEmpty(modelName))
             {
                 queryBuilder.Append(" AND t.ModelName LIKE @ModelName");
                 parameters.Add(new SqlParameter("@ModelName", "%" + modelName + "%"));
-
             }
 
+            // 2. 사용자 ID(userID) 필터링
+            if (!string.IsNullOrEmpty(userID))
+            {
+                queryBuilder.Append(" AND rh.UserID LIKE @UserID");
+                parameters.Add(new SqlParameter("@userID", "%" + userID + "%"));
+            }
+
+            // 3. 상태(status) 필터링
             if (selectedStatus == "대여중")
             {
                 queryBuilder.Append(" AND rh.IsReturned = 0");
             }
-
             if(selectedStatus == "반납완료")
             {
                 queryBuilder.Append(" AND rh.IsReturned = 1");
+
+                // 6. 반납 완료일 날짜
+                if (ReturnDatePicker.SelectedDate.HasValue)
+                {
+                    DateTime selectedDate = ReturnDatePicker.SelectedDate.Value.Date;
+                    DateTime nextDate = selectedDate.AddDays(1);
+
+                    queryBuilder.Append(" AND rh.RentalEndDate >= @SelectedDate AND rh.RentalEndDate < @NextDate");
+                    parameters.Add(new SqlParameter("@SelectedDate", selectedDate));
+                    parameters.Add(new SqlParameter("@NextDate", nextDate));
+                }
             }
 
+            // 4. 대여일 기준 시작 날짜
             if (startDate.HasValue)
             {
-                queryBuilder.Append(" AND rh.RentalStartDate >- @StartDate");
+                queryBuilder.Append(" AND rh.RentalStartDate = @StartDate");
                 parameters.Add(new SqlParameter("@StartDate", startDate.Value));
             }
 
+            // 5. 대여일 기준 종료 날짜
             if (endDate.HasValue)
             {
-                queryBuilder.Append(" AND rh.RentalStartDate >= @StartDate");
-                parameters.Add(new SqlParameter("@StartDate", startDate.Value));
+                queryBuilder.Append(" AND rh.RentalStartDate = @EndDate");
+                parameters.Add(new SqlParameter("@EndDate", endDate.Value));
             }
+
 
             LoadRentalData(queryBuilder.ToString(), parameters);
   
@@ -253,6 +274,12 @@ namespace SFS_Tool_Management.Views
             {
                 MessageBox.Show("반납 처리 중 오류: " + ex.Message);
             }
+        }
+        private void ClearDateFilters_Click(object sender,RoutedEventArgs e)
+        {
+            StartDatePicker.SelectedDate = null;
+            EndDatePicker.SelectedDate = null;
+            ReturnDatePicker.SelectedDate = null;
         }
 
     }
