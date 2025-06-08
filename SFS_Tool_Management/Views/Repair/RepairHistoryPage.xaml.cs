@@ -25,13 +25,17 @@ namespace SFS_Tool_Management.Views.Repair
         private readonly string _userID;
         private string connectionString = SQLRepository.BuildConnectionString();
 
+        private readonly string defaultQuery = @"SELECT rh.*, ti.ToolID, t.ModelName
+                                    FROM RepairHistory rh
+                                    JOIN ToolInstance ti ON rh.SerialNumber = ti.SerialNumber
+                                    JOIN Tool t ON ti.ToolID = t.ToolID";
         public RepairHistoryPage(string userID)
         {
             InitializeComponent();
 
             _userID = userID;
 
-            string defaultQuery = @"SELECT * FROM RepairHistory";
+
             LoadRepairData(defaultQuery, new List<SqlParameter>());
         }
 
@@ -264,7 +268,6 @@ namespace SFS_Tool_Management.Views.Repair
                     }
 
                     MessageBox.Show($"{SerialNumber}의 {RepairType} 요청을 허가하였습니다!", "허가 완료", MessageBoxButton.OK, MessageBoxImage.Information);
-                    string defaultQuery = @"SELECT * FROM RepairHistory";
                     LoadRepairData(defaultQuery, new List<SqlParameter>());
                 }
                 else
@@ -295,7 +298,6 @@ namespace SFS_Tool_Management.Views.Repair
                     if (result == true)
                     {
                         MessageBox.Show($"{SerialNumber}의 {RepairType} 요청을 허가하였습니다!", "허가 완료", MessageBoxButton.OK, MessageBoxImage.Information);
-                        string defaultQuery = @"SELECT * FROM RepairHistory";
                         LoadRepairData(defaultQuery, new List<SqlParameter>());
                     }
                 }
