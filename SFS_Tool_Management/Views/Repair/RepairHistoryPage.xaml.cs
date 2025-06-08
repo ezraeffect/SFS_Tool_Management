@@ -325,7 +325,8 @@ namespace SFS_Tool_Management.Views.Repair
                     }
 
                     MessageBox.Show($"{SerialNumber}의 {RepairType} 요청을 허가하였습니다!", "허가 완료", MessageBoxButton.OK, MessageBoxImage.Information);
-
+                    string defaultQuery = @"SELECT * FROM RepairHistory";
+                    LoadRepairData(defaultQuery, new List<SqlParameter>());
                 }
                 else
                 {
@@ -355,7 +356,8 @@ namespace SFS_Tool_Management.Views.Repair
                     if (result == true)
                     {
                         MessageBox.Show($"{SerialNumber}의 {RepairType} 요청을 허가하였습니다!", "허가 완료", MessageBoxButton.OK, MessageBoxImage.Information);
-                        //LoadRepairData(); // 팝업창에서 삽입이 성공적으로 끝났을 경우만
+                        string defaultQuery = @"SELECT * FROM RepairHistory";
+                        LoadRepairData(defaultQuery, new List<SqlParameter>());
                     }
                 }
                 else
