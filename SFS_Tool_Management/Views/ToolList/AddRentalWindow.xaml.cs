@@ -22,9 +22,11 @@ namespace SFS_Tool_Management.Views.ToolList
     public partial class AddRentalWindow : Window
     {
         private Dictionary<string, string> serialConditionMap = new Dictionary<string, string>();
-        public AddRentalWindow(string toolId, string modelName)
+        private readonly string _userID;
+        public AddRentalWindow(string toolId, string modelName, string userID)
         {
             InitializeComponent();
+            _userID = userID;
             ModelBox.Text = modelName;
 
             // 사용 가능한 SerialNumber 조회
@@ -135,7 +137,7 @@ namespace SFS_Tool_Management.Views.ToolList
                     using (SqlCommand cmd = new SqlCommand(insertQuery, conn))
                     {
                         string rentalId = Guid.NewGuid().ToString();
-                        string userId = "Tester02";
+                        string userId = _userID;
 
                         cmd.Parameters.AddWithValue("@RentalID", rentalId);
                         cmd.Parameters.AddWithValue("@Purpose", purpose);
