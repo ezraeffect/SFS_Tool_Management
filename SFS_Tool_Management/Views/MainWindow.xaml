@@ -108,7 +108,7 @@
             <StackPanel Grid.Row="0" HorizontalAlignment="Left" Orientation="Horizontal">
                 <!-- Draw Menu 열기 Btn -->
                 <Button x:Name="button_DrawOpen"  Style="{StaticResource CircleBtnStyle}" Tag="{StaticResource IndentLeftIcon}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="48" Height="48" Margin="8"/>
-                <TextBlock x:Name="textBlock_PageTitle" Text="Dashboard" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI" FontWeight="SemiBold" Margin="10 0 0 0"/>
+                <TextBlock Text="{Binding CurrentPageName}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI" FontWeight="SemiBold" Margin="10 0 0 0"/>
             </StackPanel>
             
         </Grid>

@@ -21,27 +21,34 @@ namespace SFS_Tool_Management.ViewModels
             _mainFrame = mainFrame;
         }
 
+        [ObservableProperty]
+        public string currentPageName;
+
         [RelayCommand]
         public void ShowDashboard()
         {
+            CurrentPageName = "Dashboard";
             _mainFrame.Navigate(new Views.DashboardPage());
         }
 
         [RelayCommand]
         public void ShowToolList()
         {
+            CurrentPageName = "Tool List";
             _mainFrame.Navigate(new Views.ToolListPage());
         }
 
         [RelayCommand]
         public void ShowRentalHistory()
         {
+            CurrentPageName = "Rental History";
             _mainFrame.Navigate(new Views.RentalHistoryPage());
         }
 
         [RelayCommand]
         public void ShowAdminPage()
         {
+            CurrentPageName = "회원 관리 (관리자 페이지)";
             _mainFrame.Navigate(new Views.AdminOptionPage());
         }
     }
