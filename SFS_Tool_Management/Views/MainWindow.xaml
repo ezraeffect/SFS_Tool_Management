@@ -66,7 +66,10 @@
         <Geometry x:Key="SettingIcon">M20 12c0-.568-.061-1.122-.174-1.656l1.834-1.612l-2-3.464l-2.322.786a8 8 0 0 0-2.859-1.657L14 2h-4l-.479 2.396a8 8 0 0 0-2.859 1.657L4.34 5.268l-2 3.464l1.834 1.612a8 8 0 0 0 0 3.312L2.34 15.268l2 3.464l2.322-.786a8 8 0 0 0 2.859 1.657L10 22h4l.479-2.396a8 8 0 0 0 2.859-1.657l2.322.786l2-3.464l-1.834-1.612A8 8 0 0 0 20 12m-8 4a4 4 0 1 1 0-8a4 4 0 0 1 0 8</Geometry>
         <Geometry x:Key="IndentLeftIcon">M18 20h2V4h-2zM2 11h10.172l-2.086-2.086L11.5 7.5L16 12l-4.5 4.5l-1.414-1.414L12.172 13H2z</Geometry>
         <Geometry x:Key="IndentRightIcon">M6 4H4v16h2zm16 9H11.828l2.086 2.086L12.5 16.5L8 12l4.5-4.5l1.414 1.414L11.828 11H22z</Geometry>
-
+        <Geometry x:Key="BuildIcon">M132 686 376 444q-8-20-12-40.5t-4-43.5q-0-100 70-170t170-70q36-0 68.5 10t61.5 28l-146 146 72 72 146-146q18 29 28 61.5t10 68.5q0 100-70 170t-170 70q-23 0-43.5-4T516 584l-242 244q-12 12-29 12t-29-12l-84-84q-12-12-12-29t12-29Zm85 29 27 27 256-256q20 18 46.5 26t53.5 8q60-0 104.5-38.5T758 386l-74 74q-12 12-28 12t-28-12L500 332q-12-12-12-28t12-28l74-74q-57 9-95.5 53.5T440 360q0 26 8 52t25 47l-256 256ZM488 472Z</Geometry>
+        <Geometry x:Key="TroubleshootIcon">M824-120 636-308q-41 32-90.5 50T440-240q-90 0-162.5-44T163-400h98q34 37 79.5 58.5T440-320q100 0 170-70t70-170q0-100-70-170t-170-70q-94 0-162.5 63.5T201-580h-80q8-127 99.5-213.5T440-880q134 0 227 93t93 227q0 56-18 105.5T692-364l188 188-56 56ZM397-400l-63-208-52 148H80v-60h160l66-190h60l61 204 43-134h60l60 120h30v60h-67l-47-94-50 154h-59Z</Geometry>
+        <Geometry x:Key="HomeRepairService">M480-400ZM80-160v-400q0-33 23.5-56.5T160-640h120v-80q0-33 23.5-56.5T360-800h240q33 0 56.5 23.5T680-720v80h120q33 0 56.5 23.5T880-560v400H80Zm240-200v40h-80v-40h-80v120h640v-120h-80v40h-80v-40H320ZM160-560v120h80v-40h80v40h320v-40h80v40h80v-120H160Zm200-80h240v-80H360v80Z</Geometry>
+        
         <!--특정 조건에서만 보이는 옵션-->
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         
@@ -147,6 +150,7 @@
                 <Button Command="{Binding ShowDashboardCommand}" Style="{StaticResource DrawBtnStyle}" Tag="{StaticResource DashboardIcon}" Content="Dashboard" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold"/>
                 <Button Command="{Binding ShowToolListCommand}" Style="{StaticResource DrawBtnStyle}" Tag="{StaticResource ToolListIcon}" Content="Tool List" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold"/>
                 <Button Command="{Binding ShowRentalHistoryCommand}" Style="{StaticResource DrawBtnStyle}" Tag="{StaticResource RentalHistoryIcon}" Content="Rental History" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold"/>
+                <Button Command="{Binding ShowRepairHistoryCommand}" Style="{StaticResource DrawBtnStyle}" Tag="{StaticResource BuildIcon}" Content="Repair History" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold"/>
                 <Button Command="{Binding ShowAdminPageCommand}" Style="{StaticResource DrawBtnStyle}" Tag="{StaticResource SettingIcon}" Content="Administrator" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Visibility="{Binding CurrentUser.IsAdmin, Converter={StaticResource BoolToVis}}"/>
             </StackPanel>
         </Grid>

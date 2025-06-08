@@ -204,6 +204,93 @@ namespace SFS_Tool_Management.Views
 
         }
 
+        private void RequestCheck_Click(object sender, RoutedEventArgs e)
+        {
+            Request("점검 필요", "점검");
+        }
 
+        private void RequestCali_Click(object sender, RoutedEventArgs e)
+        {
+            Request("검교정 필요", "검교정");
+        }
+        private void RequestFix_Click(object sender, RoutedEventArgs e)
+        {
+            Request("수리 필요", "수리");
+        }
+
+
+        private void Request(string Condition, string RepairType)
+        {
+            /* 기능 : 점검, 검교정, 수리 요청 
+            - ToolInstance.Condition 값 변경
+            - RepairHistory.RepairID 랜덤 값으로 작성
+            - RepairHistory.ReportedDate 지금 날짜, 시각으로 작성
+            - RepairHistory.UserID 작성
+            - RepairHistory.SerialNumber 작성
+             */
+
+            if (ToolDataGrid.SelectedItem is DataRowView selectedRow)
+            {
+                if ((string)selectedRow["Condition"] == "정상")
+                {
+                    string RepairID = Guid.NewGuid().ToString();
+                    string UserID = _userID;
+                    string SerialNumber = selectedRow["SerialNumber"].ToString();
+
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+
+                        string query = @"UPDATE ToolInstance
+                                        SET Condition = @Condition
+                                        WHERE SerialNumber = @SerialNumber;";
+
+                        using (SqlCommand cmd = new SqlCommand(query, connection))
+                        {
+                            cmd.Parameters.AddWithValue("@Condition", Condition);
+                            cmd.Parameters.AddWithValue("@SerialNumber", SerialNumber);
+
+
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+
+                        string query = @"INSERT INTO RepairHistory 
+                                (RepairID, ReportedDate, UserID, SerialNumber, RepairType)
+                                VALUES
+                                (@RepairID, @ReportedDate, @UserID, @SerialNumber, @RepairType)";
+
+                        using (SqlCommand cmd = new SqlCommand(query, connection))
+                        {
+                            cmd.Parameters.AddWithValue("@RepairID", RepairID);
+                            cmd.Parameters.AddWithValue("@ReportedDate", DateTime.Now);
+                            cmd.Parameters.AddWithValue("@UserID", UserID);
+                            cmd.Parameters.AddWithValue("@SerialNumber", SerialNumber);
+                            cmd.Parameters.AddWithValue("@RepairType", RepairType);
+
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    MessageBox.Show($"{SerialNumber}의 {Condition} 요청이 완료되었습니다!", "요청 완료", MessageBoxButton.OK, MessageBoxImage.Information);
+                    LoadToolData();
+
+                }
+                else
+                {
+                    MessageBox.Show("상태가 정상이 아닌 경우 요청을 할 수 없습니다!");
+                }
+
+
+            }
+            else
+            {
+                MessageBox.Show("공구를 먼저 선택하세요.");
+            }
+        }
     }
 }

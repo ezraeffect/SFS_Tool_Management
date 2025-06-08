@@ -25,6 +25,9 @@
                     <MenuItem Header="삭제" Click="DeleteTool_Click"/>
                     <MenuItem Header="복원" Click="RestoreTool_Click"/>
                     <MenuItem Header="대여 요청" Click="RequestRental_Click"/>
+                    <MenuItem Header="점검 요청" Click="RequestCheck_Click"/>
+                    <MenuItem Header="검교정 요청" Click="RequestCali_Click"/>
+                    <MenuItem Header="수리 요청" Click="RequestFix_Click"/>
                 </ContextMenu>
 
             </DataGrid.ContextMenu>

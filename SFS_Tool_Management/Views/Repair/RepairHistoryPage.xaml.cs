@@ -18,29 +18,26 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SFS_Tool_Management.Views
+namespace SFS_Tool_Management.Views.Repair
 {
-    public partial class RentalHistoryPage : Page
+    public partial class RepairHistoryPage : Page
     {
         private readonly string _userID;
         private string connectionString = SQLRepository.BuildConnectionString();
 
-        public RentalHistoryPage(string userID)
+        public RepairHistoryPage(string userID)
         {
             InitializeComponent();
 
             _userID = userID;
 
-            string defaultQuery = @"SELECT rh.*, ti.ToolID, t.ModelName
-                                    FROM RentalHistory rh
-                                    JOIN ToolInstance ti ON rh.SerialNumber = ti.SerialNumber
-                                    JOIN Tool t ON ti.ToolID = t.ToolID";
-            LoadRentalData(defaultQuery, new List<SqlParameter>());
+            string defaultQuery = @"SELECT * FROM RepairHistory";
+            LoadRepairData(defaultQuery, new List<SqlParameter>());
         }
 
 
 
-        private void LoadRentalData(string query, List<SqlParameter> parameters)
+        private void LoadRepairData(string query, List<SqlParameter> parameters)
         {
             string connectionString = SQLRepository.BuildConnectionString();
             DataTable table = new DataTable();
@@ -62,7 +59,7 @@ namespace SFS_Tool_Management.Views
                 }
             }
 
-            RentalDataGrid.ItemsSource = table.DefaultView;
+            RepairDataGrid.ItemsSource = table.DefaultView;
         }
 
 
@@ -140,14 +137,14 @@ namespace SFS_Tool_Management.Views
             }
 
 
-            LoadRentalData(queryBuilder.ToString(), parameters);
+            LoadRepairData(queryBuilder.ToString(), parameters);
   
         }
 
         // CSV 내보내기 클릭
         private void ExportCsv_Click(object sender, RoutedEventArgs e)
         {
-            if(RentalDataGrid.Items.Count == 0)
+            if(RepairDataGrid.Items.Count == 0)
             {
                 MessageBox.Show("내보낼 데이터가 없습니다.");
                 return;
@@ -156,14 +153,14 @@ namespace SFS_Tool_Management.Views
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
                 Filter = "CSV 파일 (*.csv)|*.csv",
-                FileName = $"RentalHistory_{DateTime.Now:yyyyMMdd_HHmmss}.csv"
+                FileName = $"RepairHistory_{DateTime.Now:yyyyMMdd_HHmmss}.csv"
             };
 
             if (saveFileDialog.ShowDialog() == true)
             {
                 try
                 {
-                    var dataView = RentalDataGrid.ItemsSource as DataView;
+                    var dataView = RepairDataGrid.ItemsSource as DataView;
                     if (dataView == null)
                     {
                         MessageBox.Show("데이터 형식을 인식하지 못했습니다.");
@@ -207,7 +204,7 @@ namespace SFS_Tool_Management.Views
 
         private void ReturnTool_Click(object sender, RoutedEventArgs e)
         {
-            if (RentalDataGrid.SelectedItem is DataRowView row)
+            if (RepairDataGrid.SelectedItem is DataRowView row)
             {
                 if (row["RentalEndDate"] != DBNull.Value)
                 {
@@ -258,7 +255,7 @@ namespace SFS_Tool_Management.Views
                                     JOIN ToolInstance ti ON rh.SerialNumber = ti.SerialNumber
                                     JOIN Tool t ON ti.ToolID = t.ToolID
                                     ";
-                LoadRentalData(defaultQuery, new List<SqlParameter>());
+                LoadRepairData(defaultQuery, new List<SqlParameter>());
 
             }
             catch (Exception ex)
