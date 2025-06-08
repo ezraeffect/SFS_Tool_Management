@@ -14,6 +14,8 @@ using ScottPlot.WPF;
 using System.Data;
 using ScottPlot;
 using ScottPlot.Plottables;
+using System.Drawing.Printing;
+using System.IO;
 
 
 namespace SFS_Tool_Management.ViewModels
@@ -22,8 +24,7 @@ namespace SFS_Tool_Management.ViewModels
     {
         private DashboardModel _model;
         public WpfPlot DailyToolPlotControl { get; } = new WpfPlot();
-        public WpfPlot ToolStautsPlotControl { get; } = new WpfPlot();
-
+        public WpfPlot ToolStatusPlotControl { get; } = new WpfPlot();
 
         private readonly string _currentID;
 
@@ -67,6 +68,10 @@ namespace SFS_Tool_Management.ViewModels
         private List<DateTime> dailyDateTimes = new List<DateTime>();
         private List<int> rentalCounts = new List<int>();
         private List<int> returnCounts = new List<int>();
+
+        private List<string> ToolStatus = new List<string>();
+        private List<int> ToolCount = new List<int>();
+
         public void LoadData(DashboardModel model)
         {
             TotalQuantity = model.TotalQuantity;
@@ -253,18 +258,77 @@ namespace SFS_Tool_Management.ViewModels
             }
         }
 
+        public async Task GetToolStatusDataAsync()
+        {
+            /*
+            - 공구 상태별 분포
+            - ToolInstance의 상태별 개수 분포
+             */
+
+            var repo = new SQLRepository();
+
+            string query = @"SELECT
+                                Condition,
+                                COUNT(*) AS Count
+                            FROM ToolInstance
+                            GROUP BY Condition
+                            ORDER BY Count DESC;";
+
+            var result = await repo.ExecuteQueryAsync(query, reader => new ToolStatusModel
+            {
+                Status = reader.GetString(0),
+                Count = reader.GetInt32(1)
+            });
+
+            foreach (var item in result)
+            {
+                ToolStatus.Add((string)item.Status);
+                ToolCount.Add((int)item.Count);
+            }
+        }
+
         [RelayCommand]
         public async Task SetPlotValue()
         {
+            // 비동기로 일별 공구 대여, 반납 횟수 조회
             await GetDailyToolStatusDataAsync();
+
+            // 대여 횟수 그래프 작성
             var rentalCountPlot = DailyToolPlotControl.Plot.Add.Scatter(dailyDateTimes.ToArray(), rentalCounts.ToArray());
             rentalCountPlot.LegendText = "Rented Count";
+
+            // 반납 횟수 그래프 작성
             var returnCountPlot = DailyToolPlotControl.Plot.Add.Scatter(dailyDateTimes.ToArray(), returnCounts.ToArray());
             returnCountPlot.LegendText = "Returned Count";
 
             DailyToolPlotControl.Plot.Font.Automatic();
             DailyToolPlotControl.Plot.Axes.DateTimeTicksBottom();
             DailyToolPlotControl.Refresh();
+
+            // 비동기로 공구 상태별 갯수 조회
+            await GetToolStatusDataAsync();
+
+            if (ToolCount.Count != ToolStatus.Count)
+                throw new InvalidOperationException("ToolCount와 ToolStatus의 길이가 일치하지 않음");
+
+            double[] values = ToolCount.Select(x => (double)x).ToArray();
+            var pie = ToolStatusPlotControl.Plot.Add.Pie(values);
+            pie.ExplodeFraction = 0.1;
+            pie.SliceLabelDistance = 0.5;
+
+            double total = values.Sum();
+
+            for (int i = 0; i < values.Length; i++)
+            {
+                pie.Slices[i].LabelFontSize = 20;
+                pie.Slices[i].Label = $"{values[i]}";
+                pie.Slices[i].LegendText = $"{ToolStatus[i]}: {values[i]} ({values[i] / total:p1})";
+            }
+
+            ToolStatusPlotControl.Plot.Axes.Frameless();
+            ToolStatusPlotControl.Plot.Legend.FontName = "Segoe UI";
+            ToolStatusPlotControl.Plot.HideGrid();
+            ToolStatusPlotControl.Refresh();
         }
     }
 }

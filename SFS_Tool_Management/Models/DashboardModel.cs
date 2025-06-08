@@ -33,4 +33,11 @@ namespace SFS_Tool_Management.Models
         public int? RentalCount { get; set; } // 대여 횟수
         public int? ReturnCount { get; set; } // 반납 횟수
     }
+
+    public partial class ToolStatusModel
+    {
+        /* 공구 상태별 분포 Model */
+        public string? Status { get; set; } // 상태
+        public int? Count { get; set; } // 개수
+    }
 }
