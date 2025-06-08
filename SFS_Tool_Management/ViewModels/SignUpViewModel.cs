@@ -12,11 +12,13 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SFS_Tool_Management.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Win32;
 using OpenTK.Graphics.ES11;
 using System.Windows.Media;
 using System.IO;
 using Microsoft.IdentityModel.Tokens;
+using System.Globalization;
+using System.Windows.Data;
+
 
 namespace SFS_Tool_Management.ViewModels
 {
@@ -113,6 +115,7 @@ namespace SFS_Tool_Management.ViewModels
                 }
                 bool ac = (IsAdmin) ? true : false;
                 string hashedPw = Encrypter.HashPW(Password);
+
                 UserList newUser = new UserList(Name, ID, Position, Department, PhoneNumber, ac, hashedPw, imageData);
                 await db.UserList.AddAsync(newUser);
                 await db.SaveChangesAsync();

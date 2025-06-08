@@ -15,8 +15,7 @@
 
                 <!-- 이름 입력 Control -->
                 <TextBlock Text="Name" Margin="0,0,0,3" FontFamily="Segoe UI"/>
-                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" x:Name="textBox_Name" FontFamily="Segoe UI" Margin="0,0,0,3"/>
-
+                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" x:Name="textBox_Name" FontFamily="Segoe UI" Margin="0,0,0,3" />
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
