@@ -329,7 +329,7 @@ namespace SFS_Tool_Management.Views.Repair
                 }
                 else
                 {
-                    MessageBox.Show("상태가 정상이 아닌 경우 요청을 할 수 없습니다!");
+                    MessageBox.Show("이미 허가된 요청은 처리가 불가능합니다!");
                 }
             }
         }
@@ -340,10 +340,29 @@ namespace SFS_Tool_Management.Views.Repair
             - RepairHistory.Description 값 Textbox받아서 작성
             - RepairHistory.RepairEndDate 지금 날짜, 시각으로 작성 */
 
-            
-        }
-        
-                    
+            if (RepairDataGrid.SelectedItem is DataRowView selectedRow)
+            {
+                if (selectedRow["RepairStartDate"] != DBNull.Value && selectedRow["RepairEndDate"] == DBNull.Value)
+                {
+                    string RepairType = (string)selectedRow["RepairType"];
+                    string SerialNumber = selectedRow["SerialNumber"].ToString();
+                    string RepairID = selectedRow["RepairID"].ToString();
+                    string UserID = _userID;
 
+                    var popup = new DoneRepairWindow(_userID, RepairType, SerialNumber, RepairID);
+                    bool? result = popup.ShowDialog();
+
+                    if (result == true)
+                    {
+                        MessageBox.Show($"{SerialNumber}의 {RepairType} 요청을 허가하였습니다!", "허가 완료", MessageBoxButton.OK, MessageBoxImage.Information);
+                        //LoadRepairData(); // 팝업창에서 삽입이 성공적으로 끝났을 경우만
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("요청 완료 조건에 맞지 않아 처리가 불가능합니다!");
+                }
+            }
+        }
     }
 }
