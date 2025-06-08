@@ -69,21 +69,21 @@ namespace SFS_Tool_Management.ViewModels
         public void ShowDashboard()
         {
             CurrentPageName = "Dashboard";
-            _mainFrame.Navigate(new Views.DashboardPage());
+            _mainFrame.Navigate(new Views.DashboardPage(_userID));
         }
 
         [RelayCommand]
         public void ShowToolList()
         {
             CurrentPageName = "Tool List";
-            _mainFrame.Navigate(new Views.ToolListPage());
+            _mainFrame.Navigate(new Views.ToolListPage(_userID));
         }
 
         [RelayCommand]
         public void ShowRentalHistory()
         {
             CurrentPageName = "Rental History";
-            _mainFrame.Navigate(new Views.RentalHistoryPage());
+            _mainFrame.Navigate(new Views.RentalHistoryPage(_userID));
         }
 
         [RelayCommand]

@@ -20,9 +20,17 @@ namespace SFS_Tool_Management.ViewModels
     {
         private DashboardModel _model;
         public WpfPlot PlotControl { get; } = new WpfPlot();
+
+        private readonly string _currentID;
+
         public DashboardViewModel()
         {
             _model = new DashboardModel();
+        }
+        public DashboardViewModel(string currentID)
+        {
+            _model = new DashboardModel();
+            _currentID = currentID;
         }
 
         [ObservableProperty]
@@ -121,9 +129,14 @@ namespace SFS_Tool_Management.ViewModels
 
             string query = @"SELECT SerialNumber, RentalStartDate, PlannedReturnDate, DATEDIFF(DAY, GETDATE(), PlannedReturnDate)
                             FROM dbo.RentalHistory
-                            WHERE UserID = 'Tester01'
+                            WHERE UserID = @UserID
                             AND PlannedReturnDate >= GETDATE()
                             AND IsReturned = 0;";
+
+            var parameters = new Dictionary<string, object>
+            {
+                { "@UserID",  _currentID}
+            };
 
             var result = await repo.ExecuteQueryAsync(query, reader => new RentalToolListModel
             {
@@ -131,7 +144,7 @@ namespace SFS_Tool_Management.ViewModels
                 RentalStartDate = reader.GetDateTime(1).ToString(),
                 PlannedReturnDate = reader.GetDateTime(2).ToString(),
                 RemainingDay = reader.GetInt32(3).ToString()
-            });
+            }, parameters);
 
             foreach (var item in result)
                 RentalToolList.Add(item);
@@ -152,9 +165,14 @@ namespace SFS_Tool_Management.ViewModels
 
             string query = @"SELECT SerialNumber, RentalStartDate, PlannedReturnDate, DATEDIFF(DAY, PlannedReturnDate, GETDATE()) AS '연체 일자'
 	                        FROM dbo.RentalHistory
-	                        WHERE UserID = 'Tester01'
+	                        WHERE UserID = @UserID
 	                        AND PlannedReturnDate < GETDATE()
 	                        AND IsReturned = 0;";
+
+            var parameters = new Dictionary<string, object>
+            {
+                { "@UserID",  _currentID}
+            };
 
             var result = await repo.ExecuteQueryAsync(query, reader => new RentalToolListModel
             {
@@ -162,7 +180,7 @@ namespace SFS_Tool_Management.ViewModels
                 RentalStartDate = reader.GetDateTime(1).ToString(),
                 PlannedReturnDate = reader.GetDateTime(2).ToString(),
                 RemainingDay = reader.GetInt32(3).ToString()
-            });
+            }, parameters);
 
             foreach (var item in result)
                 OverdueToolList.Add(item);
