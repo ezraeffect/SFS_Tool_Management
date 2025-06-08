@@ -50,6 +50,12 @@
         </Storyboard>
 
         <Geometry x:Key="DashboardIcon">M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m0 16H5V5h14zM9 17H7v-5h2zm4 0h-2V7h2zm4 0h-2v-7h2z</Geometry>
+        <Geometry x:Key="ToolListIcon">M9 19h12v-2H9zm0-6h12v-2H9zm0-8v2h12V5zm-4-.5a1.5 1.5 0 1 0 .001 3.001A1.5 1.5 0 0 0 5 4.5m0 6a1.5 1.5 0 1 0 .001 3.001A1.5 1.5 0 0 0 5 10.5m0 6a1.5 1.5 0 1 0 .001 3.001A1.5 1.5 0 0 0 5 16.5</Geometry>
+        <Geometry x:Key="RentalHistoryIcon">M2.12 13.526c.742 4.781 4.902 8.47 9.881 8.47c5.499 0 9.998-4.499 9.998-9.998S17.501 2 12.002 2C8.704 2 5.802 3.601 4 6V2.001L2.003 2L2 9h7V7l-3.199-.001C7.2 5.201 9.502 4 12.002 4C16.4 4 20 7.6 20 11.998s-3.6 7.999-7.999 7.999c-3.878 0-7.132-2.794-7.849-6.471z</Geometry>
+        <Geometry x:Key="SettingIcon">M20 12c0-.568-.061-1.122-.174-1.656l1.834-1.612l-2-3.464l-2.322.786a8 8 0 0 0-2.859-1.657L14 2h-4l-.479 2.396a8 8 0 0 0-2.859 1.657L4.34 5.268l-2 3.464l1.834 1.612a8 8 0 0 0 0 3.312L2.34 15.268l2 3.464l2.322-.786a8 8 0 0 0 2.859 1.657L10 22h4l.479-2.396a8 8 0 0 0 2.859-1.657l2.322.786l2-3.464l-1.834-1.612A8 8 0 0 0 20 12m-8 4a4 4 0 1 1 0-8a4 4 0 0 1 0 8</Geometry>
+        <Geometry x:Key="IndentLeftIcon">M18 20h2V4h-2zM2 11h10.172l-2.086-2.086L11.5 7.5L16 12l-4.5 4.5l-1.414-1.414L12.172 13H2z</Geometry>
+        <Geometry x:Key="IndentRightIcon">M6 4H4v16h2zm16 9H11.828l2.086 2.086L12.5 16.5L8 12l4.5-4.5l1.414 1.414L11.828 11H22z</Geometry>
+
         <!--특정 조건에서만 보이는 옵션-->
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
 
@@ -93,7 +99,7 @@
 
             <StackPanel Grid.Row="0" HorizontalAlignment="Left" Orientation="Horizontal">
                 <!-- Draw Menu 열기 Btn -->
-                <Button x:Name="button_DrawOpen" Style="{StaticResource IndentLeftButtonStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="48" Height="48" Margin="8"/>
+                <Button x:Name="button_DrawOpen"  Style="{StaticResource CircleBtnStyle}" Tag="{StaticResource IndentLeftIcon}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="48" Height="48" Margin="8"/>
                 <TextBlock x:Name="textBlock_PageTitle" Text="Dashboard" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24" FontFamily="Segoe UI" FontWeight="SemiBold" Margin="10 0 0 0"/>
             </StackPanel>
             
@@ -114,16 +120,16 @@
             <!-- 메뉴 전환 Btn Gird -->
             <StackPanel Orientation="Vertical">
                 <!-- Draw Menu 닫기 Btn -->
-                <Button x:Name="button_DrawClose" Style="{StaticResource IndentRightButtonStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" Height="48" Content="닫기" Margin="8"/>
+                <Button x:Name="button_DrawClose" Style="{StaticResource CircleBtnStyle}" Tag="{StaticResource IndentRightIcon}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="48" Height="48" Content="닫기" Margin="8"/>
 
                 <TextBlock Text="Tool Management" FontFamily="Segoe UI" FontSize="20" FontWeight="Bold" Margin="10"/>
 
-                <Button x:Name="button_ShowDashboard" Style="{StaticResource DrawDashboardButtonStyle}" Content="Dashboard" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Click="button_ShowDashboard_Click"/>
-                <Button x:Name="button_ShowToolList" Style="{StaticResource DrawToolListButtonStyle}" Content="Tool List" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Click="button_ShowToolList_Click"/>
-                <Button x:Name="button_ShowRentalHistory" Style="{StaticResource DrawRentalHistoryButtonStyle}" Content="Rental History" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Click="button_ShowRentalHistory_Click"/>
-
-                <Button Content="Administrator" Command="{Binding OpenAdminPage}" Height="40" Margin="5" Visibility="{Binding CurrentUser.IsAdmin, Converter={StaticResource BoolToVis}}" Click="button_ShowAdminOption_Click" VerticalAlignment="Bottom"/>
-                <!-- <Button x:Name="button_ShowFuncTest" Style="{StaticResource DrawDashboardButtonStyle}" Content="USING ONLY TEST" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Click="button_ShowFuncTest_Click"/> -->
+                <!-- Draw Menu 내부 Btn-->
+                <Button x:Name="button_ShowDashboard" Style="{StaticResource DrawBtnStyle}" Tag="{StaticResource DashboardIcon}" Content="Dashboard" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Click="button_ShowDashboard_Click"/>
+                <Button x:Name="button_ShowToolList" Style="{StaticResource DrawBtnStyle}" Tag="{StaticResource ToolListIcon}" Content="Tool List" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Click="button_ShowToolList_Click"/>
+                <Button x:Name="button_ShowRentalHistory" Style="{StaticResource DrawBtnStyle}" Tag="{StaticResource RentalHistoryIcon}" Content="Rental History" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Click="button_ShowRentalHistory_Click"/>
+                <Button Style="{StaticResource DrawBtnStyle}" Tag="{StaticResource SettingIcon}" Content="Administrator" Command="{Binding OpenAdminPage}" Height="40" Margin="5" Visibility="{Binding CurrentUser.IsAdmin, Converter={StaticResource BoolToVis}}" Click="button_ShowAdminOption_Click" VerticalAlignment="Bottom"/>
+             
             </StackPanel>
         </Grid>
     </Grid>

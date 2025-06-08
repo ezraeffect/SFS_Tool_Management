@@ -82,14 +82,14 @@ namespace SFS_Tool_Management.ViewModels
         {
             var repo = new SQLRepository();
 
-            string query = "SELECT COUNT(*) AS TotalQuantity, "
-                        + "COUNT(CASE WHEN Condition = '정상' THEN 1 END) AS AvailableQuantity, "
-                        + "COUNT(CASE WHEN Condition = '점검 필요' THEN 1 END) AS RequiredCheckQuantity, "
-                        + "COUNT(CASE WHEN Condition = '점검 중' THEN 1 END) AS ChekcingQuantity, "
-                        + "COUNT(CASE WHEN Condition = '교정 필요' THEN 1 END) AS RequiredCalibrationQuantity, "
-                        + "COUNT(CASE WHEN Condition = '교정 중' THEN 1 END) AS CalibratingQuantity, "
-                        + "COUNT(CASE WHEN Condition = '대여' THEN 1 END) AS RentalQuantity "
-                        + "FROM ToolInstance;";
+            string query = @"SELECT COUNT(*) AS TotalQuantity,
+                            COUNT(CASE WHEN Condition = '정상' THEN 1 END) AS AvailableQuantity,
+                            COUNT(CASE WHEN Condition = '점검 필요' THEN 1 END) AS RequiredCheckQuantity,
+                            COUNT(CASE WHEN Condition = '점검 중' THEN 1 END) AS ChekcingQuantity,
+                            COUNT(CASE WHEN Condition = '교정 필요' THEN 1 END) AS RequiredCalibrationQuantity,
+                            COUNT(CASE WHEN Condition = '교정 중' THEN 1 END) AS CalibratingQuantity,
+                            COUNT(CASE WHEN Condition = '대여' THEN 1 END) AS RentalQuantity
+                            FROM ToolInstance;";
 
             var result = await repo.ExecuteQueryAsync(query, reader => new DashboardModel
             {

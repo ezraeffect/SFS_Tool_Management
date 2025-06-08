@@ -42,7 +42,8 @@
                     <styles:SummaryCard Margin="5" Title="대여" Count="{Binding RentalQuantity}" BackgroundBrush="#c3a54c"/>
                 </StackPanel>
             </ScrollViewer>
-            <!-- Summary Card StackPanel -->
+            
+            <!-- 대여 중, 연체 된 공구 목록 Grid -->
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>

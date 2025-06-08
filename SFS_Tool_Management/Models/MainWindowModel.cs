@@ -8,6 +8,6 @@ namespace SFS_Tool_Management.Models
 {
     internal class MainWindowModel
     {
-        //public string? 
+        
     }
 }
