@@ -202,67 +202,6 @@ namespace SFS_Tool_Management.Views.Repair
             }
         }
 
-        private void ReturnTool_Click(object sender, RoutedEventArgs e)
-        {
-            if (RepairDataGrid.SelectedItem is DataRowView row)
-            {
-                if (row["RentalEndDate"] != DBNull.Value)
-                {
-                    MessageBox.Show("이미 반납된 항목입니다.");
-                    return;
-                }
-
-                // SerialNumber는 문자열이므로 그대로 string으로 받기
-                string serialNumber = row["SerialNumber"].ToString();
-
-                // 반납 처리 메서드 호출
-                ReturnTool(serialNumber);
-            }
-        }
-
-
-        private void ReturnTool(string serialNumber)
-        {
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-
-                    string query = @"
-                -- 1. ToolInstance 상태 변경
-                UPDATE ToolInstance
-                SET Condition = '정상'
-                WHERE SerialNumber = @SerialNumber;
-
-                -- 2. RentalHistory 반납 처리
-                UPDATE RentalHistory
-                SET RentalEndDate = GETDATE(), IsReturned = 1
-                WHERE SerialNumber = @SerialNumber AND RentalEndDate IS NULL;";
-
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@SerialNumber", serialNumber);
-
-                    cmd.ExecuteNonQuery();
-                }
-
-                MessageBox.Show("반납이 완료되었습니다.");
-
-                // 목록 다시 불러오기
-                string defaultQuery = @"
-                                    SELECT rh.*, ti.ToolID, t.ModelName
-                                    FROM RentalHistory rh
-                                    JOIN ToolInstance ti ON rh.SerialNumber = ti.SerialNumber
-                                    JOIN Tool t ON ti.ToolID = t.ToolID
-                                    ";
-                LoadRepairData(defaultQuery, new List<SqlParameter>());
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("반납 처리 중 오류: " + ex.Message);
-            }
-        }
         private void ClearDateFilters_Click(object sender,RoutedEventArgs e)
         {
             StartDatePicker.SelectedDate = null;
