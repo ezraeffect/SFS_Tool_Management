@@ -175,7 +175,7 @@ namespace SFS_Tool_Management.Views
                 string serialNumber = selectedRow["ToolID"].ToString();
                 string modelName = selectedRow["ModelName"].ToString();
 
-                var rentalWindow = new AddRentalWindow(serialNumber, modelName);
+                var rentalWindow = new AddRentalWindow(serialNumber, modelName, _userID);
                 rentalWindow.ShowDialog();
 
             }

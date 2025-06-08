@@ -130,6 +130,7 @@ namespace SFS_Tool_Management.Repositories
                 ["Connection Timeout"] = int.Parse(Config.Load("Connection Timeout"))
             };
 
+
             return builder.ConnectionString;
         }
     }
