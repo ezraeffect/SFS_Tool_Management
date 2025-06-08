@@ -270,5 +270,80 @@ namespace SFS_Tool_Management.Views.Repair
             ReturnDatePicker.SelectedDate = null;
         }
 
+        private void ConfirmReq_Click(object sender, RoutedEventArgs e)
+        {
+            /* 기능: 요청 Confirm
+            - ToolInstance.Condition 값 변경 점검 중 / 검교정 중 / 수리 중
+            - RepairHistory.RepairStartDate 지금 날짜, 시각으로 작성
+            - RepairHistory.PerformedBy UserID값으로 작성
+            - RepairHistory.RepairType 작성 */
+
+            if (RepairDataGrid.SelectedItem is DataRowView selectedRow)
+            {
+                if (selectedRow["RepairStartDate"] == DBNull.Value || string.IsNullOrWhiteSpace(selectedRow["RepairStartDate"].ToString()))
+                {
+                    string RepairType = (string)selectedRow["RepairType"];
+                    string Condition = RepairType + " 중";
+                    string SerialNumber = selectedRow["SerialNumber"].ToString();
+                    string RepairID = selectedRow["RepairID"].ToString();
+                    string UserID = _userID;
+
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+
+                        string query = @"UPDATE ToolInstance
+                                        SET Condition = @Condition
+                                        WHERE SerialNumber = @SerialNumber;";
+
+                        using (SqlCommand cmd = new SqlCommand(query, connection))
+                        {
+                            cmd.Parameters.AddWithValue("@Condition", Condition);
+                            cmd.Parameters.AddWithValue("@SerialNumber", SerialNumber);
+
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+
+                        string query = @"UPDATE RepairHistory
+                                            SET RepairStartDate = @RepairStartDate,
+                                                PerformedBy = @UserID
+                                            WHERE RepairID = @RepairID;";
+
+                        using (SqlCommand cmd = new SqlCommand(query, connection))
+                        {
+                            cmd.Parameters.AddWithValue("@RepairID", RepairID);
+                            cmd.Parameters.AddWithValue("@RepairStartDate", DateTime.Now);
+                            cmd.Parameters.AddWithValue("@UserID", UserID);
+
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    MessageBox.Show($"{SerialNumber}의 {RepairType} 요청을 허가하였습니다!", "허가 완료", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                }
+                else
+                {
+                    MessageBox.Show("상태가 정상이 아닌 경우 요청을 할 수 없습니다!");
+                }
+            }
+        }
+        private void DoneReq_Click(object sender, RoutedEventArgs e)
+        {
+            /* 기능 : 요청 Done
+            - ToolInstance.Condition 값 변경 정상
+            - RepairHistory.Description 값 Textbox받아서 작성
+            - RepairHistory.RepairEndDate 지금 날짜, 시각으로 작성 */
+
+            
+        }
+        
+                    
+
     }
 }

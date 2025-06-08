@@ -57,7 +57,8 @@
               SelectionMode="Single" >
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <!--<MenuItem Header="반납하기" Click="RepairTool_Click"/>-->
+                    <MenuItem Header="요청 확인" Click="ConfirmReq_Click"/>
+                    <MenuItem Header="작업 완료" Click="DoneReq_Click"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>
