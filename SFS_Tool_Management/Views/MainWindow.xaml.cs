@@ -22,26 +22,7 @@ namespace SFS_Tool_Management
         public MainWindow()
         {
             InitializeComponent();
-            MainFrame.Navigate(new Views.DashboardPage());
-            DataContext = new UserViewModel();
-        }
-        private void button_ShowDashboard_Click(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new Views.DashboardPage());
-        }
-
-        private void button_ShowToolList_Click(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new Views.ToolListPage());
-        }
-
-        private void button_ShowRentalHistory_Click(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new Views.RentalHistoryPage());
-        }
-        private void button_ShowAdminOption_Click(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new Views.AdminOptionPage());
+            DataContext = new MainWindowViewModel(MainFrame);
         }
     }
 }

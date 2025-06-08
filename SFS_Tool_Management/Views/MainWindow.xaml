@@ -1,12 +1,21 @@
 ﻿<Window x:Class="SFS_Tool_Management.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:SFS_Tool_Management.ViewModels"
         xmlns:local="clr-namespace:SFS_Tool_Management"
         mc:Ignorable="d"
         Title="MainWindow" Height="960" Width="1440">
-    
+
+    <!-- Page Loaded Evnet Trigger -->
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding ShowDashboardCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <!-- 서랍 메뉴 Storyboard -->
     <Window.Resources>
         <!-- 여는 애니메이션 -->
@@ -88,7 +97,6 @@
 
             <!-- 사용자 표시용 StackPanel -->
             <StackPanel x:Name="user_Profile" Orientation="Horizontal" Margin="0 10 10 10" HorizontalAlignment="Right">
-                <ContentControl Content="{Binding CurrentPage}" />
                 <StackPanel Orientation="Vertical" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 8 0">
                     <TextBlock Text="{Binding CurrentUser.DisplayName, Mode=OneWay}" FontSize="14" FontFamily="Segoe UI" FontWeight="SemiBold" Margin="2" HorizontalAlignment="Right"/>
                     <TextBlock Text="{Binding CurrentUser.Department, Mode=OneWay}" FontSize="12" FontFamily="Segoe UI" Margin="2" HorizontalAlignment="Right"/>
@@ -125,11 +133,10 @@
                 <TextBlock Text="Tool Management" FontFamily="Segoe UI" FontSize="20" FontWeight="Bold" Margin="10"/>
 
                 <!-- Draw Menu 내부 Btn-->
-                <Button x:Name="button_ShowDashboard" Style="{StaticResource DrawBtnStyle}" Tag="{StaticResource DashboardIcon}" Content="Dashboard" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Click="button_ShowDashboard_Click"/>
-                <Button x:Name="button_ShowToolList" Style="{StaticResource DrawBtnStyle}" Tag="{StaticResource ToolListIcon}" Content="Tool List" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Click="button_ShowToolList_Click"/>
-                <Button x:Name="button_ShowRentalHistory" Style="{StaticResource DrawBtnStyle}" Tag="{StaticResource RentalHistoryIcon}" Content="Rental History" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Click="button_ShowRentalHistory_Click"/>
-                <Button Style="{StaticResource DrawBtnStyle}" Tag="{StaticResource SettingIcon}" Content="Administrator" Command="{Binding OpenAdminPage}" Height="40" Margin="5" Visibility="{Binding CurrentUser.IsAdmin, Converter={StaticResource BoolToVis}}" Click="button_ShowAdminOption_Click" VerticalAlignment="Bottom"/>
-             
+                <Button Command="{Binding ShowDashboardCommand}" Style="{StaticResource DrawBtnStyle}" Tag="{StaticResource DashboardIcon}" Content="Dashboard" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold"/>
+                <Button Command="{Binding ShowToolListCommand}" Style="{StaticResource DrawBtnStyle}" Tag="{StaticResource ToolListIcon}" Content="Tool List" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold"/>
+                <Button Command="{Binding ShowRentalHistoryCommand}" Style="{StaticResource DrawBtnStyle}" Tag="{StaticResource RentalHistoryIcon}" Content="Rental History" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold"/>
+                <Button Command="{Binding ShowAdminPageCommand}" Style="{StaticResource DrawBtnStyle}" Tag="{StaticResource SettingIcon}" Content="Administrator" Height="40" FontFamily="Segoe UI" FontSize="15" FontWeight="DemiBold" Visibility="{Binding CurrentUser.IsAdmin, Converter={StaticResource BoolToVis}}"/>
             </StackPanel>
         </Grid>
     </Grid>

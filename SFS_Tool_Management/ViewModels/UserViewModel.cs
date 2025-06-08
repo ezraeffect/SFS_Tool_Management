@@ -18,25 +18,6 @@ namespace SFS_Tool_Management.ViewModels
 {
     public partial class UserViewModel : ObservableObject
     {
-        [ObservableProperty]
-        private ObservableCollection<UserList>? userLists;
-        [ObservableProperty]
-        private UserList? currentUser;
 
-        public UserViewModel()
-        {
-            var users = UserList.GetAllUsers() ?? new List<UserList>();
-            UserLists = new ObservableCollection<UserList>(users);
-
-            CurrentUser = UserList.Instance.CurrentUser;
-            UserList.Instance.PropertyChanged += User_PropertyChanged;
-        }
-        private void User_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(UserList.CurrentUser))
-            {
-                CurrentUser = UserList.Instance.CurrentUser;
-            }
-        }
     }
 }

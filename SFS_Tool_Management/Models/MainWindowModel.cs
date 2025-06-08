@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace SFS_Tool_Management.Models
 {
-    internal class MainWindowModel
+    public partial class MainWindowModel
     {
-        
+        public string? PageName { get; set; }
+        public object? PageData { get; set; }
     }
 }
