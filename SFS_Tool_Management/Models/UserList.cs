@@ -34,7 +34,7 @@ namespace SFS_Tool_Management.Models
 
         public bool IsAdmin { get; set; }
 
-        public byte[] ImageBinary { get; set; }
+        public byte[]? ImageBinary { get; set; }
         public string Access => IsAdmin ? "Administrator" : "User";
 
         public UserList() { }
