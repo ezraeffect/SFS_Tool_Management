@@ -20,9 +20,10 @@ namespace SFS_Tool_Management.ViewModels
     {
         [ObservableProperty]
         private ObservableCollection<UserList> users;
-
         [ObservableProperty]
         private UserList selectedUser;
+        [ObservableProperty]
+        private bool isPopupOpen;
 
         private readonly SQLRepository sqlRepository;
         public AdminViewModel()
@@ -64,6 +65,41 @@ namespace SFS_Tool_Management.ViewModels
                 await cmd.ExecuteNonQueryAsync();
             }
             await RefreshUsersAsync();
+        }
+
+        [RelayCommand(CanExecute = nameof(CanModifyUser))]
+        private void OpenPopup(UserList? user)
+        {
+            if (user == null)
+                return;
+            SelectedUser = user;
+            IsPopupOpen = true;
+        }
+
+        [RelayCommand]
+        private async Task SaveEdit()
+        {
+            if (SelectedUser == null)
+                return;
+
+            string query = "UPDATE [dbo].[UserList] SET Position = @Position, Department = @Department WHERE UserID = @UserID";
+            using (var conn = new SqlConnection(SQLRepository.BuildConnectionString()))
+            using (var cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@Position", SelectedUser.Position);
+                cmd.Parameters.AddWithValue("@Department", SelectedUser.Department);
+                cmd.Parameters.AddWithValue("@UserID", SelectedUser.UserID);
+                await conn.OpenAsync();
+                await cmd.ExecuteNonQueryAsync();
+            }
+            await RefreshUsersAsync();
+            IsPopupOpen = false;
+        }
+
+        [RelayCommand]
+        private void CancelEdit()
+        {
+            IsPopupOpen = false;
         }
     }
 }

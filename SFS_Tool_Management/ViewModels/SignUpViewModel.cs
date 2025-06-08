@@ -12,6 +12,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SFS_Tool_Management.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
+using System.Windows.Data;
 
 namespace SFS_Tool_Management.ViewModels
 {
