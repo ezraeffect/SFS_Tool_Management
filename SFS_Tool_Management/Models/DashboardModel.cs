@@ -25,4 +25,12 @@ namespace SFS_Tool_Management.Models
         public string? PlannedReturnDate { get; set; } // 반납 예정일
         public string? RemainingDay { get; set; } // 반납까지 남은 날짜
     }
+
+    public partial class DailyRentalStatusModel
+    {
+        /* 일별 대여/반납 건수 추이 */
+        public DateTime? Date { get; set; } // 날짜
+        public string? RentalCount { get; set; } // 대여 횟수
+        public string? ReturnCount { get; set; } // 반납 횟수
+    }
 }

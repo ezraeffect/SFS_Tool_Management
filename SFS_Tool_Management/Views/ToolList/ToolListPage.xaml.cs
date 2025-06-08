@@ -47,7 +47,25 @@ namespace SFS_Tool_Management.Views
                 {
                     connection.Open();
 
-                    string query = "SELECT * FROM Tool";
+                    //string query = @"SELECT * FROM Tool";
+
+                    string query = @"SELECT
+                                        T.ToolID,
+                                        T.ToolType,
+                                        T.ModelName,
+                                        T.Manufacture,
+                                        T.TotalQuantity,
+                                        T.AvailableQuantity,
+                                        T.PurchaseDate,
+                                        T.DurabilityLimit,
+                                        I.SerialNumber,
+                                        I.LastCalibrationDate,
+                                        I.NextCalibrationDate,
+                                        I.Condition
+                                    FROM
+                                        Tool T
+                                    INNER JOIN
+                                        ToolInstance I ON T.ToolID = I.ToolID;";
 
                     SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
                     DataTable dataTable = new DataTable();
