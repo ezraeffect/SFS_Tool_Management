@@ -12,6 +12,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SFS_Tool_Management.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
+using System.Windows.Data;
 
 namespace SFS_Tool_Management.ViewModels
 {
@@ -102,6 +104,7 @@ namespace SFS_Tool_Management.ViewModels
                 string hashedPw = Encrypter.HashPW(Password);
                 UserList newUser = new UserList(Name, ID, Position, Department, PhoneNumber, ac, hashedPw);
                 await db.AddAsync(newUser);
+                await db.SaveChangesAsync();
 
                 MessageBox.Show("회원가입이 완료되었습니다.", "회원가입 완료", MessageBoxButton.OK, MessageBoxImage.Information);
             }
