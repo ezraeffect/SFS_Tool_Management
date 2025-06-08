@@ -8,22 +8,17 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ToolListPage">
 
-    <Grid Background="#FFECECEC" Margin="20">
+    <Grid Background="#FFFFFF" Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="공구 목록"
-                   FontSize="24"
-                   FontWeight="Bold"
-                   Margin="10"
-                   Grid.Row="0"/>
         <DataGrid x:Name="ToolDataGrid"
                   AutoGenerateColumns="true"
                   IsReadOnly="True"
-                  Margin="10"
-                  Grid.Row="1">
+
+                  Grid.Row="0">
             <DataGrid.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="수정" Click="EditTool_Click"/>
@@ -35,13 +30,13 @@
             </DataGrid.ContextMenu>
         </DataGrid>
         <Button Content="추가"
-                Width="120"
-                Height="40"
+                Grid.Row="1"
+                Width="40"
+                Height="30"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
-                Margin="10"
-                Click="AddToolButton_Click"
-                Grid.Row="1"/>
+                Margin="5"
+                Click="AddToolButton_Click"/>
 
     </Grid>
 
