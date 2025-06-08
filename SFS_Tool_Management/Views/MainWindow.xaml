@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:SFS_Tool_Management.ViewModels"
+        xmlns:repo="clr-namespace:SFS_Tool_Management.Repositories"
         xmlns:local="clr-namespace:SFS_Tool_Management"
         mc:Ignorable="d"
         Title="MainWindow" Height="960" Width="1440">
@@ -17,7 +18,7 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-    <!-- 서랍 메뉴 Storyboard -->
+    <!-- Resources -->
     <Window.Resources>
         <!-- 여는 애니메이션 -->
         <Storyboard x:Key="OpenMenu">
@@ -68,7 +69,9 @@
 
         <!--특정 조건에서만 보이는 옵션-->
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
-
+        
+        <!-- Bitmap을 ImageSource로 변경 하는 Interface -->
+        <repo:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter"/>
     </Window.Resources>
 
     <!-- 애니메이션 이벤트 트리거 -->
@@ -105,7 +108,11 @@
                     </StackPanel>
                     <TextBlock Text="{Binding CurrentUser.Department, Mode=OneWay}" FontSize="12" FontFamily="Segoe UI" Margin="2" HorizontalAlignment="Right"/>
                 </StackPanel>
-                <Ellipse Width="40" Height="40" Margin="2 2 2 2" Fill="#d7d7d7"></Ellipse>
+                <Ellipse Width="40" Height="40" Margin="2 2 2 2">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="{Binding CurrentUser.Image, Converter={StaticResource ByteArrayToImageSourceConverter}}" />
+                    </Ellipse.Fill>
+                </Ellipse>
             </StackPanel>
 
 

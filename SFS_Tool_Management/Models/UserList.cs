@@ -33,6 +33,8 @@ namespace SFS_Tool_Management.Models
         public string? phoneNumber;
 
         public bool IsAdmin { get; set; }
+
+        public byte[] ImageBinary { get; set; }
         public string Access => IsAdmin ? "Administrator" : "User";
 
         public UserList() { }
@@ -72,7 +74,7 @@ namespace SFS_Tool_Management.Models
             CurrentUser = user;
             OnPropertyChanged(nameof(CurrentUser));
         }
-        public UserList(string? name, string? id, string? pos, string? dep, string? pn, bool ac, string? pw)
+        public UserList(string? name, string? id, string? pos, string? dep, string? pn, bool ac, string? pw, byte[]? ib)
         {
             Name = name;
             UserID = id;
@@ -81,6 +83,7 @@ namespace SFS_Tool_Management.Models
             Department = dep;
             PhoneNumber = pn;
             IsAdmin = ac;
+            ImageBinary = ib;
         }
         public string DisplayName
             => $"{Position} {Name}";

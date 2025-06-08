@@ -57,7 +57,8 @@ namespace SFS_Tool_Management.ViewModels
                         userLog.Department,
                         userLog.PhoneNumber,
                         userLog.IsAdmin,
-                        hashedPassword);
+                        hashedPassword,
+                        userLog.ImageBinary);
                     UserList.Instance.SetCurrentUser(authenticatedUser);
                     CurrentUser = authenticatedUser;
                 }
