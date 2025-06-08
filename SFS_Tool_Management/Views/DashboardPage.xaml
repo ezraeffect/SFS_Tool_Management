@@ -23,6 +23,7 @@
             <i:InvokeCommandAction Command="{Binding GetDataCommand}"/>
             <i:InvokeCommandAction Command="{Binding GetRentalDataCommand}"/>
             <i:InvokeCommandAction Command="{Binding GetOverdueDataCommand}"/>
+            <i:InvokeCommandAction Command="{Binding SetPlotValueCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
@@ -85,8 +86,6 @@
                 <Line Grid.Row="1" Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" HorizontalAlignment="Stretch" Stroke="LightGray" StrokeThickness="2" Margin="5,5,5,5"/>
                 <ContentControl Grid.Row="2" Grid.Column="1" Content="{Binding PlotControl, Mode=OneTime}" Margin="5"/>
             </Grid>
-
-            <Button Command="{Binding SetPlotValueCommand}" Height="50" Width="50" Content="그래프"/>
         </StackPanel>
     </Grid>
 </Page>

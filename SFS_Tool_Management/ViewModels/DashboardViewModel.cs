@@ -12,6 +12,8 @@ using CommunityToolkit.Mvvm.Input;
 using System.Windows;
 using ScottPlot.WPF;
 using System.Data;
+using ScottPlot;
+using ScottPlot.Plottables;
 
 
 namespace SFS_Tool_Management.ViewModels
@@ -19,7 +21,9 @@ namespace SFS_Tool_Management.ViewModels
     public partial class DashboardViewModel : ObservableObject
     {
         private DashboardModel _model;
-        public WpfPlot PlotControl { get; } = new WpfPlot();
+        public WpfPlot DailyToolPlotControl { get; } = new WpfPlot();
+        public WpfPlot ToolStautsPlotControl { get; } = new WpfPlot();
+
 
         private readonly string _currentID;
 
@@ -60,6 +64,9 @@ namespace SFS_Tool_Management.ViewModels
         [ObservableProperty]
         private ObservableCollection<RentalToolListModel> overdueToolList = new();
 
+        private List<DateTime> dailyDateTimes = new List<DateTime>();
+        private List<int> rentalCounts = new List<int>();
+        private List<int> returnCounts = new List<int>();
         public void LoadData(DashboardModel model)
         {
             TotalQuantity = model.TotalQuantity;
@@ -193,13 +200,71 @@ namespace SFS_Tool_Management.ViewModels
             repo.InsertTestQuery();
         }
 
-        [RelayCommand]
-        public void SetPlotValue()
+        public async Task GetDailyToolStatusDataAsync()
         {
-            double[] dataX = { 1, 2, 3, 4, 5 };
-            double[] dataY = { 1, 4, 9, 16, 25 };
-            PlotControl.Plot.Add.Scatter(dataX, dataY);
-            PlotControl.Refresh();
+            /*
+            - 일별 대여/반납 건수 추이 (최근 30일)
+            - RentalHistory의 대여일/반납일 기준 일별 집계
+             */
+
+            var repo = new SQLRepository();
+
+            string query = @"WITH DateSeries AS (
+                                SELECT CAST(GETDATE() - 29 AS DATE) AS [Date]
+                                UNION ALL
+                                SELECT DATEADD(DAY, 1, [Date])
+                                FROM DateSeries
+                                WHERE [Date] < CAST(GETDATE() AS DATE)
+                            ),
+                            RentalCount AS (
+                                SELECT CAST(RentalStartDate AS DATE) AS [Date], COUNT(*) AS RentalCount
+                                FROM RentalHistory
+                                WHERE RentalStartDate >= CAST(GETDATE() - 29 AS DATE)
+                                GROUP BY CAST(RentalStartDate AS DATE)
+                            ),
+                            ReturnCount AS (
+                                SELECT CAST(RentalEndDate AS DATE) AS [Date], COUNT(*) AS ReturnCount
+                                FROM RentalHistory
+                                WHERE RentalEndDate IS NOT NULL AND RentalEndDate >= CAST(GETDATE() - 29 AS DATE)
+                                GROUP BY CAST(RentalEndDate AS DATE)
+                            )
+                            SELECT
+                                D.[Date],
+                                ISNULL(R.RentalCount, 0) AS RentalCount,
+                                ISNULL(T.ReturnCount, 0) AS ReturnCount
+                            FROM DateSeries D
+                            LEFT JOIN RentalCount R ON D.[Date] = R.[Date]
+                            LEFT JOIN ReturnCount T ON D.[Date] = T.[Date]
+                            ORDER BY D.[Date]
+                            OPTION (MAXRECURSION 0);";
+
+            var result = await repo.ExecuteQueryAsync(query, reader => new DailyRentalStatusModel
+            {
+                Date = reader.GetDateTime(0),
+                RentalCount = reader.GetInt32(1),
+                ReturnCount = reader.GetInt32(2)
+            });
+
+            foreach (var item in result)
+            {
+                dailyDateTimes.Add((DateTime)item.Date);
+                rentalCounts.Add((int)item.RentalCount);
+                returnCounts.Add((int)item.ReturnCount);
+            }
+        }
+
+        [RelayCommand]
+        public async Task SetPlotValue()
+        {
+            await GetDailyToolStatusDataAsync();
+            var rentalCountPlot = DailyToolPlotControl.Plot.Add.Scatter(dailyDateTimes.ToArray(), rentalCounts.ToArray());
+            rentalCountPlot.LegendText = "Rented Count";
+            var returnCountPlot = DailyToolPlotControl.Plot.Add.Scatter(dailyDateTimes.ToArray(), returnCounts.ToArray());
+            returnCountPlot.LegendText = "Returned Count";
+
+            DailyToolPlotControl.Plot.Font.Automatic();
+            DailyToolPlotControl.Plot.Axes.DateTimeTicksBottom();
+            DailyToolPlotControl.Refresh();
         }
     }
 }

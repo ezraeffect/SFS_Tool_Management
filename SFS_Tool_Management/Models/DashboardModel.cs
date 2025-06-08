@@ -30,7 +30,7 @@ namespace SFS_Tool_Management.Models
     {
         /* 일별 대여/반납 건수 추이 */
         public DateTime? Date { get; set; } // 날짜
-        public string? RentalCount { get; set; } // 대여 횟수
-        public string? ReturnCount { get; set; } // 반납 횟수
+        public int? RentalCount { get; set; } // 대여 횟수
+        public int? ReturnCount { get; set; } // 반납 횟수
     }
 }
