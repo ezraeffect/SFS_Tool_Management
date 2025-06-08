@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SFS_Tool_Management.Models
 {
-    public partial class UserModel
+    public partial class UserModel : ObservableObject
     {
-        public string? UserID { get; set; }
-        public string? UserName { get; set; }
-        public string? UserPosition { get; set; }
-        public string? UserDepartment { get; set; }
-        public byte[]? UserImageBlob { get; set; }
-        public bool? IsAdmin { get; set; }
+        [ObservableProperty] public string? id;
+        [ObservableProperty] public string? name;
+        [ObservableProperty] public string? position;
+        [ObservableProperty] public string? department;
+        [ObservableProperty] public byte[]? image;
+        [ObservableProperty] public bool? isAdmin;
     }
 }

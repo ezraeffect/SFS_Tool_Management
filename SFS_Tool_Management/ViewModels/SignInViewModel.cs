@@ -46,7 +46,7 @@ namespace SFS_Tool_Management.ViewModels
                         return;
                     }
                     MessageBox.Show($"{userLog.Name}님, 환영합니다.", "로그인 성공", MessageBoxButton.OK, MessageBoxImage.Information);
-                    MainWindow mainWindow =  new MainWindow();
+                    MainWindow mainWindow =  new MainWindow(ID);
                     mainWindow.Show();
                     Application.Current.MainWindow.Close();
 

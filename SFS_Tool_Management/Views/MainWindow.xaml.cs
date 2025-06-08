@@ -19,10 +19,10 @@ namespace SFS_Tool_Management
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(string userID)
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel(MainFrame);
+            DataContext = new MainWindowViewModel(MainFrame, userID);
         }
     }
 }
