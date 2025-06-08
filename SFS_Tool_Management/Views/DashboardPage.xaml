@@ -11,20 +11,25 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="DashboardPage">
-
+    
+    <!-- Data Context -->
     <Page.DataContext>
         <model:DashboardViewModel/>
     </Page.DataContext>
-
+    
+    <!-- Page Loaded Evnet Trigger -->
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding GetDataCommand}"/>
+            <i:InvokeCommandAction Command="{Binding GetRentalDataCommand}"/>
+            <i:InvokeCommandAction Command="{Binding GetOverdueDataCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
     <Grid>
         <StackPanel Orientation="Vertical">
-            <TextBlock Text="요약" Margin="10" FontFamily="Segoe UI" FontSize="22" FontWeight="DemiBold"/>
+            <!-- Summary Card StackPanel -->
+            <TextBlock Text="요약" Margin="5" FontFamily="Segoe UI" FontSize="22" FontWeight="DemiBold"/>
             <Line X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" HorizontalAlignment="Stretch" Stroke="LightGray" StrokeThickness="2" Margin="5,5,5,5"/>
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top" CanHorizontallyScroll="True">
@@ -37,6 +42,29 @@
                     <styles:SummaryCard Margin="5" Title="대여" Count="{Binding RentalQuantity}" BackgroundBrush="#c3a54c"/>
                 </StackPanel>
             </ScrollViewer>
+            <!-- Summary Card StackPanel -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition MinHeight="200"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="대여 중인 공구" Margin="10" FontFamily="Segoe UI" FontSize="22" FontWeight="DemiBold"/>
+                <Line Grid.Row="1" Grid.Column="0" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" HorizontalAlignment="Stretch" Stroke="LightGray" StrokeThickness="2" Margin="5,5,5,5"/>
+                <DataGrid Grid.Row="2" Grid.Column="0" ItemsSource="{Binding RentalToolList}" Margin="5"/>
+                
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="연체 된 공구" Margin="10" FontFamily="Segoe UI" FontSize="22" FontWeight="DemiBold"/>
+                <Line Grid.Row="1" Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" HorizontalAlignment="Stretch" Stroke="LightGray" StrokeThickness="2" Margin="5,5,5,5"/>
+                <DataGrid Grid.Row="2" Grid.Column="1" ItemsSource="{Binding OverdueToolList}" Margin="5"/>
+            </Grid>
+            
+
+            <!-- Plot StackPanel -->
             <StackPanel Orientation="Horizontal">
                 <StackPanel Orientation="Vertical">
                     <ContentControl Content="{Binding PlotControl, Mode=OneTime}" Height="200" Width="300"/>
