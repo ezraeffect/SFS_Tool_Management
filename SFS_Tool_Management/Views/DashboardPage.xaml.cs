@@ -21,9 +21,10 @@ namespace SFS_Tool_Management.Views
     /// </summary>
     public partial class DashboardPage : Page
     {
-        public DashboardPage()
+        public DashboardPage(string userID)
         {
             InitializeComponent();
+            DataContext = new DashboardViewModel(userID);
         }
     }
 }

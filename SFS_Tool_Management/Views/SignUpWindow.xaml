@@ -57,6 +57,21 @@
                     <RadioButton x:Name="radioButton_isAdmin" Content="Administrator" Grid.Column="1" FontFamily="Segoe UI" IsChecked="{Binding IsAdmin, Mode=TwoWay}" />
                 </Grid>
 
+                <!-- 역할 입력 Control -->
+                <TextBlock Text="Profile Picture" FontFamily="Segoe UI" Margin="0,0,0,3"/>
+                <Grid Margin="0,0,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition MaxWidth="150"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Height="60" Width="60" Margin="5" Command="{Binding BrowseFileCommand}" Content="Upload">
+                        <Button.Background>
+                            <ImageBrush ImageSource="{Binding ImageBrushed}" Stretch="Uniform"/>
+                        </Button.Background>
+                    </Button>
+                    <TextBlock Grid.Column="1" Text="Only JPG, BMP and GIF files under 1MB are allowed for upload." TextWrapping="Wrap" Margin="5" FontSize="9"/>
+                </Grid>
+
                 <!-- 가입 컨트롤 Control -->
                 <Button x:Name="button_SignUp" Content="Sign Up" FontFamily="Segoe UI" Margin="0,0,0,2" Command="{Binding SignUpCommand}" />
             </StackPanel>

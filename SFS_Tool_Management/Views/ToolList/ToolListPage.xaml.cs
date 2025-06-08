@@ -27,11 +27,15 @@ namespace SFS_Tool_Management.Views
         private string connectionString = SQLRepository.BuildConnectionString();
         
         private DataRowView _lastDeletedTool = null;
-        public ToolListPage()
+
+        private readonly string _userID;
+
+        public ToolListPage(string userID)
         {
 
             InitializeComponent();
             LoadToolData();
+            _userID = userID;
             
         }
 

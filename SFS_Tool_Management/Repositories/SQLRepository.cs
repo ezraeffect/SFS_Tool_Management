@@ -16,10 +16,19 @@ namespace SFS_Tool_Management.Repositories
     public class SQLRepository
     {
 
-        public async Task<List<T>> ExecuteQueryAsync<T>(string query, Func<SqlDataReader, T> map)
+        public async Task<List<T>> ExecuteQueryAsync<T>(string query, Func<SqlDataReader, T> map, Dictionary<string, object>? parameters = null)
         {
             using var conn = new SqlConnection(BuildConnectionString());
             using var cmd = new SqlCommand(query, conn);
+
+            if (parameters != null)
+            {
+                foreach (var param in parameters)
+                {
+                    cmd.Parameters.AddWithValue(param.Key, param.Value ?? DBNull.Value);
+                }
+            }
+
             await conn.OpenAsync();
             using var reader = await cmd.ExecuteReaderAsync();
 
@@ -27,10 +36,9 @@ namespace SFS_Tool_Management.Repositories
             while (await reader.ReadAsync())
             {
                 result.Add(map(reader));
-
-                // Only USE DEBUG
-                // ReadMultiRow((IDataRecord)reader);
             }
+            // Only USE DEBUG
+            //ReadMultiRow((IDataRecord)reader);
             return result;
         }
 

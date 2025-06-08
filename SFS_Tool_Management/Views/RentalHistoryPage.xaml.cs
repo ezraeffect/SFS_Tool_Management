@@ -22,18 +22,19 @@ namespace SFS_Tool_Management.Views
 {
     public partial class RentalHistoryPage : Page
     {
+        private readonly string _userID;
         private string connectionString = SQLRepository.BuildConnectionString();
 
-        public RentalHistoryPage()
+        public RentalHistoryPage(string userID)
         {
             InitializeComponent();
 
-            string defaultQuery = @"
-        SELECT rh.*, ti.ToolID, t.ModelName
-        FROM RentalHistory rh
-        JOIN ToolInstance ti ON rh.SerialNumber = ti.SerialNumber
-        JOIN Tool t ON ti.ToolID = t.ToolID
-    ";
+            _userID = userID;
+
+            string defaultQuery = @"SELECT rh.*, ti.ToolID, t.ModelName
+                                    FROM RentalHistory rh
+                                    JOIN ToolInstance ti ON rh.SerialNumber = ti.SerialNumber
+                                    JOIN Tool t ON ti.ToolID = t.ToolID";
             LoadRentalData(defaultQuery, new List<SqlParameter>());
         }
 
