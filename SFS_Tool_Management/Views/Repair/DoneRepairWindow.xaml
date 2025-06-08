@@ -1,0 +1,26 @@
+﻿<Window x:Class="SFS_Tool_Management.Views.Repair.DoneRepairWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SFS_Tool_Management.Views.Repair"
+        mc:Ignorable="d"
+        Title="DoneRepairWindow" Height="500" Width="300">
+    <Grid>
+        <StackPanel Orientation="Vertical" Margin="10">
+            <TextBlock Text="요청 ID"/>
+            <TextBlock x:Name="RepairID_TextBlock" FontWeight="Bold" Margin="0,0,0,5"/>
+
+            <TextBlock Text="요청 종류"/>
+            <TextBlock x:Name="RepairType_TextBlock" FontWeight="Bold" Margin="0,0,0,5"/>
+
+            <TextBlock Text="시리얼 번호"/>
+            <TextBlock x:Name="SerialNumber_TextBlock" FontWeight="Bold" Margin="0,0,0,5"/>
+
+            <TextBlock Text="조치 내역"/>
+            <TextBox x:Name="Description_TextBox" Height="290" Margin="0,0,0,5"/>
+
+            <Button x:Name="Confirm_Button" Content="요청 종결" Click="Confirm_Button_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

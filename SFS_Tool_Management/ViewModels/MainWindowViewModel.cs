@@ -87,6 +87,13 @@ namespace SFS_Tool_Management.ViewModels
         }
 
         [RelayCommand]
+        public void ShowRepairHistory()
+        {
+            CurrentPageName = "Repair History";
+            _mainFrame.Navigate(new Views.Repair.RepairHistoryPage(_userID));
+        }
+
+        [RelayCommand]
         public void ShowAdminPage()
         {
             CurrentPageName = "회원 관리 (관리자 페이지)";

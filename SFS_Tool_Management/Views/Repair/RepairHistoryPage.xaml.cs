@@ -18,29 +18,26 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SFS_Tool_Management.Views
+namespace SFS_Tool_Management.Views.Repair
 {
-    public partial class RentalHistoryPage : Page
+    public partial class RepairHistoryPage : Page
     {
         private readonly string _userID;
         private string connectionString = SQLRepository.BuildConnectionString();
 
-        public RentalHistoryPage(string userID)
+        public RepairHistoryPage(string userID)
         {
             InitializeComponent();
 
             _userID = userID;
 
-            string defaultQuery = @"SELECT rh.*, ti.ToolID, t.ModelName
-                                    FROM RentalHistory rh
-                                    JOIN ToolInstance ti ON rh.SerialNumber = ti.SerialNumber
-                                    JOIN Tool t ON ti.ToolID = t.ToolID";
-            LoadRentalData(defaultQuery, new List<SqlParameter>());
+            string defaultQuery = @"SELECT * FROM RepairHistory";
+            LoadRepairData(defaultQuery, new List<SqlParameter>());
         }
 
 
 
-        private void LoadRentalData(string query, List<SqlParameter> parameters)
+        private void LoadRepairData(string query, List<SqlParameter> parameters)
         {
             string connectionString = SQLRepository.BuildConnectionString();
             DataTable table = new DataTable();
@@ -62,7 +59,7 @@ namespace SFS_Tool_Management.Views
                 }
             }
 
-            RentalDataGrid.ItemsSource = table.DefaultView;
+            RepairDataGrid.ItemsSource = table.DefaultView;
         }
 
 
@@ -140,14 +137,14 @@ namespace SFS_Tool_Management.Views
             }
 
 
-            LoadRentalData(queryBuilder.ToString(), parameters);
+            LoadRepairData(queryBuilder.ToString(), parameters);
   
         }
 
         // CSV 내보내기 클릭
         private void ExportCsv_Click(object sender, RoutedEventArgs e)
         {
-            if(RentalDataGrid.Items.Count == 0)
+            if(RepairDataGrid.Items.Count == 0)
             {
                 MessageBox.Show("내보낼 데이터가 없습니다.");
                 return;
@@ -156,14 +153,14 @@ namespace SFS_Tool_Management.Views
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
                 Filter = "CSV 파일 (*.csv)|*.csv",
-                FileName = $"RentalHistory_{DateTime.Now:yyyyMMdd_HHmmss}.csv"
+                FileName = $"RepairHistory_{DateTime.Now:yyyyMMdd_HHmmss}.csv"
             };
 
             if (saveFileDialog.ShowDialog() == true)
             {
                 try
                 {
-                    var dataView = RentalDataGrid.ItemsSource as DataView;
+                    var dataView = RepairDataGrid.ItemsSource as DataView;
                     if (dataView == null)
                     {
                         MessageBox.Show("데이터 형식을 인식하지 못했습니다.");
@@ -207,7 +204,7 @@ namespace SFS_Tool_Management.Views
 
         private void ReturnTool_Click(object sender, RoutedEventArgs e)
         {
-            if (RentalDataGrid.SelectedItem is DataRowView row)
+            if (RepairDataGrid.SelectedItem is DataRowView row)
             {
                 if (row["RentalEndDate"] != DBNull.Value)
                 {
@@ -258,7 +255,7 @@ namespace SFS_Tool_Management.Views
                                     JOIN ToolInstance ti ON rh.SerialNumber = ti.SerialNumber
                                     JOIN Tool t ON ti.ToolID = t.ToolID
                                     ";
-                LoadRentalData(defaultQuery, new List<SqlParameter>());
+                LoadRepairData(defaultQuery, new List<SqlParameter>());
 
             }
             catch (Exception ex)
@@ -273,5 +270,99 @@ namespace SFS_Tool_Management.Views
             ReturnDatePicker.SelectedDate = null;
         }
 
+        private void ConfirmReq_Click(object sender, RoutedEventArgs e)
+        {
+            /* 기능: 요청 Confirm
+            - ToolInstance.Condition 값 변경 점검 중 / 검교정 중 / 수리 중
+            - RepairHistory.RepairStartDate 지금 날짜, 시각으로 작성
+            - RepairHistory.PerformedBy UserID값으로 작성
+            - RepairHistory.RepairType 작성 */
+
+            if (RepairDataGrid.SelectedItem is DataRowView selectedRow)
+            {
+                if (selectedRow["RepairStartDate"] == DBNull.Value || string.IsNullOrWhiteSpace(selectedRow["RepairStartDate"].ToString()))
+                {
+                    string RepairType = (string)selectedRow["RepairType"];
+                    string Condition = RepairType + " 중";
+                    string SerialNumber = selectedRow["SerialNumber"].ToString();
+                    string RepairID = selectedRow["RepairID"].ToString();
+                    string UserID = _userID;
+
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+
+                        string query = @"UPDATE ToolInstance
+                                        SET Condition = @Condition
+                                        WHERE SerialNumber = @SerialNumber;";
+
+                        using (SqlCommand cmd = new SqlCommand(query, connection))
+                        {
+                            cmd.Parameters.AddWithValue("@Condition", Condition);
+                            cmd.Parameters.AddWithValue("@SerialNumber", SerialNumber);
+
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+
+                        string query = @"UPDATE RepairHistory
+                                            SET RepairStartDate = @RepairStartDate,
+                                                PerformedBy = @UserID
+                                            WHERE RepairID = @RepairID;";
+
+                        using (SqlCommand cmd = new SqlCommand(query, connection))
+                        {
+                            cmd.Parameters.AddWithValue("@RepairID", RepairID);
+                            cmd.Parameters.AddWithValue("@RepairStartDate", DateTime.Now);
+                            cmd.Parameters.AddWithValue("@UserID", UserID);
+
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    MessageBox.Show($"{SerialNumber}의 {RepairType} 요청을 허가하였습니다!", "허가 완료", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                }
+                else
+                {
+                    MessageBox.Show("이미 허가된 요청은 처리가 불가능합니다!");
+                }
+            }
+        }
+        private void DoneReq_Click(object sender, RoutedEventArgs e)
+        {
+            /* 기능 : 요청 Done
+            - ToolInstance.Condition 값 변경 정상
+            - RepairHistory.Description 값 Textbox받아서 작성
+            - RepairHistory.RepairEndDate 지금 날짜, 시각으로 작성 */
+
+            if (RepairDataGrid.SelectedItem is DataRowView selectedRow)
+            {
+                if (selectedRow["RepairStartDate"] != DBNull.Value && selectedRow["RepairEndDate"] == DBNull.Value)
+                {
+                    string RepairType = (string)selectedRow["RepairType"];
+                    string SerialNumber = selectedRow["SerialNumber"].ToString();
+                    string RepairID = selectedRow["RepairID"].ToString();
+                    string UserID = _userID;
+
+                    var popup = new DoneRepairWindow(_userID, RepairType, SerialNumber, RepairID);
+                    bool? result = popup.ShowDialog();
+
+                    if (result == true)
+                    {
+                        MessageBox.Show($"{SerialNumber}의 {RepairType} 요청을 허가하였습니다!", "허가 완료", MessageBoxButton.OK, MessageBoxImage.Information);
+                        //LoadRepairData(); // 팝업창에서 삽입이 성공적으로 끝났을 경우만
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("요청 완료 조건에 맞지 않아 처리가 불가능합니다!");
+                }
+            }
+        }
     }
 }
