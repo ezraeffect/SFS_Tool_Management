@@ -37,7 +37,7 @@
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}" >
-                    <MenuItem Header="직급/부서 수정"  Command="{Binding OpenPopupCommand}"
+                    <MenuItem Header="개인정보 수정"  Command="{Binding OpenPopupCommand}"
                               CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
                     <MenuItem Header="삭제" Command="{Binding DeleteUserCommand}"
                               CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
@@ -56,9 +56,11 @@
                     <TextBlock Text="부서 수정" FontWeight="Bold" Margin="0,0,0,5"/>
                     <TextBox Text="{Binding SelectedUser.Department, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                              Width="200" Margin="0,0,0,10"/>
+                    <TextBlock Text="전화번호 수정" FontWeight="Bold" Margin="0,0,0,5"/>
+                    <TextBox Text="{Binding SelectedUser.PhoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+         Width="200" Margin="0,0,0,10"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button Content="저장" Command="{Binding SaveEditCommand}" Margin="0,0,5,0"/>
-                        <Button Content="취소" Command="{Binding CancelEditCommand}"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
