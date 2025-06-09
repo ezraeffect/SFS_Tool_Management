@@ -80,11 +80,11 @@
 
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="일별 대여/반납 건수 추이" Margin="10" FontFamily="Segoe UI" FontSize="22" FontWeight="DemiBold"/>
                 <Line Grid.Row="1" Grid.Column="0" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" HorizontalAlignment="Stretch" Stroke="LightGray" StrokeThickness="2" Margin="5,5,5,5"/>
-                <ContentControl Grid.Row="2" Grid.Column="0" Content="{Binding DailyToolPlotControl, Mode=OneTime}" Margin="5"/>
+                <ContentControl Grid.Row="2" Grid.Column="0" Content="{Binding DailyToolPlotControl, Mode=OneTime}" Margin="5" MinHeight="350"/>
 
                 <TextBlock Grid.Row="0" Grid.Column="1" Text="공구 상태별 분포" Margin="10" FontFamily="Segoe UI" FontSize="22" FontWeight="DemiBold"/>
                 <Line Grid.Row="1" Grid.Column="1" X1="0" Y1="0" X2="1" Y2="0" Stretch="Fill" HorizontalAlignment="Stretch" Stroke="LightGray" StrokeThickness="2" Margin="5,5,5,5"/>
-                <ContentControl Grid.Row="2" Grid.Column="1" Content="{Binding ToolStatusPlotControl, Mode=OneTime}" Margin="5"/>
+                <ContentControl Grid.Row="2" Grid.Column="1" Content="{Binding ToolStatusPlotControl, Mode=OneTime}" Margin="5" MinHeight="350"/>
             </Grid>
         </StackPanel>
     </Grid>
