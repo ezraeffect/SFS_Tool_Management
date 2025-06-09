@@ -27,10 +27,12 @@ namespace SFS_Tool_Management
                     connection.Open();
 
                     string query = @"
-                        INSERT INTO Tool
-                        (ToolID, ToolType, ModelName, Manufacture, TotalQuantity, AvailableQuantity, PurchaseDate, DurabilityLimit, Status)
-                        VALUES 
-                        (@ToolID, @ToolType, @ModelName, @Manufacture, @TotalQuantity, @AvailableQuantity, @PurchaseDate, @DurabilityLimit, @Status)";
+    INSERT INTO Tool
+    (ToolID, ToolType, ModelName, Manufacture, TotalQuantity, AvailableQuantity, PurchaseDate, DurabilityLimit)
+    VALUES 
+    (@ToolID, @ToolType, @ModelName, @Manufacture, @TotalQuantity, @AvailableQuantity, @PurchaseDate, @DurabilityLimit)";
+
+
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
@@ -42,7 +44,9 @@ namespace SFS_Tool_Management
                         cmd.Parameters.AddWithValue("@AvailableQuantity", int.Parse(AvailableQuantityTextBox.Text));
                         cmd.Parameters.AddWithValue("@PurchaseDate", PurchaseDatePicker.SelectedDate ?? DateTime.Now);
                         cmd.Parameters.AddWithValue("@DurabilityLimit", DurabilityLimitPicker.SelectedDate ?? DateTime.Now);
-                        cmd.Parameters.AddWithValue("@Status", StatusTextBox.Text);
+                        
+
+
 
                         cmd.ExecuteNonQuery();
                     }

@@ -32,14 +32,23 @@
 
             </DataGrid.ContextMenu>
         </DataGrid>
-        <Button Content="추가"
-                Grid.Row="1"
-                Width="40"
-                Height="30"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Margin="5"
-                Click="AddToolButton_Click"/>
+        <StackPanel Orientation="Horizontal"
+            Grid.Row="1"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Margin="5">
+
+            <Button Content="Tool추가"
+            Width="80"
+            Height="30"
+            Margin="0,0,10,0"
+            Click="AddToolButton_Click"/>
+
+            <Button Content="ToolInstance추가"
+            Width="120"
+            Height="30"
+            Click="AddToolInstanceButton_Click"/>
+        </StackPanel>
 
     </Grid>
 
