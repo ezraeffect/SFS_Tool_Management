@@ -90,6 +90,18 @@ namespace SFS_Tool_Management.Views
             {
                 LoadToolData(); // 팝업창에서 삽입이 성공적으로 끝났을 경우만
             }
+
+        }
+
+        private void AddToolInstanceButton_Click(object sender, RoutedEventArgs e)
+        {
+            var popup = new AddToolInstanceWindow();  // 생성한 ToolInstance 추가 창
+            bool? result = popup.ShowDialog();
+
+            if (result == true)
+            {
+                LoadToolData(); // DB 반영 성공 시, 목록 새로고침
+            }
         }
         private void EditTool_Click(object sender, RoutedEventArgs e)
         {

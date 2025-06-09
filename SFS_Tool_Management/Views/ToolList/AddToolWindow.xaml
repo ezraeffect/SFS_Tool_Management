@@ -34,8 +34,7 @@
             <TextBlock Text="내구 연한" Margin="0,5,0,0"/>
             <DatePicker x:Name="DurabilityLimitPicker" Margin="0,0,0,5"/>
 
-            <TextBlock Text="상태" Margin="0,5,0,0"/>
-            <TextBox x:Name="StatusTextBox" Margin="0,0,0,5"/>
+            
         </StackPanel>
 
         <Button Content="추가" Grid.Row="1"
