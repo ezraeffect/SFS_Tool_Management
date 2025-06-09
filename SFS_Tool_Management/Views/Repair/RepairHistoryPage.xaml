@@ -19,7 +19,7 @@
         </Grid.RowDefinitions>
 
         <!-- 필터 영역 -->
-        <!-- <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Grid.Row="0">
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Grid.Row="0">
             <Label Content="공구명:" VerticalAlignment="Center" />
             <TextBox x:Name="ModelNameFilterBox" Width="150" Margin="5,0" />
 
@@ -46,7 +46,7 @@
             <Button Content="날짜 초기화" Click="ClearDateFilters_Click" Margin="10,0"/>
 
             <Button Content="검색" Click="FilterSearch_Click" Margin="10,0" />
-        </StackPanel> -->
+        </StackPanel>
 
 
         <!-- 데이터 그리드 -->
