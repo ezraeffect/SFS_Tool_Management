@@ -82,23 +82,18 @@ namespace SFS_Tool_Management.ViewModels
             if (SelectedUser == null)
                 return;
 
-            string query = "UPDATE [dbo].[UserList] SET Position = @Position, Department = @Department WHERE UserID = @UserID";
+            string query = "UPDATE [dbo].[UserList] SET Position = @Position, Department = @Department, PhoneNumber = @PhoneNumber WHERE UserID = @UserID";
             using (var conn = new SqlConnection(SQLRepository.BuildConnectionString()))
             using (var cmd = new SqlCommand(query, conn))
             {
                 cmd.Parameters.AddWithValue("@Position", SelectedUser.Position);
                 cmd.Parameters.AddWithValue("@Department", SelectedUser.Department);
+                cmd.Parameters.AddWithValue("@PhoneNumber", SelectedUser.PhoneNumber);
                 cmd.Parameters.AddWithValue("@UserID", SelectedUser.UserID);
                 await conn.OpenAsync();
                 await cmd.ExecuteNonQueryAsync();
             }
             await RefreshUsersAsync();
-            IsPopupOpen = false;
-        }
-
-        [RelayCommand]
-        private void CancelEdit()
-        {
             IsPopupOpen = false;
         }
     }

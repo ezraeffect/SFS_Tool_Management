@@ -23,10 +23,8 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    
+
                     <TextBlock Text="Password" Grid.Column="0" FontFamily="Segoe UI" Margin="0,0,0,3" HorizontalAlignment="Left" />
-                    <TextBlock Text="Forgot your password?" Grid.Column="1" FontFamily="Segoe UI" HorizontalAlignment="Right"
-                               Foreground="CornflowerBlue" TextDecorations="Underline" Cursor="Hand" />
                 </Grid>
 
                 <PasswordBox x:Name="textBox_Password" FontFamily="Segoe UI" Margin="0,0,0,5" PasswordChanged="PasswordBox_PasswordChanged" />
